@@ -56,3 +56,6 @@ spring:
     username: use the one from .env file
     password: use the one from .env file
 ```
+
+http://localhost:8080/swagger-ui.html
+http://localhost:8080/v3/api-docs

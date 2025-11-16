@@ -18,3 +18,20 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
+  springdoc:
+    api-docs:
+      path: /api-docs/openapi.json
+
+    swagger-ui:
+      path: /swagger-ui.html
+
+    info:
+      title: BriefBot API
+      description: API documentation for the BriefBot application.
+      version: v1.0.0
+
+    group-configs:
+      - group: default
+        packages-to-scan:
+          - com.admeliora.briefbot.user.api
