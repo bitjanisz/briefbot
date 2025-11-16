@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("users")
 @RequiredArgsConstructor
 @Tag(name = "Users", description = "User management API")
 public class UserController {
