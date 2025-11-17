@@ -1,7 +1,13 @@
 package com.admeliora.briefbot;
 
+import com.admeliora.briefbot.comment.tool.CommentToolProvider;
+import org.springframework.ai.support.ToolCallbacks;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import java.util.List;
 
 @SpringBootApplication
 public class BriefBotApplication {
@@ -10,4 +16,8 @@ public class BriefBotApplication {
 		SpringApplication.run(BriefBotApplication.class, args);
 	}
 
+    @Bean
+    public List<ToolCallback> tools(CommentToolProvider commentToolProvider) {
+        return List.of(ToolCallbacks.from(commentToolProvider));
+    }
 }
