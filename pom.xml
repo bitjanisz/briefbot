@@ -12,7 +12,7 @@
     <artifactId>briefbot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 <!--    <packaging>war</packaging>-->
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>BriefBot</name>
     <description>Demo project for Spring Boot</description>
     <url/>
