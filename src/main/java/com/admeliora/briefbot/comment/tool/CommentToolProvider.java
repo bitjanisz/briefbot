@@ -15,10 +15,10 @@ public class CommentToolProvider {
 
 //    private final CommentRepository commentRepository;
 
-    @Tool(
-            name = "fetchAllBookComments",
-            description = "Retrieves a complete list of all book-related comments from the system."
-    )
+//    @Tool(
+//            name = "fetchAllBookComments",
+//            description = "Retrieves a complete list of all book-related comments from the system."
+//    )
     public List<String> fetchAllCommentsMCP() {
 //        List<Comment> comments = commentRepository.findAll();
 //        return comments;

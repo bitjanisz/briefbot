@@ -16,8 +16,8 @@ public class BriefBotApplication {
 		SpringApplication.run(BriefBotApplication.class, args);
 	}
 
-    @Bean
-    public List<ToolCallback> tools(CommentToolProvider commentToolProvider) {
-        return List.of(ToolCallbacks.from(commentToolProvider));
-    }
+//    @Bean
+//    public List<ToolCallback> tools(CommentToolProvider commentToolProvider) {
+//        return List.of(ToolCallbacks.from(commentToolProvider));
+//    }
 }
