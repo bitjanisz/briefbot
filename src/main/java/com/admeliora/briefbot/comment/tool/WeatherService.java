@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -35,5 +36,20 @@ public class WeatherService {
                         latitude, longitude)
                 .retrieve()
                 .body(WeatherResponse.class);
+    }
+
+    public record PersonResponse(String name, String lastName, String location) {}
+
+    @McpTool(description = "Get the Users list with locations")
+    public Object getUsers() {
+
+        System.out.println("USERS LIST TOOL WAS USED");
+
+        return List.of(
+                new PersonResponse("Michał", "Janisz", "Łódź"),
+                new PersonResponse("Ewelina", "Janisz", "Łódź"),
+                new PersonResponse("Mateusz", "Fru", "Huta Dłutowska"),
+                new PersonResponse("Karolina", "Kasa", "Poznań")
+        );
     }
 }
