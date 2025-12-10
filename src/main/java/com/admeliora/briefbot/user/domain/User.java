@@ -20,4 +20,10 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
+    @Column(nullable = false, unique = true, length = 255)
+    private String email;
+
+    // Stores bcrypt hash (typically 60 chars)
+    @Column(nullable = false, length = 60)
+    private String password;
 }
