@@ -1,29 +1,35 @@
 package com.admeliora.briefbot.user.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Column(name = "oidc_sub", nullable = false)
+    private String oidcSub;
 
     @Column(nullable = false)
-    private String lastName;
+    private String name;
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false)
     private String email;
 
-    // Stores bcrypt hash (typically 60 chars)
-    @Column(nullable = false, length = 60)
-    private String password;
+    @Column
+    private String picture;
+
+    @Column(name = "last_login", nullable = false)
+    private LocalDateTime lastLogin;
 }

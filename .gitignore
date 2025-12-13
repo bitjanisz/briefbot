@@ -34,3 +34,4 @@ build/
 
 /src/main/resources/dev-credentials.yml
 .env
+/src/main/resources/application-mk.yml
