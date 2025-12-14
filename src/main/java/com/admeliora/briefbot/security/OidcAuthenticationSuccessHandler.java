@@ -32,7 +32,8 @@ public class OidcAuthenticationSuccessHandler implements AuthenticationSuccessHa
             }, () -> {
                 User newUser = User.builder()
                         .oidcSub(sub)
-                        .name(oauth2User.getAttribute("name"))
+                        .givenName(oauth2User.getAttribute("given_name"))
+                        .familyName(oauth2User.getAttribute("family_name"))
                         .email(oauth2User.getAttribute("email"))
                         .picture(oauth2User.getAttribute("picture"))
                         .lastLogin(LocalDateTime.now())

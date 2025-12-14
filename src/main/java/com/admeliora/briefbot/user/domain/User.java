@@ -22,7 +22,10 @@ public class User {
     private String oidcSub;
 
     @Column(nullable = false)
-    private String name;
+    private String givenName;
+
+    @Column(nullable = false)
+    private String familyName;
 
     @Column(nullable = false)
     private String email;

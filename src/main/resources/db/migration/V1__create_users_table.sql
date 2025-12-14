@@ -2,7 +2,8 @@ CREATE TABLE users
 (
     id BIGSERIAL PRIMARY KEY,
     oidc_sub VARCHAR(100) NOT NULL,
-    name VARCHAR(100) NOT NULL,
+    given_name VARCHAR(100) NOT NULL,
+    family_name VARCHAR(100) NOT NULL,
     email  VARCHAR(150) NOT NULL,
     picture  VARCHAR(150) NOT NULL
     last_login TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
