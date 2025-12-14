@@ -1,9 +1,11 @@
-package com.admeliora.briefbot.user.api;
+package com.admeliora.briefbot.adapter.in.web.user;
 
-import com.admeliora.briefbot.user.api.dto.UserDto;
-import com.admeliora.briefbot.user.api.dto.UserUpdateDto;
-import com.admeliora.briefbot.user.port.in.ListUsersInPort;
+// Adapter wejściowy (REST) – wywołuje porty wejściowe (use case) zgodnie z architekturą heksagonalną
+
+import com.admeliora.briefbot.adapter.in.web.user.dto.UserDto;
+import com.admeliora.briefbot.adapter.in.web.user.dto.UserUpdateDto;
 import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
+import com.admeliora.briefbot.user.port.in.ListUsersInPort;
 import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +22,7 @@ import java.util.List;
 @RequestMapping("users")
 @RequiredArgsConstructor
 @Tag(name = "Users", description = "User management API")
-public class UserController {
+public class UserInRestAdapter {
 
     private final ListUsersInPort listUsersInPort;
     private final GetLoggedUserInPort getLoggedUserInPort;

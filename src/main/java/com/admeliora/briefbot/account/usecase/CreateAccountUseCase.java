@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.account.usecase;
 
-import com.admeliora.briefbot.account.api.dto.AccountDto;
+import com.admeliora.briefbot.account.port.in.command.CreateAccountCommand;
 import com.admeliora.briefbot.domain.account.Account;
 import com.admeliora.briefbot.domain.account.AccountRole;
 import com.admeliora.briefbot.domain.account.UserAccount;
@@ -25,23 +25,26 @@ public class CreateAccountUseCase implements CreateAccountInPort {
 
     @Override
     @Transactional
-    public AccountDto execute(String accountName, Long userId) {
-        if (!userPort.existsById(userId)) {
-            throw new EntityNotFoundException("User not found: " + userId);
+    public Account execute(CreateAccountCommand command) {
+        Long ownerId = command.ownerId();
+        String name = command.name();
+
+        if (!userPort.existsById(ownerId)) {
+            throw new EntityNotFoundException("User not found: " + ownerId);
         }
 
         Account account = new Account();
-        account.setName(requireText(accountName));
+        account.setName(requireText(name));
         account = accountPort.save(account);
 
         UserAccount link = new UserAccount();
-        link.setId(new UserAccountId(userId, account.getId()));
-        link.setUser(userPort.getReferenceById(userId));
+        link.setId(new UserAccountId(ownerId, account.getId()));
+        link.setUser(userPort.getReferenceById(ownerId));
         link.setAccount(account);
         link.setRole(AccountRole.OWNER);
 
         userAccountPort.save(link);
-        return AccountDto.from(account);
+        return account;
     }
 
     private static String requireText(String value) {

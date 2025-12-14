@@ -1,8 +1,7 @@
-package com.admeliora.briefbot.user.adapter;
+package com.admeliora.briefbot.adapter.out.persistence.user;
 
 import com.admeliora.briefbot.domain.user.User;
 import com.admeliora.briefbot.user.port.UserPort;
-import com.admeliora.briefbot.adapter.out.persistence.user.UserRepositoryJpa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -45,3 +44,4 @@ public class UserAdapter implements UserPort {
         return userRepository.save(user);
     }
 }
+

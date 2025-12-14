@@ -1,6 +1,7 @@
 package com.admeliora.briefbot.account.usecase;
 
-import com.admeliora.briefbot.account.api.dto.AccountDto;
+import com.admeliora.briefbot.account.port.in.command.AddUserToAccountCommand;
+import com.admeliora.briefbot.domain.account.Account;
 import com.admeliora.briefbot.domain.account.AccountRole;
 import com.admeliora.briefbot.domain.account.UserAccount;
 import com.admeliora.briefbot.domain.account.UserAccountId;
@@ -23,8 +24,12 @@ public class AddUserToAccountUseCase implements AddUserToAccountInPort {
 
     @Override
     @Transactional
-    public AccountDto execute(Long accountId, Long userId, AccountRole role) {
-        AccountRole effectiveRole = role != null ? role : AccountRole.MEMBER;
+    public Account execute(AddUserToAccountCommand command) {
+        Long userId = command.userId();
+        Long accountId = command.accountId();
+        AccountRole role = command.role();
+
+        AccountRole effectiveRole = command != null ? role : AccountRole.MEMBER;
 
         if (!userPort.existsById(userId)) {
             throw new EntityNotFoundException("User not found: " + userId);
@@ -49,7 +54,6 @@ public class AddUserToAccountUseCase implements AddUserToAccountInPort {
                     return userAccountPort.save(link);
                 });
         return accountPort.findById(accountId)
-                .map(AccountDto::from)
                 .orElseThrow();
     }
 }

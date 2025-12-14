@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.account.port.in;
 
-import com.admeliora.briefbot.account.api.dto.AccountDto;
-import com.admeliora.briefbot.domain.account.AccountRole;
+import com.admeliora.briefbot.domain.account.Account;
+import com.admeliora.briefbot.account.port.in.command.AddUserToAccountCommand;
 
 public interface AddUserToAccountInPort {
-    AccountDto execute(Long accountId, Long userId, AccountRole role);
+    Account execute(AddUserToAccountCommand command);
 }

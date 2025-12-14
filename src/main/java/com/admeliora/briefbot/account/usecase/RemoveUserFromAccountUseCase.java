@@ -1,7 +1,8 @@
 package com.admeliora.briefbot.account.usecase;
 
-import com.admeliora.briefbot.account.api.dto.AccountDto;
 import com.admeliora.briefbot.account.port.AccountPort;
+import com.admeliora.briefbot.account.port.in.command.RemoveUserFromAccountCommand;
+import com.admeliora.briefbot.domain.account.Account;
 import com.admeliora.briefbot.domain.account.UserAccountId;
 import com.admeliora.briefbot.account.port.UserAccountPort;
 import com.admeliora.briefbot.account.port.in.RemoveUserFromAccountInPort;
@@ -17,9 +18,13 @@ public class RemoveUserFromAccountUseCase implements RemoveUserFromAccountInPort
     private final UserAccountPort userAccountPort;
     private final AccountPort accountPort;
 
+
     @Override
     @Transactional
-    public AccountDto execute(Long accountId, Long userId) {
+    public Account execute(RemoveUserFromAccountCommand command) {
+        Long userId = command.userId();
+        Long accountId = command.accountId();
+
         UserAccountId id = new UserAccountId(userId, accountId);
         if (!userAccountPort.existsById(id)) {
             throw new EntityNotFoundException(
@@ -27,6 +32,6 @@ public class RemoveUserFromAccountUseCase implements RemoveUserFromAccountInPort
             );
         }
         userAccountPort.deleteById(id);
-        return accountPort.findById(accountId).map(AccountDto::from).orElseThrow();
+        return accountPort.findById(accountId).orElseThrow();
     }
 }

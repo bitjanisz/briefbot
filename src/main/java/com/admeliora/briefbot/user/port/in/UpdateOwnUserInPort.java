@@ -1,7 +1,7 @@
 package com.admeliora.briefbot.user.port.in;
 
-import com.admeliora.briefbot.user.api.dto.UserDto;
-import com.admeliora.briefbot.user.api.dto.UserUpdateDto;
+import com.admeliora.briefbot.adapter.in.web.user.dto.UserDto;
+import com.admeliora.briefbot.adapter.in.web.user.dto.UserUpdateDto;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.Optional;

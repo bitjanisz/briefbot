@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.account.port.in;
 
-import com.admeliora.briefbot.account.api.dto.AccountDto;
+import com.admeliora.briefbot.domain.account.Account;
+import com.admeliora.briefbot.account.port.in.command.RemoveUserFromAccountCommand;
 
 public interface RemoveUserFromAccountInPort {
-    AccountDto execute(Long accountId, Long userId);
+    Account execute(RemoveUserFromAccountCommand command);
 }
-

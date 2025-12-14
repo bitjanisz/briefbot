@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.user.port.in;
 
-import com.admeliora.briefbot.user.api.dto.UserDto;
+import com.admeliora.briefbot.adapter.in.web.user.dto.UserDto;
 
 import java.util.List;
 
