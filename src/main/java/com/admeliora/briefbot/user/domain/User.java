@@ -1,17 +1,20 @@
 package com.admeliora.briefbot.user.domain;
 
+import com.admeliora.briefbot.account.domain.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
 public class User {
 
     @Id
@@ -35,4 +38,7 @@ public class User {
 
     @Column(name = "last_login", nullable = false)
     private LocalDateTime lastLogin;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserAccount> userAccounts = new HashSet<>();
 }

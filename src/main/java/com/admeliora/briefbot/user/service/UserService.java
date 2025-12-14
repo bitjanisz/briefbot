@@ -1,5 +1,6 @@
 package com.admeliora.briefbot.user.service;
 
+import com.admeliora.briefbot.user.api.dto.UserDto;
 import com.admeliora.briefbot.user.api.dto.UserUpdateDto;
 import com.admeliora.briefbot.user.domain.User;
 import com.admeliora.briefbot.user.repository.UserRepository;
@@ -18,19 +19,21 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(UserDto::from).toList();
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getLoggedUser(OidcUser oidcUser) {
+    public Optional<UserDto> getLoggedUser(OidcUser oidcUser) {
         return Optional.ofNullable(oidcUser)
                 .map(u -> (String) u.getAttribute("sub"))
-                .flatMap(userRepository::findByOidcSub);
+                .flatMap(userRepository::findByOidcSub)
+                .map(UserDto::from);
     }
 
     @Transactional
-    public Optional<User> updateOwnAccount(OidcUser principal, UserUpdateDto dto) {
+    public Optional<UserDto> updateOwnAccount(OidcUser principal, UserUpdateDto dto) {
         if (principal == null) return Optional.empty();
         String sub = principal.getAttribute("sub");
         if (sub == null) return Optional.empty();
@@ -41,6 +44,7 @@ public class UserService {
                     if (dto.familyName() != null) user.setFamilyName(dto.familyName());
                     if (dto.picture() != null) user.setPicture(dto.picture());
                     return userRepository.save(user);
-                });
+                })
+                .map(UserDto::from);
     }
 }

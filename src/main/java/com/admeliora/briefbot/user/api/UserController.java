@@ -30,16 +30,12 @@ public class UserController {
             operationId = "getAllUsers"
     )
     public List<UserDto> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return users.stream()
-                .map(UserDto::from)
-                .toList();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> me(@AuthenticationPrincipal OidcUser user) {
         return userService.getLoggedUser(user)
-                .map(UserDto::from)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -50,7 +46,6 @@ public class UserController {
             @RequestBody @Validated UserUpdateDto dto) {
 
         return userService.updateOwnAccount(principal, dto)
-                .map(UserDto::from)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
