@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.infrastructure.adapter.out.persistence.account;
 
-import com.admeliora.briefbot.account.port.AccountPort;
+import com.admeliora.briefbot.account.port.out.AccountPort;
 import com.admeliora.briefbot.account.model.Account;
 import com.admeliora.briefbot.infrastructure.adapter.out.persistence.account.jpa.AccountRepositoryJpa;
 import lombok.RequiredArgsConstructor;

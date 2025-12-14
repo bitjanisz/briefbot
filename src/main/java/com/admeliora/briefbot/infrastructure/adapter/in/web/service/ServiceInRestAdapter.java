@@ -22,25 +22,25 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Services", description = "CRUD for services")
 public class ServiceInRestAdapter {
-    private final CreateServiceInPort createServiceInPort;
-    private final GetServiceInPort getServiceInPort;
-    private final UpdateServiceInPort updateServiceInPort;
-    private final DeleteServiceInPort deleteServiceInPort;
-    private final ListServicesInPort listServicesInPort;
+    private final CreateServicePort createServicePort;
+    private final GetServicePort getServicePort;
+    private final UpdateServicePort updateServicePort;
+    private final DeleteServicePort deleteServicePort;
+    private final ListServicesPort listServicesPort;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create service")
     public ServiceResponse create(@Valid @RequestBody ServiceCreateRequest request) {
         var command = new CreateServiceCommand(request.name(), request.description(), request.accountId());
-        var service = createServiceInPort.create(command);
+        var service = createServicePort.create(command);
         return ServiceMapper.toResponse(service);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get service by id")
     public ResponseEntity<ServiceResponse> get(@PathVariable Long id) {
-        return getServiceInPort.getById(id)
+        return getServicePort.getById(id)
                 .map(ServiceMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -50,7 +50,7 @@ public class ServiceInRestAdapter {
     @Operation(summary = "Update service")
     public ServiceResponse update(@PathVariable Long id, @Valid @RequestBody ServiceUpdateRequest request) {
         var command = new UpdateServiceCommand(request.id(), request.name(), request.description());
-        var service = updateServiceInPort.update(command);
+        var service = updateServicePort.update(command);
         return ServiceMapper.toResponse(service);
     }
 
@@ -58,13 +58,13 @@ public class ServiceInRestAdapter {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete service")
     public void delete(@PathVariable Long id) {
-        deleteServiceInPort.delete(id);
+        deleteServicePort.delete(id);
     }
 
     @GetMapping
     @Operation(summary = "List services by account id")
     public List<ServiceResponse> list(@RequestParam Long accountId) {
-        return listServicesInPort.listByAccountId(accountId)
+        return listServicesPort.listByAccountId(accountId)
                 .stream()
                 .map(ServiceMapper::toResponse)
                 .toList();

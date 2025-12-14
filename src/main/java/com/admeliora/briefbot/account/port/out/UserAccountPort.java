@@ -1,4 +1,4 @@
-package com.admeliora.briefbot.account.port;
+package com.admeliora.briefbot.account.port.out;
 
 import com.admeliora.briefbot.account.model.UserAccount;
 import com.admeliora.briefbot.account.model.UserAccountId;

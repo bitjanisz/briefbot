@@ -1,7 +1,7 @@
 package com.admeliora.briefbot.service.usecase;
 
 import com.admeliora.briefbot.service.model.Service;
-import com.admeliora.briefbot.service.port.in.CreateServiceInPort;
+import com.admeliora.briefbot.service.port.in.CreateServicePort;
 import com.admeliora.briefbot.service.port.in.command.CreateServiceCommand;
 import com.admeliora.briefbot.service.port.out.ServicePort;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +13,7 @@ import java.time.Instant;
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
 @Tag(name = "Services", description = "CRUD for services")
-public class CreateServiceUseCase implements CreateServiceInPort {
+public class CreateServiceUseCase implements CreateServicePort {
     private final ServicePort servicePort;
 
     @Override

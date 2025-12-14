@@ -1,13 +1,13 @@
 package com.admeliora.briefbot.service.usecase;
 
-import com.admeliora.briefbot.service.port.in.DeleteServiceInPort;
+import com.admeliora.briefbot.service.port.in.DeleteServicePort;
 import com.admeliora.briefbot.service.port.out.ServicePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteServiceUseCase implements DeleteServiceInPort {
+public class DeleteServiceUseCase implements DeleteServicePort {
     private final ServicePort servicePort;
 
     @Override

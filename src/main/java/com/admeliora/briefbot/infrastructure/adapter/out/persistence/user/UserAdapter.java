@@ -2,7 +2,7 @@ package com.admeliora.briefbot.infrastructure.adapter.out.persistence.user;
 
 import com.admeliora.briefbot.infrastructure.adapter.out.persistence.user.jpa.UserRepositoryJpa;
 import com.admeliora.briefbot.user.model.User;
-import com.admeliora.briefbot.user.port.UserPort;
+import com.admeliora.briefbot.user.port.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

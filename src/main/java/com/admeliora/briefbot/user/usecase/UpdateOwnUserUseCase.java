@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.user.usecase;
 
 import com.admeliora.briefbot.user.model.User;
-import com.admeliora.briefbot.user.port.UserPort;
-import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
+import com.admeliora.briefbot.user.port.out.UserPort;
+import com.admeliora.briefbot.user.port.in.UpdateOwnUserPort;
 import com.admeliora.briefbot.user.port.in.command.UpdateOwnUserCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateOwnUserUseCase implements UpdateOwnUserInPort {
+public class UpdateOwnUserUseCase implements UpdateOwnUserPort {
 
     private final UserPort userPort;
 

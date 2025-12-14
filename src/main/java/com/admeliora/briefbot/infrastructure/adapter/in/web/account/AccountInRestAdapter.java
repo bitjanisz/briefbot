@@ -1,9 +1,9 @@
 package com.admeliora.briefbot.infrastructure.adapter.in.web.account;
 
-import com.admeliora.briefbot.account.port.in.AddUserToAccountInPort;
-import com.admeliora.briefbot.account.port.in.CreateAccountInPort;
-import com.admeliora.briefbot.account.port.in.ListAccountsInPort;
-import com.admeliora.briefbot.account.port.in.RemoveUserFromAccountInPort;
+import com.admeliora.briefbot.account.port.in.AddUserToAccountPort;
+import com.admeliora.briefbot.account.port.in.CreateAccountPort;
+import com.admeliora.briefbot.account.port.in.ListAccountsPort;
+import com.admeliora.briefbot.account.port.in.RemoveUserFromAccountPort;
 import com.admeliora.briefbot.account.port.in.command.AddUserToAccountCommand;
 import com.admeliora.briefbot.account.port.in.command.CreateAccountCommand;
 import com.admeliora.briefbot.account.port.in.command.RemoveUserFromAccountCommand;
@@ -29,15 +29,15 @@ import java.util.List;
 @Tag(name = "Accounts", description = "Accounts API (adapters)")
 public class AccountInRestAdapter {
 
-    private final ListAccountsInPort listAccountsInPort;
-    private final CreateAccountInPort createAccountInPort;
-    private final AddUserToAccountInPort addUserToAccountInPort;
-    private final RemoveUserFromAccountInPort removeUserFromAccountInPort;
+    private final ListAccountsPort listAccountsPort;
+    private final CreateAccountPort createAccountPort;
+    private final AddUserToAccountPort addUserToAccountPort;
+    private final RemoveUserFromAccountPort removeUserFromAccountPort;
 
     @GetMapping
     @Operation(summary = "List accounts")
     public List<AccountSummaryResponse> listAccounts(@AuthenticationPrincipal OidcUser oidcUser) {
-        return listAccountsInPort.execute().stream()
+        return listAccountsPort.execute().stream()
                 .map(AccountMapper::toSummary)
                 .toList();
     }
@@ -48,7 +48,7 @@ public class AccountInRestAdapter {
     public AccountResponse createAccount(@AuthenticationPrincipal OidcUser oidcUser,
                                  @Valid @RequestBody CreateAccountRequest request) {
         var command = new CreateAccountCommand(request.name(), request.ownerId());
-        var account = createAccountInPort.execute(command);
+        var account = createAccountPort.execute(command);
         return AccountMapper.toResponse(account);
     }
 
@@ -57,7 +57,7 @@ public class AccountInRestAdapter {
     public AccountResponse addUserToAccount(@PathVariable Long accountId,
                                        @Valid @RequestBody AddUserToAccountRequest request) {
         var command = new AddUserToAccountCommand(accountId, request.userId(), request.role());
-        var account = addUserToAccountInPort.execute(command);
+        var account = addUserToAccountPort.execute(command);
         return AccountMapper.toResponse(account);
     }
 
@@ -66,7 +66,7 @@ public class AccountInRestAdapter {
     @Operation(summary = "Remove user from account")
     public AccountResponse removeUserFromAccount(@PathVariable Long accountId, @PathVariable Long userId) {
         var command = new RemoveUserFromAccountCommand(accountId, userId);
-        var account = removeUserFromAccountInPort.execute(command);
+        var account = removeUserFromAccountPort.execute(command);
         return AccountMapper.toResponse(account);
     }
 }

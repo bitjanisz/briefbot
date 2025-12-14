@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.user.usecase;
 
 import com.admeliora.briefbot.user.model.User;
-import com.admeliora.briefbot.user.port.UserPort;
-import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
+import com.admeliora.briefbot.user.port.out.UserPort;
+import com.admeliora.briefbot.user.port.in.GetLoggedUserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GetLoggedUserUseCase implements GetLoggedUserInPort {
+public class GetLoggedUserUseCase implements GetLoggedUserPort {
 
     private final UserPort userPort;
 

@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.account.usecase;
 
-import com.admeliora.briefbot.account.port.AccountPort;
-import com.admeliora.briefbot.account.port.UserAccountPort;
-import com.admeliora.briefbot.account.port.in.RemoveUserFromAccountInPort;
+import com.admeliora.briefbot.account.port.out.AccountPort;
+import com.admeliora.briefbot.account.port.out.UserAccountPort;
+import com.admeliora.briefbot.account.port.in.RemoveUserFromAccountPort;
 import com.admeliora.briefbot.account.port.in.command.RemoveUserFromAccountCommand;
 import com.admeliora.briefbot.account.model.Account;
 import com.admeliora.briefbot.account.model.UserAccountId;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class RemoveUserFromAccountUseCase implements RemoveUserFromAccountInPort {
+public class RemoveUserFromAccountUseCase implements RemoveUserFromAccountPort {
 
     private final UserAccountPort userAccountPort;
     private final AccountPort accountPort;

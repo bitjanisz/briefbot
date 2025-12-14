@@ -2,9 +2,9 @@ package com.admeliora.briefbot.user.port.in;
 
 import com.admeliora.briefbot.user.model.User;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-
 import java.util.Optional;
 
-public interface GetLoggedUserInPort {
+public interface GetLoggedUserPort {
     Optional<User> execute(OidcUser principal);
 }
+

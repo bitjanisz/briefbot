@@ -3,9 +3,9 @@ package com.admeliora.briefbot.infrastructure.adapter.in.web.user;
 import com.admeliora.briefbot.infrastructure.adapter.in.web.user.mapper.UserMapper;
 import com.admeliora.briefbot.infrastructure.adapter.in.web.user.model.request.UserUpdateRequest;
 import com.admeliora.briefbot.infrastructure.adapter.in.web.user.model.response.UserResponse;
-import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
-import com.admeliora.briefbot.user.port.in.ListUsersInPort;
-import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
+import com.admeliora.briefbot.user.port.in.GetLoggedUserPort;
+import com.admeliora.briefbot.user.port.in.ListUsersPort;
+import com.admeliora.briefbot.user.port.in.UpdateOwnUserPort;
 import com.admeliora.briefbot.user.port.in.command.UpdateOwnUserCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,9 +24,9 @@ import java.util.List;
 @Tag(name = "Users", description = "User management API")
 public class UserInRestAdapter {
 
-    private final ListUsersInPort listUsersInPort;
-    private final GetLoggedUserInPort getLoggedUserInPort;
-    private final UpdateOwnUserInPort updateOwnUserInPort;
+    private final ListUsersPort listUsersPort;
+    private final GetLoggedUserPort getLoggedUserPort;
+    private final UpdateOwnUserPort updateOwnUserPort;
 
     @GetMapping
     @Operation(
@@ -35,7 +35,7 @@ public class UserInRestAdapter {
             operationId = "getAllUsers"
     )
     public List<UserResponse> getAllUsers() {
-        return listUsersInPort.execute().stream().map(UserMapper::toResponse).toList();
+        return listUsersPort.execute().stream().map(UserMapper::toResponse).toList();
     }
 
     @GetMapping("/me")
@@ -45,7 +45,7 @@ public class UserInRestAdapter {
             operationId = "getLoggedInUser"
     )
     public ResponseEntity<UserResponse> me(@AuthenticationPrincipal OidcUser user) {
-        return getLoggedUserInPort.execute(user)
+        return getLoggedUserPort.execute(user)
                 .map(UserMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -61,7 +61,7 @@ public class UserInRestAdapter {
             @AuthenticationPrincipal OidcUser principal,
             @RequestBody @Validated UserUpdateRequest updateRequest) {
         var command = new UpdateOwnUserCommand(principal, updateRequest.givenName(), updateRequest.familyName(), updateRequest.picture());
-        return updateOwnUserInPort.execute(command)
+        return updateOwnUserPort.execute(command)
                 .map(UserMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

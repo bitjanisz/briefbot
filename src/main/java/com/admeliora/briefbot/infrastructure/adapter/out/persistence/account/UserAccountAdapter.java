@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.infrastructure.adapter.out.persistence.account;
 
-import com.admeliora.briefbot.account.port.UserAccountPort;
+import com.admeliora.briefbot.account.port.out.UserAccountPort;
 import com.admeliora.briefbot.account.model.UserAccount;
 import com.admeliora.briefbot.account.model.UserAccountId;
 import com.admeliora.briefbot.infrastructure.adapter.out.persistence.account.jpa.UserAccountRepositoryJpa;

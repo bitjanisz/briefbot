@@ -1,4 +1,4 @@
-package com.admeliora.briefbot.user.port;
+package com.admeliora.briefbot.user.port.out;
 
 import com.admeliora.briefbot.user.model.User;
 
