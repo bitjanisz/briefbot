@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.user.usecase;
 
-import com.admeliora.briefbot.domain.user.User;
+import com.admeliora.briefbot.user.model.User;
 import com.admeliora.briefbot.user.port.UserPort;
 import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
 import com.admeliora.briefbot.user.port.in.command.UpdateOwnUserCommand;

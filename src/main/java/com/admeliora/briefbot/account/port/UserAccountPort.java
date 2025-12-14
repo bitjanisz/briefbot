@@ -1,7 +1,7 @@
 package com.admeliora.briefbot.account.port;
 
-import com.admeliora.briefbot.domain.account.UserAccount;
-import com.admeliora.briefbot.domain.account.UserAccountId;
+import com.admeliora.briefbot.account.model.UserAccount;
+import com.admeliora.briefbot.account.model.UserAccountId;
 
 import java.util.List;
 import java.util.Optional;

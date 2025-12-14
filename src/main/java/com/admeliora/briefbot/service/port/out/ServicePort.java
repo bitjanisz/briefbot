@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.service.port.out;
 
-import com.admeliora.briefbot.domain.service.Service;
+import com.admeliora.briefbot.service.model.Service;
 
 import java.util.List;
 import java.util.Optional;

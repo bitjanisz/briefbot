@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.service.usecase;
 
-import com.admeliora.briefbot.domain.service.Service;
+import com.admeliora.briefbot.service.model.Service;
 import com.admeliora.briefbot.service.port.in.CreateServiceInPort;
 import com.admeliora.briefbot.service.port.in.command.CreateServiceCommand;
 import com.admeliora.briefbot.service.port.out.ServicePort;

@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.user.port.in;
 
-import com.admeliora.briefbot.domain.user.User;
+import com.admeliora.briefbot.user.model.User;
 
 import java.util.List;
 
