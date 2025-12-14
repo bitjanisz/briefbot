@@ -2,8 +2,9 @@ package com.admeliora.briefbot.user.api;
 
 import com.admeliora.briefbot.user.api.dto.UserDto;
 import com.admeliora.briefbot.user.api.dto.UserUpdateDto;
-import com.admeliora.briefbot.user.domain.User;
-import com.admeliora.briefbot.user.service.UserService;
+import com.admeliora.briefbot.user.port.in.ListUsersInPort;
+import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
+import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,9 @@ import java.util.List;
 @Tag(name = "Users", description = "User management API")
 public class UserController {
 
-    private final UserService userService;
+    private final ListUsersInPort listUsersInPort;
+    private final GetLoggedUserInPort getLoggedUserInPort;
+    private final UpdateOwnUserInPort updateOwnUserInPort;
 
     @GetMapping
     @Operation(
@@ -30,22 +33,32 @@ public class UserController {
             operationId = "getAllUsers"
     )
     public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+        return listUsersInPort.execute();
     }
 
     @GetMapping("/me")
+    @Operation(
+            summary = "Get logged-in user",
+            description = "Retrieves information about the currently authenticated user.",
+            operationId = "getLoggedInUser"
+    )
     public ResponseEntity<UserDto> me(@AuthenticationPrincipal OidcUser user) {
-        return userService.getLoggedUser(user)
+        return getLoggedUserInPort.execute(user)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/me")
+    @Operation(
+            summary = "Update logged-in user",
+            description = "Updates information for the currently authenticated user.",
+            operationId = "updateLoggedInUser"
+    )
     public ResponseEntity<UserDto> updateMe(
             @AuthenticationPrincipal OidcUser principal,
             @RequestBody @Validated UserUpdateDto dto) {
 
-        return userService.updateOwnAccount(principal, dto)
+        return updateOwnUserInPort.execute(principal, dto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -1,6 +1,5 @@
-package com.admeliora.briefbot.account.domain;
+package com.admeliora.briefbot.domain.account;
 
-import com.admeliora.briefbot.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +18,7 @@ public class UserAccount {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private com.admeliora.briefbot.domain.user.User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @MapsId("accountId")
@@ -30,10 +29,11 @@ public class UserAccount {
     @Column(nullable = false, length = 20)
     private AccountRole role;
 
-    public UserAccount(User user, Account account, AccountRole role) {
+    public UserAccount(com.admeliora.briefbot.domain.user.User user, Account account, AccountRole role) {
         this.user = user;
         this.account = account;
         this.role = role;
         this.id = new UserAccountId(user.getId(), account.getId());
     }
 }
+

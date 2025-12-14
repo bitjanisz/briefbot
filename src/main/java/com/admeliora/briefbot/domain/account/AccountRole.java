@@ -1,4 +1,4 @@
-package com.admeliora.briefbot.account.domain;
+package com.admeliora.briefbot.domain.account;
 
 public enum AccountRole {
     OWNER,
@@ -6,3 +6,4 @@ public enum AccountRole {
     MEMBER,
     VIEWER
 }
+

@@ -1,6 +1,5 @@
-package com.admeliora.briefbot.user.domain;
+package com.admeliora.briefbot.domain.user;
 
-import com.admeliora.briefbot.account.domain.UserAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,5 +39,6 @@ public class User {
     private LocalDateTime lastLogin;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserAccount> userAccounts = new HashSet<>();
+    private Set<com.admeliora.briefbot.domain.account.UserAccount> userAccounts = new HashSet<>();
 }
+

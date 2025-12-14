@@ -1,7 +1,7 @@
 package com.admeliora.briefbot.security;
 
-import com.admeliora.briefbot.user.domain.User;
-import com.admeliora.briefbot.user.repository.UserRepository;
+import com.admeliora.briefbot.adapter.out.persistence.user.UserRepositoryJpa;
+import com.admeliora.briefbot.domain.user.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OidcAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryJpa userRepository;
 
     @Override
     @Transactional

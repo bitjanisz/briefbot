@@ -1,4 +1,4 @@
-package com.admeliora.briefbot.account.domain;
+package com.admeliora.briefbot.domain.account;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,5 +27,6 @@ public class Account {
     private Instant createdAt = Instant.now();
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<UserAccount> userAccounts = new HashSet<>();
+    private Set<com.admeliora.briefbot.domain.account.UserAccount> userAccounts = new HashSet<>();
 }
+

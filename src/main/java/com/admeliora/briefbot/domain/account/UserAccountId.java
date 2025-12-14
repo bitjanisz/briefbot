@@ -1,4 +1,4 @@
-package com.admeliora.briefbot.account.domain;
+package com.admeliora.briefbot.domain.account;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -26,3 +26,4 @@ public class UserAccountId implements Serializable {
         return Objects.hash(userId, accountId);
     }
 }
+

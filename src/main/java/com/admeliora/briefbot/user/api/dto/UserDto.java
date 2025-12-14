@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.user.api.dto;
 
-import com.admeliora.briefbot.user.domain.User;
+import com.admeliora.briefbot.domain.user.User;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

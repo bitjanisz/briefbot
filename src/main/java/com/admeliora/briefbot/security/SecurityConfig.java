@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.security;
 
-import com.admeliora.briefbot.user.repository.UserRepository;
+import com.admeliora.briefbot.adapter.out.persistence.user.UserRepositoryJpa;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    OidcAuthenticationSuccessHandler customAuthenticationSuccessHandler(UserRepository userRepository) {
+    OidcAuthenticationSuccessHandler customAuthenticationSuccessHandler(UserRepositoryJpa userRepository) {
         return new OidcAuthenticationSuccessHandler(userRepository);
     }
 }
