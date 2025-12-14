@@ -2,6 +2,7 @@ package com.admeliora.briefbot.service.usecase;
 
 import com.admeliora.briefbot.domain.service.Service;
 import com.admeliora.briefbot.service.port.in.UpdateServiceInPort;
+import com.admeliora.briefbot.service.port.in.command.UpdateServiceCommand;
 import com.admeliora.briefbot.service.port.out.ServicePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,10 +18,10 @@ public class UpdateServiceUseCase implements UpdateServiceInPort {
 
     @Override
     @Operation(summary = "Update service", description = "Updates an existing service by id. Returns the updated service domain object.")
-    public Service update(Long id, String name, String description) {
-        Service service = servicePort.findById(id).orElseThrow();
-        service.setName(name);
-        service.setDescription(description);
+    public Service update(UpdateServiceCommand command) {
+        Service service = servicePort.findById(command.id()).orElseThrow();
+        service.setName(command.name());
+        service.setDescription(command.description());
         service.setUpdatedAt(Instant.now());
         return servicePort.save(service);
     }

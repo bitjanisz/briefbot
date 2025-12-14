@@ -5,6 +5,8 @@ import com.admeliora.briefbot.adapter.in.web.service.request.ServiceCreateReques
 import com.admeliora.briefbot.adapter.in.web.service.request.ServiceUpdateRequest;
 import com.admeliora.briefbot.adapter.in.web.service.response.ServiceResponse;
 import com.admeliora.briefbot.service.port.in.*;
+import com.admeliora.briefbot.service.port.in.command.CreateServiceCommand;
+import com.admeliora.briefbot.service.port.in.command.UpdateServiceCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,8 +31,9 @@ public class ServiceInRestAdapter {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create service")
-    public ServiceResponse create(@Valid @RequestBody ServiceCreateRequest dto) {
-        var service = createServiceInPort.create(dto.name(), dto.description(), dto.accountId());
+    public ServiceResponse create(@Valid @RequestBody ServiceCreateRequest request) {
+        var command = new CreateServiceCommand(request.name(), request.description(), request.accountId());
+        var service = createServiceInPort.create(command);
         return ServiceMapper.toResponse(service);
     }
 
@@ -45,8 +48,9 @@ public class ServiceInRestAdapter {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update service")
-    public ServiceResponse update(@PathVariable Long id, @Valid @RequestBody ServiceUpdateRequest dto) {
-        var service = updateServiceInPort.update(id, dto.name(), dto.description());
+    public ServiceResponse update(@PathVariable Long id, @Valid @RequestBody ServiceUpdateRequest request) {
+        var command = new UpdateServiceCommand(request.id(), request.name(), request.description());
+        var service = updateServiceInPort.update(command);
         return ServiceMapper.toResponse(service);
     }
 

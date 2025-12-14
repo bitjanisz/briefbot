@@ -1,11 +1,10 @@
 package com.admeliora.briefbot.user.usecase;
 
-import com.admeliora.briefbot.user.api.dto.UserDto;
-import com.admeliora.briefbot.user.api.dto.UserUpdateDto;
+import com.admeliora.briefbot.domain.user.User;
 import com.admeliora.briefbot.user.port.UserPort;
 import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
+import com.admeliora.briefbot.user.port.in.command.UpdateOwnUserCommand;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +18,16 @@ public class UpdateOwnUserUseCase implements UpdateOwnUserInPort {
 
     @Override
     @Transactional
-    public Optional<UserDto> execute(OidcUser principal, UserUpdateDto dto) {
-        if (principal == null) return Optional.empty();
-        String sub = principal.getAttribute("sub");
+    public Optional<User> execute(UpdateOwnUserCommand command) {
+        if (command == null || command.principal() == null) return Optional.empty();
+        String sub = command.principal().getAttribute("sub");
         if (sub == null) return Optional.empty();
-
         return userPort.findByOidcSub(sub)
                 .map(user -> {
-                    if (dto.givenName() != null) user.setGivenName(dto.givenName());
-                    if (dto.familyName() != null) user.setFamilyName(dto.familyName());
-                    if (dto.picture() != null) user.setPicture(dto.picture());
+                    if (command.givenName() != null) user.setGivenName(command.givenName());
+                    if (command.familyName() != null) user.setFamilyName(command.familyName());
+                    if (command.picture() != null) user.setPicture(command.picture());
                     return userPort.save(user);
-                })
-                .map(UserDto::from);
+                });
     }
 }

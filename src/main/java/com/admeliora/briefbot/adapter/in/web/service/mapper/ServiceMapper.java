@@ -1,5 +1,6 @@
 package com.admeliora.briefbot.adapter.in.web.service.mapper;
 
+import com.admeliora.briefbot.adapter.in.web.service.response.ServiceResponse;
 import com.admeliora.briefbot.domain.service.Service;
 
 public class ServiceMapper {

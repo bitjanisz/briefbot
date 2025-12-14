@@ -2,6 +2,7 @@ package com.admeliora.briefbot.service.usecase;
 
 import com.admeliora.briefbot.domain.service.Service;
 import com.admeliora.briefbot.service.port.in.CreateServiceInPort;
+import com.admeliora.briefbot.service.port.in.command.CreateServiceCommand;
 import com.admeliora.briefbot.service.port.out.ServicePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,11 +18,11 @@ public class CreateServiceUseCase implements CreateServiceInPort {
 
     @Override
     @Operation(summary = "Create service", description = "Creates a new service and returns the domain object.")
-    public Service create(String name, String description, Long accountId) {
+    public Service create(CreateServiceCommand command) {
         Service service = new Service();
-        service.setName(name);
-        service.setDescription(description);
-        service.setAccountId(accountId);
+        service.setName(command.name());
+        service.setDescription(command.description());
+        service.setAccountId(command.accountId());
         service.setCreatedAt(Instant.now());
         service.setUpdatedAt(Instant.now());
         return servicePort.save(service);

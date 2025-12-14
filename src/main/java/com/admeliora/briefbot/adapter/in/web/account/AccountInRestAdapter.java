@@ -46,7 +46,7 @@ public class AccountInRestAdapter {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create account")
     public AccountResponse createAccount(@AuthenticationPrincipal OidcUser oidcUser,
-                                         @Valid @RequestBody CreateAccountRequest request) {
+                                 @Valid @RequestBody CreateAccountRequest request) {
         var command = new CreateAccountCommand(request.name(), request.ownerId());
         var account = createAccountInPort.execute(command);
         return AccountMapper.toResponse(account);
@@ -55,7 +55,7 @@ public class AccountInRestAdapter {
     @PutMapping("/{accountId}/users")
     @Operation(summary = "Add or update user on account")
     public AccountResponse addUserToAccount(@PathVariable Long accountId,
-                                            @Valid @RequestBody AddUserToAccountRequest request) {
+                                       @Valid @RequestBody AddUserToAccountRequest request) {
         var command = new AddUserToAccountCommand(accountId, request.userId(), request.role());
         var account = addUserToAccountInPort.execute(command);
         return AccountMapper.toResponse(account);

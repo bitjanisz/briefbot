@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.user.usecase;
 
-import com.admeliora.briefbot.user.api.dto.UserDto;
+import com.admeliora.briefbot.domain.user.User;
 import com.admeliora.briefbot.user.port.UserPort;
 import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ public class GetLoggedUserUseCase implements GetLoggedUserInPort {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<UserDto> execute(OidcUser principal) {
+    public Optional<User> execute(OidcUser principal) {
         if (principal == null) return Optional.empty();
         String sub = principal.getAttribute("sub");
         if (sub == null) return Optional.empty();
-        return userPort.findByOidcSub(sub).map(UserDto::from);
+        return userPort.findByOidcSub(sub);
     }
 }
 

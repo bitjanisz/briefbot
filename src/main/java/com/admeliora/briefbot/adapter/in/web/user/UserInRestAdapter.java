@@ -6,6 +6,7 @@ import com.admeliora.briefbot.adapter.in.web.user.response.UserResponse;
 import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
 import com.admeliora.briefbot.user.port.in.ListUsersInPort;
 import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
+import com.admeliora.briefbot.user.port.in.command.UpdateOwnUserCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -58,8 +59,9 @@ public class UserInRestAdapter {
     )
     public ResponseEntity<UserResponse> updateMe(
             @AuthenticationPrincipal OidcUser principal,
-            @RequestBody @Validated UserUpdateRequest dto) {
-        return updateOwnUserInPort.execute(principal, dto)
+            @RequestBody @Validated UserUpdateRequest updateRequest) {
+        var command = new UpdateOwnUserCommand(principal, updateRequest.givenName(), updateRequest.familyName(), updateRequest.picture());
+        return updateOwnUserInPort.execute(command)
                 .map(UserMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

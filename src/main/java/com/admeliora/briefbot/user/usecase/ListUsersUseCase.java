@@ -1,6 +1,6 @@
 package com.admeliora.briefbot.user.usecase;
 
-import com.admeliora.briefbot.user.api.dto.UserDto;
+import com.admeliora.briefbot.domain.user.User;
 import com.admeliora.briefbot.user.port.UserPort;
 import com.admeliora.briefbot.user.port.in.ListUsersInPort;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ public class ListUsersUseCase implements ListUsersInPort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserDto> execute() {
-        return userPort.findAll().stream().map(UserDto::from).toList();
+    public List<User> execute() {
+        return userPort.findAll();
     }
 }
 
