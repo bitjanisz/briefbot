@@ -1,8 +1,9 @@
 package com.admeliora.briefbot.adapter.in.web.service;
 
-import com.admeliora.briefbot.adapter.in.web.service.dto.ServiceCreateDto;
-import com.admeliora.briefbot.adapter.in.web.service.dto.ServiceDto;
-import com.admeliora.briefbot.adapter.in.web.service.dto.ServiceUpdateDto;
+import com.admeliora.briefbot.adapter.in.web.service.mapper.ServiceMapper;
+import com.admeliora.briefbot.adapter.in.web.service.request.ServiceCreateRequest;
+import com.admeliora.briefbot.adapter.in.web.service.request.ServiceUpdateRequest;
+import com.admeliora.briefbot.adapter.in.web.service.response.ServiceResponse;
 import com.admeliora.briefbot.service.port.in.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,25 +29,25 @@ public class ServiceInRestAdapter {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create service")
-    public ServiceDto create(@Valid @RequestBody ServiceCreateDto dto) {
+    public ServiceResponse create(@Valid @RequestBody ServiceCreateRequest dto) {
         var service = createServiceInPort.create(dto.name(), dto.description(), dto.accountId());
-        return ServiceDto.from(service);
+        return ServiceMapper.toResponse(service);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get service by id")
-    public ResponseEntity<ServiceDto> get(@PathVariable Long id) {
+    public ResponseEntity<ServiceResponse> get(@PathVariable Long id) {
         return getServiceInPort.getById(id)
-                .map(ServiceDto::from)
+                .map(ServiceMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update service")
-    public ServiceDto update(@PathVariable Long id, @Valid @RequestBody ServiceUpdateDto dto) {
+    public ServiceResponse update(@PathVariable Long id, @Valid @RequestBody ServiceUpdateRequest dto) {
         var service = updateServiceInPort.update(id, dto.name(), dto.description());
-        return ServiceDto.from(service);
+        return ServiceMapper.toResponse(service);
     }
 
     @DeleteMapping("/{id}")
@@ -58,10 +59,10 @@ public class ServiceInRestAdapter {
 
     @GetMapping
     @Operation(summary = "List services by account id")
-    public List<ServiceDto> list(@RequestParam Long accountId) {
+    public List<ServiceResponse> list(@RequestParam Long accountId) {
         return listServicesInPort.listByAccountId(accountId)
                 .stream()
-                .map(ServiceDto::from)
+                .map(ServiceMapper::toResponse)
                 .toList();
     }
 }

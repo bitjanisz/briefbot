@@ -8,9 +8,14 @@ import java.util.Optional;
 
 public interface UserAccountPort {
     Optional<UserAccount> findById(UserAccountId id);
+
     UserAccount save(UserAccount ua);
+
     void deleteById(UserAccountId id);
+
     boolean existsById(UserAccountId id);
+
     List<UserAccount> findByUserId(Long userId);
+
     List<UserAccount> findByAccountId(Long accountId);
 }

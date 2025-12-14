@@ -3,10 +3,11 @@ package com.admeliora.briefbot.service.usecase;
 import com.admeliora.briefbot.domain.service.Service;
 import com.admeliora.briefbot.service.port.in.UpdateServiceInPort;
 import com.admeliora.briefbot.service.port.out.ServicePort;
-import lombok.RequiredArgsConstructor;
-import java.time.Instant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+
+import java.time.Instant;
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor

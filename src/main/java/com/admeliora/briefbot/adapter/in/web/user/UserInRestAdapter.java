@@ -1,9 +1,8 @@
 package com.admeliora.briefbot.adapter.in.web.user;
 
-// Adapter wejściowy (REST) – wywołuje porty wejściowe (use case) zgodnie z architekturą heksagonalną
-
-import com.admeliora.briefbot.adapter.in.web.user.dto.UserDto;
-import com.admeliora.briefbot.adapter.in.web.user.dto.UserUpdateDto;
+import com.admeliora.briefbot.adapter.in.web.user.mapper.UserMapper;
+import com.admeliora.briefbot.adapter.in.web.user.request.UserUpdateRequest;
+import com.admeliora.briefbot.adapter.in.web.user.response.UserResponse;
 import com.admeliora.briefbot.user.port.in.GetLoggedUserInPort;
 import com.admeliora.briefbot.user.port.in.ListUsersInPort;
 import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
@@ -34,8 +33,8 @@ public class UserInRestAdapter {
             description = "Retrieves a list of all registered users.",
             operationId = "getAllUsers"
     )
-    public List<UserDto> getAllUsers() {
-        return listUsersInPort.execute();
+    public List<UserResponse> getAllUsers() {
+        return listUsersInPort.execute().stream().map(UserMapper::toResponse).toList();
     }
 
     @GetMapping("/me")
@@ -44,8 +43,9 @@ public class UserInRestAdapter {
             description = "Retrieves information about the currently authenticated user.",
             operationId = "getLoggedInUser"
     )
-    public ResponseEntity<UserDto> me(@AuthenticationPrincipal OidcUser user) {
+    public ResponseEntity<UserResponse> me(@AuthenticationPrincipal OidcUser user) {
         return getLoggedUserInPort.execute(user)
+                .map(UserMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -56,11 +56,11 @@ public class UserInRestAdapter {
             description = "Updates information for the currently authenticated user.",
             operationId = "updateLoggedInUser"
     )
-    public ResponseEntity<UserDto> updateMe(
+    public ResponseEntity<UserResponse> updateMe(
             @AuthenticationPrincipal OidcUser principal,
-            @RequestBody @Validated UserUpdateDto dto) {
-
+            @RequestBody @Validated UserUpdateRequest dto) {
         return updateOwnUserInPort.execute(principal, dto)
+                .map(UserMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

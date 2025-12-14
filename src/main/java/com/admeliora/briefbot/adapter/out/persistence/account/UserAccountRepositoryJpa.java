@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface UserAccountRepositoryJpa extends JpaRepository<UserAccount, UserAccountId> {
     List<UserAccount> findByUser_Id(Long userId);
+
     List<UserAccount> findByAccount_Id(Long accountId);
 }
 

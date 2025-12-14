@@ -2,8 +2,8 @@ package com.admeliora.briefbot.user.usecase;
 
 import com.admeliora.briefbot.user.api.dto.UserDto;
 import com.admeliora.briefbot.user.api.dto.UserUpdateDto;
-import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
 import com.admeliora.briefbot.user.port.UserPort;
+import com.admeliora.briefbot.user.port.in.UpdateOwnUserInPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;

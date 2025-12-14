@@ -1,4 +1,5 @@
 package com.admeliora.briefbot.account.port.in.command;
 
-public record CreateAccountCommand(String name, Long ownerId) {}
+public record CreateAccountCommand(String name, Long ownerId) {
+}
 
