@@ -1,0 +1,104 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  config:
+    import: "optional:classpath:dev-credentials.yml"
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            scope:
+              - openid
+              - profile
+              - email
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:username}
+    password: ${MAIL_PASSWORD:password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+          timeout: 10000
+          connectiontimeout: 10000
+          writetimeout: 10000
+        from: ${MAIL_FROM:noreply@briefbot.com}
+
+  flyway:
+    locations: classpath:db/migration
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  mvc:
+    problemdetails:
+      enabled: true
+
+# Actuator configuration
+management:
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+    shutdown:
+      enabled: false
+  server:
+    port: 8080
+
+  springdoc:
+    api-docs:
+      path: /api-docs/openapi.json
+
+    swagger-ui:
+      path: /swagger-ui.html
+#      csrf:
+#        enabled: true
+
+    info:
+      title: BriefBot API
+      description: API documentation for the BriefBot application.
+      version: v1.0.0
+
+    group-configs:
+      - group: default
+        packages-to-scan:
+          - com.admeliora.briefbot
+
+logging:
+  root:
+    level: ${LOG_LEVEL:INFO}
+  level:
+    org.flywaydb: ${LOG_FLYWAYDB_LEVEL:INFO}
+    org.springframework: ${LOG_SPRING_LEVEL:INFO}
+    org.springframework.mail: ${LOG_MAIL_LEVEL:INFO}
+    jakarta.mail: ${LOG_MAIL_LEVEL:INFO}

@@ -1,4 +1,4 @@
-# Project Name
+# BriefBot
 
 A brief description of your project, what it does, and the problem it solves.
 
