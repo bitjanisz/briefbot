@@ -6,7 +6,6 @@ CREATE TABLE users (
     given_name VARCHAR(100),
     family_name VARCHAR(100),
     picture_url VARCHAR(255),
-    password_hash VARCHAR(255),
     last_login_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -181,11 +180,16 @@ CREATE TABLE orders (
 );
 
 -- INDEKSY (Tworzone na końcu, gdy tabele już istnieją)
+CREATE INDEX idx_users_oidc_sub ON users(oidc_sub);
+CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_user_accounts_user ON user_accounts(user_id);
 CREATE INDEX idx_user_accounts_account ON user_accounts(account_id);
 CREATE INDEX idx_services_account ON services(account_id);
 CREATE INDEX idx_clients_account ON clients(account_id);
 CREATE INDEX idx_briefings_client ON briefings(client_id);
+CREATE INDEX idx_briefing_versions_briefing ON briefing_versions(briefing_id);
 CREATE INDEX idx_offers_client ON offers(client_id);
+CREATE INDEX idx_offers_briefing ON offers(briefing_id);
 CREATE INDEX idx_offer_versions_offer ON offer_versions(offer_id);
+CREATE INDEX idx_offer_items_version ON offer_version_items(offer_version_id);
 CREATE INDEX idx_orders_offer_version ON orders(offer_version_id);
