@@ -1,7 +1,7 @@
 package com.admeliora.briefbot.security;
 
-import com.admeliora.briefbot.infrastructure.adapter.out.persistence.user.jpa.UserRepositoryJpa;
-import com.admeliora.briefbot.user.model.User;
+import com.admeliora.briefbot.adapter.out.persistence.user.jpa.UserRepositoryJpa;
+import com.admeliora.briefbot.application.user.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -54,5 +54,4 @@ spring:
     group-configs:
       - group: default
         packages-to-scan:
-          - com.admeliora.briefbot.user.api
-          - com.admeliora.briefbot.auth.api
+          - com.admeliora.briefbot
