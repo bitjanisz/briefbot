@@ -2,6 +2,7 @@ package com.admeliora.briefbot.infrastructure.context;
 
 import com.admeliora.briefbot.application.account.port.out.UserAccountPort;
 import com.admeliora.briefbot.application.user.port.out.UserPort;
+import com.admeliora.briefbot.security.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,25 +36,49 @@ public class AccountFilterInterceptor extends OncePerRequestFilter {
 
         if (authentication != null && authentication.isAuthenticated()) {
             String email;
+            Long userId = null;
+            Long accountId = null;
+
+            // Check if JWT authentication with CustomUserDetails
+            if (authentication.getPrincipal() instanceof CustomUserDetails customUserDetails) {
+                email = customUserDetails.getEmail();
+                userId = customUserDetails.getUserId();
+                accountId = customUserDetails.getAccountId();
+
+                accountFilterContext.setAccountId(accountId);
+                accountFilterContext.setUserId(userId);
+                accountFilterContext.setUserEmail(email);
+                log.debug("JWT auth - Set context from CustomUserDetails: userId={}, accountId={}, email={}",
+                        userId, accountId, email);
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            // OAuth2 authentication
             if (authentication.getPrincipal() instanceof OidcUser oidcUser) {
                 email = oidcUser.getEmail();
-            } else if (authentication instanceof User user) {
+            }
+            // Form login with standard User
+            else if (authentication instanceof User user) {
                 email = user.getUsername();
-            } else if (authentication instanceof UsernamePasswordAuthenticationToken
+            }
+            // UsernamePasswordAuthenticationToken with String principal
+            else if (authentication instanceof UsernamePasswordAuthenticationToken
                     && authentication.getPrincipal() instanceof String principalStr) {
                 email = principalStr;
             } else {
                 filterChain.doFilter(request, response);
                 return;
             }
+
+            // For non-JWT auth, lookup account from database
             var userAccount = userAccountPort.findPrimaryAccountIdByUserEmail(email);
 
             userAccount.ifPresentOrElse(au -> {
-                Long accountId = au.getAccountId();
-                accountFilterContext.setAccountId(accountId);
+                accountFilterContext.setAccountId(au.getAccountId());
                 accountFilterContext.setUserId(au.getUserId());
                 accountFilterContext.setUserEmail(email);
-                log.debug("Set accountId filter to: {} for user: {}", accountId, email);
+                log.debug("Non-JWT auth - Set accountId filter to: {} for user: {}", au.getAccountId(), email);
             }, () -> {
                 accountFilterContext.setUserEmail(email);
                 userPort.findByEmail(email).ifPresent(user ->

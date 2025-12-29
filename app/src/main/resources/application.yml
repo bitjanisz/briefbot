@@ -57,6 +57,28 @@ spring:
     problemdetails:
       enabled: true
 
+# JWT Configuration
+# ⚠️  SECURITY WARNING: Change JWT_SECRET in production!
+# Generate a secure key: openssl rand -base64 64
+security:
+  jwt:
+    # CRITICAL: This default secret is for DEVELOPMENT ONLY!
+    # In production, set JWT_SECRET environment variable to a cryptographically secure random string
+    # Example: export JWT_SECRET=$(openssl rand -base64 64)
+    secret: ${JWT_SECRET:kV8yC9mR2nP4tL6wE3xH7uF1sJ5qA0zD9bN8cM2vX4gK6jT3pW7eQ1oU5rY9iS2hL0aF4dG8nC6mV3xB5tZ7wE1}
+    expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
+    issuer: ${JWT_ISSUER:briefbot} # JWT issuer claim (iss)
+    audience: ${JWT_AUDIENCE:briefbot-api} # JWT audience claim (aud)
+    cookie:
+      name: ${JWT_COOKIE_NAME:BRIEFBOT_JWT}
+      max-age: ${JWT_COOKIE_MAX_AGE:86400} # 24 hours in seconds
+      secure: ${JWT_COOKIE_SECURE:false} # Set to true in production with HTTPS
+      http-only: ${JWT_COOKIE_HTTP_ONLY:true}
+      same-site: ${JWT_COOKIE_SAME_SITE:Lax} # Lax, Strict, or None
+  redirect:
+    default-success-url: ${DEFAULT_SUCCESS_URL:/api/users/me}
+    login-url: ${LOGIN_URL:/login}
+
 # Actuator configuration
 management:
   health:

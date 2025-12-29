@@ -1,19 +1,27 @@
 package com.admeliora.briefbot.security;
 
+import com.admeliora.briefbot.adapter.out.persistence.account.jpa.UserAccountRepositoryJpa;
 import com.admeliora.briefbot.adapter.out.persistence.user.jpa.UserRepositoryJpa;
+import com.admeliora.briefbot.security.jwt.JwtAuthenticationFilter;
+import com.admeliora.briefbot.security.jwt.JwtTokenProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Slf4j
@@ -24,17 +32,21 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             OidcAuthenticationSuccessHandler oidcSuccessHandler,
-                                            FormAuthenticationSuccessHandler formSuccessHandler) throws Exception {
+                                            FormAuthenticationSuccessHandler formSuccessHandler,
+                                            JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/**").permitAll() // Actuator endpoints
                         .requestMatchers("/h2-console/**").permitAll() // H2 console
-                        .requestMatchers("/auth/**").permitAll() // Auth REST API endpoints
+                        .requestMatchers("/api/auth/**").permitAll() // Auth REST API endpoints (including JWT)
 //                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api-docs/**").permitAll() // Swagger UI
                         .requestMatchers("/login", "/perform-login", "/oauth2/**").permitAll() // Login page and OAuth2
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless for JWT
+                )
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
@@ -59,7 +71,10 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
-                );
+                )
+                // Add JWT filter before UsernamePasswordAuthenticationFilter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
@@ -75,13 +90,22 @@ public class SecurityConfig {
     }
 
     @Bean
-    OidcAuthenticationSuccessHandler customAuthenticationSuccessHandler(UserRepositoryJpa userRepository) {
-        return new OidcAuthenticationSuccessHandler(userRepository);
+    OidcAuthenticationSuccessHandler customAuthenticationSuccessHandler(
+            UserRepositoryJpa userRepository,
+            UserAccountRepositoryJpa userAccountRepository,
+            JwtTokenProvider jwtTokenProvider,
+            ObjectMapper objectMapper) {
+        return new OidcAuthenticationSuccessHandler(userRepository, userAccountRepository, jwtTokenProvider, objectMapper);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
 
