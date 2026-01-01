@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class AuthenticationSteps {
 
+    private static final String JWT_COOKIE_NAME = "BRIEFBOT_JWT";
+
     private final TestContext context;
 
     @Autowired
@@ -179,10 +181,10 @@ public class AuthenticationSteps {
 
         context.setLastResponse(response);
 
-        // Save session cookies for subsequent authenticated requests
-        if (response.getStatusCode() == 200 && response.getCookies() != null) {
+        // Save JWT cookies for subsequent authenticated requests
+        if (response.getStatusCode() == 200) {
             context.setSessionCookies(response.getDetailedCookies());
-            log.info("Session cookies saved for user: {}", email);
+            log.info("JWT cookies saved for user: {}", email);
         }
     }
 
@@ -232,11 +234,16 @@ public class AuthenticationSteps {
 
     @And("I should be authenticated")
     public void iShouldBeAuthenticated() {
-        // Verify session cookie was set
+        // Verify JWT cookie was set
         Response response = context.getLastResponse();
         assertThat(response.getCookies())
-                .as("Session cookie should be present")
+                .as("JWT cookie should be present")
                 .isNotEmpty();
+
+        // Verify BRIEFBOT_JWT cookie specifically
+        assertThat(response.getCookie(JWT_COOKIE_NAME))
+                .as(JWT_COOKIE_NAME + " cookie should be present")
+                .isNotNull();
     }
 
     @Given("a user registered via OAuth with email {string}")

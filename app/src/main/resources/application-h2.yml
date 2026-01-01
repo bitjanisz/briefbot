@@ -12,7 +12,7 @@ spring:
       ddl-auto: none
     show-sql: true
 
-  # Optional H2 console (embedded web console is started on a separate port by H2WebConsoleConfig)
+  # H2 console is available on management port (8081) via /h2-console
   h2:
     console:
       enabled: true

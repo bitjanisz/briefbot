@@ -34,14 +34,14 @@ public class CommonSteps {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
                 .when()
-                .get("/actuator/health")
+                .get(TestConfig.getActuatorUrl())
                 .then()
                 .extract()
                 .response();
 
         assertThat(response.getStatusCode())
                 .as("API should be available")
-                .isIn(200, 404); // 404 is ok if actuator is not exposed
+                .isIn(200);
     }
 
     @Given("I am authenticated")

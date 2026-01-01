@@ -1,6 +1,6 @@
 spring:
 
-# Security configuration for testing
+  # Security configuration for testing
   security:
     oauth2:
       client:
