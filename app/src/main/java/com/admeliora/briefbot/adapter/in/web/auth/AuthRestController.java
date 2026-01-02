@@ -41,10 +41,8 @@ public class AuthRestController {
 
     private final RegisterUserPort registerUserPort;
     private final LoginPort loginPort;
-
     private final UserAccountRepositoryJpa userAccountRepository;
     private final JwtTokenProvider jwtTokenProvider;
-
     private final JwtProperties jwtProperties;
 
     @PostMapping("/register")
@@ -77,7 +75,7 @@ public class AuthRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping({"/login", "/logon"})
+    @PostMapping("/login")
     @Operation(summary = "Login with email and password (also available under /logon)", description = "Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')",

@@ -49,4 +49,9 @@ public class UserAccountAdapter implements UserAccountPort {
     public Optional<UserAccount> findPrimaryAccountIdByUserEmail(String email) {
         return userAccountRepository.findByUserEmail(email).stream().findFirst();
     }
+
+    @Override
+    public boolean existsByUserIdAndAccountId(Long userId, Long accountId) {
+        return userAccountRepository.existsByUserIdAndAccountId(userId, accountId);
+    }
 }

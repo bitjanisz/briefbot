@@ -28,5 +28,6 @@ public interface UserAccountRepositoryJpa extends JpaRepository<UserAccount, Lon
             WHERE u.email = :email
             """, nativeQuery = true)
     List<UserAccount> findByUserEmail(@Param("email") String email);
-}
 
+    boolean existsByUserIdAndAccountId(Long userId, Long accountId);
+}

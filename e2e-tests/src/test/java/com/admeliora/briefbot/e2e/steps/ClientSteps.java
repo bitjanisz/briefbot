@@ -7,6 +7,7 @@ import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.restassured.RestAssured.given;
@@ -143,6 +144,13 @@ public class ClientSteps {
         assertThat(clients)
                 .as("Response should contain clients array")
                 .isNotNull();
+    }
+
+    @And("I create a sample client")
+    public void iCreateASampleClient() {
+        var radom = RandomStringUtils.insecure().nextAlphabetic(5);
+        String randomEmail = "client+" + radom + "@example.com";
+        iCreateAClientWithNameAndEmail("Sample " + radom + " Client ", randomEmail);
     }
 }
 

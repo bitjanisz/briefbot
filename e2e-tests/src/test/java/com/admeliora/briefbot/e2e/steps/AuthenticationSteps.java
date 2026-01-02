@@ -163,6 +163,11 @@ public class AuthenticationSteps {
         iLoginWithEmailAndPassword("admin@briefbot.com", "Admin123");
     }
 
+    @Given("I login as account admin")
+    public void iLoginAsAccountAdmin() {
+        iLoginWithEmailAndPassword("admin@briefbot.com", "Admin123");
+    }
+
     @When("I login with email {string} and password {string}")
     public void iLoginWithEmailAndPassword(String email, String password) {
         LoginRequest request = LoginRequest.builder()

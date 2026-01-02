@@ -19,4 +19,6 @@ public interface UserAccountPort {
     List<UserAccount> findByAccountId(Long accountId);
 
     Optional<UserAccount> findPrimaryAccountIdByUserEmail(String email);
+
+    boolean existsByUserIdAndAccountId(Long userId, Long accountId);
 }

@@ -1,5 +1,14 @@
 spring:
 
+  mail:
+    host: host
+    port: 465
+    username: username
+    password: password
+    properties:
+      mail:
+        from: kontakt@brifin.pl
+
   security:
     oauth2:
       client:
@@ -29,7 +38,9 @@ spring:
       enabled: true
       path: /h2-console
 
-app:
-  h2:
-    console:
-      port: 8082
+security:
+  jwt:
+    secret: kV8yC9mR2nP4tL6wE3xH7uF1sJ5qA0zD9bN8cM2vX4gK6jT3pW7eQ1oU5rY9iS2hL0aF4dG8nC6mV3xB5tZ7wE1
+  redirect:
+    default-success-url: api/users/me
+    login-url: /login
