@@ -1,0 +1,114 @@
+server:
+  port: ${SERVER_PORT:8080}
+  application:
+    name: briefbot
+
+#spring:
+#  config:
+#    import: "optional:classpath:dev-credentials.yml"
+#
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: ${GOOGLE_CLIENT_ID:}
+#            client-secret: ${GOOGLE_CLIENT_SECRET:}
+#            scope:
+#              - openid
+#              - profile
+#              - email
+#
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#
+#  mail:
+#    host: ${MAIL_HOST:localhost}
+#    port: ${MAIL_PORT:587}
+#    username: ${MAIL_USERNAME:username}
+#    password: ${MAIL_PASSWORD:password}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          ssl:
+#            enable: true
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+#          timeout: 10000
+#          connectiontimeout: 10000
+#          writetimeout: 10000
+#        from: ${MAIL_FROM:noreply@briefbot.com}
+#
+#  flyway:
+#    locations: classpath:db/migration
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: validate
+#
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#
+#  mvc:
+#    problemdetails:
+#      enabled: true
+
+# JWT Configuration
+# ⚠️  SECURITY WARNING: Change JWT_SECRET in production!
+# Generate a secure key: openssl rand -base64 64
+#security:
+#  jwt:
+#    # CRITICAL: This default secret is for DEVELOPMENT ONLY!
+#    # In production, set JWT_SECRET environment variable to a cryptographically secure random string
+#    # Example: export JWT_SECRET=$(openssl rand -base64 64)
+#    secret: ${JWT_SECRET:kV8yC9mR2nP4tL6wE3xH7uF1sJ5qA0zD9bN8cM2vX4gK6jT3pW7eQ1oU5rY9iS2hL0aF4dG8nC6mV3xB5tZ7wE1}
+#    expiration: ${JWT_EXPIRATION:86400000} # 24 hours in milliseconds
+#    issuer: ${JWT_ISSUER:briefbot} # JWT issuer claim (iss)
+#    audience: ${JWT_AUDIENCE:briefbot-api} # JWT audience claim (aud)
+#    cookie:
+#      name: ${JWT_COOKIE_NAME:BRIEFBOT_JWT}
+#      max-age: ${JWT_COOKIE_MAX_AGE} # 24 hours in seconds
+#      secure: ${JWT_COOKIE_SECURE} # Set to true in production with HTTPS
+#      http-only: ${JWT_COOKIE_HTTP_ONLY}
+#      same-site: ${JWT_COOKIE_SAME_SITE} # Lax, Strict, or None
+#  redirect:
+#    default-success-url: ${DEFAULT_SUCCESS_URL:/api/users/me}
+#    login-url: ${LOGIN_URL:/login}
+
+# Actuator and management configuration
+#management:
+#  server:
+#    port: 8081
+#  health:
+#    mail:
+#      enabled: false
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    shutdown:
+#      enabled: false
+
+#springdoc:
+#  api-docs:
+#    enabled: true
+#    path: /v3/api-docs
+#  swagger-ui:
+#    enabled: true
+#    path: /swagger-ui
+#  show-actuator: true
+#  use-management-port: true
+
+#logging:
+#  level:
+#    ROOT: ${LOG_LEVEL:INFO}
+#    org.flywaydb: ${LOG_FLYWAYDB_LEVEL:INFO}
+#    org.springframework: ${LOG_SPRING_LEVEL:INFO}
+#    org.springframework.mail: ${LOG_MAIL_LEVEL:INFO}
+#    jakarta.mail: ${LOG_MAIL_LEVEL:INFO}
