@@ -14,13 +14,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Base64;
+import javax.crypto.SecretKey;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final Key jwtKey;
+    private final SecretKey jwtKey;
     private final String cookieName;
 
     public JwtAuthFilter(
@@ -49,11 +49,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtKey)
+            Claims claims = Jwts.parser()
+                    .verifyWith(jwtKey)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
             // If parsing succeeds, expiration was valid; continue
             filterChain.doFilter(request, response);
         } catch (Exception e) {
@@ -71,4 +71,3 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         return null;
     }
 }
-

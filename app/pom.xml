@@ -85,17 +85,17 @@
         <!--            <artifactId>thymeleaf-extras-springsecurity6</artifactId>-->
         <!--        </dependency>-->
 
-        <!--        &lt;!&ndash; Actuator &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
-        <!--        </dependency>-->
+                <!-- Actuator -->
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                </dependency>
 
-        <!--        &lt;!&ndash; OpenAPI (MVC) &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springdoc</groupId>-->
-        <!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
-        <!--        </dependency>-->
+                <!-- OpenAPI (MVC) -->
+                <dependency>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                </dependency>
 
 
         <!-- Lombok -->
@@ -132,7 +132,6 @@
         <!--        </dependency>-->
     </dependencies>
 
-    <!-- Add a Maven profile for local/dev H2 usage so H2 is not on the classpath by default -->
     <profiles>
         <profile>
             <id>dev</id>
