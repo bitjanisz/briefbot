@@ -7,10 +7,15 @@ import java.util.Optional;
 
 public interface CompanyProfilePort {
     CompanyProfile save(CompanyProfile profile);
+
     Optional<CompanyProfile> findById(Long id);
+
     List<CompanyProfile> findAll();
+
     boolean existsById(Long id);
+
     CompanyProfile getReferenceById(Long id);
+
     void delete(CompanyProfile profile);
 }
 

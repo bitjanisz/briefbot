@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.application.companyprofile.service;
 
+import com.admeliora.briefbot.application.account.port.out.AccountPort;
 import com.admeliora.briefbot.application.common.exception.NoAccountAssignedException;
 import com.admeliora.briefbot.application.companyprofile.model.CompanyProfile;
-import com.admeliora.briefbot.application.account.port.out.AccountPort;
 import com.admeliora.briefbot.application.companyprofile.port.in.CreateCompanyProfilePort;
 import com.admeliora.briefbot.application.companyprofile.port.in.command.CreateCompanyProfileCommand;
 import com.admeliora.briefbot.application.companyprofile.port.out.CompanyProfilePort;

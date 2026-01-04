@@ -34,11 +34,11 @@ public class UpdateServiceService implements UpdateServiceUseCase {
             command.relations().forEach(relationCommand -> {
                 var relatedService = servicePort.findById(relationCommand.relatedServiceId()).orElseThrow();
                 ServiceRelation serviceRelation = ServiceRelation.builder()
-                    .parentService(service)
-                    .relatedServiceId(relatedService.getId())
-                    .relationType(relationCommand.relationType())
-                    .impactDescription(relationCommand.impactDescription())
-                    .build();
+                        .parentService(service)
+                        .relatedServiceId(relatedService.getId())
+                        .relationType(relationCommand.relationType())
+                        .impactDescription(relationCommand.impactDescription())
+                        .build();
                 service.getServiceRelations().add(serviceRelation);
             });
         }

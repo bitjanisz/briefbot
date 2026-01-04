@@ -74,7 +74,7 @@ public class CustomUserDetails implements UserDetails {
             String familyName
     ) {
         this(username, password, true, true, true, true, authorities,
-             userId, accountId, email, givenName, familyName);
+                userId, accountId, email, givenName, familyName);
     }
 
     @Override

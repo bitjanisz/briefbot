@@ -82,7 +82,7 @@ public class AccountFilterInterceptor extends OncePerRequestFilter {
             }, () -> {
                 accountFilterContext.setUserEmail(email);
                 userPort.findByEmail(email).ifPresent(user ->
-                    accountFilterContext.setUserId(user.getId())
+                        accountFilterContext.setUserId(user.getId())
                 );
                 log.warn("No account found for user: {}", email);
             });

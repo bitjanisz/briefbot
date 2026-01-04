@@ -6,8 +6,11 @@ import java.util.Optional;
 
 public interface OfferVersionPort {
     OfferVersion save(OfferVersion offerVersion);
+
     Optional<OfferVersion> findById(Long id);
+
     boolean existsById(Long id);
+
     OfferVersion getReferenceById(Long id);
 }
 

@@ -15,8 +15,8 @@ public class BriefingMapper {
 
         List<BriefingVersionResponse> versions = briefing.getVersions() != null
                 ? briefing.getVersions().stream()
-                        .map(BriefingMapper::toVersionResponse)
-                        .collect(Collectors.toList())
+                .map(BriefingMapper::toVersionResponse)
+                .collect(Collectors.toList())
                 : List.of();
 
         return new BriefingResponse(

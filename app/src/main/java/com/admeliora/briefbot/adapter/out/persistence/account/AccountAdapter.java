@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.adapter.out.persistence.account;
 
-import com.admeliora.briefbot.application.account.port.out.AccountPort;
-import com.admeliora.briefbot.application.account.model.Account;
 import com.admeliora.briefbot.adapter.out.persistence.account.jpa.AccountRepositoryJpa;
+import com.admeliora.briefbot.application.account.model.Account;
+import com.admeliora.briefbot.application.account.port.out.AccountPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -4,15 +4,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record UpdateServiceCommand(
-    Long id,
-    String name,
-    String description,
-    BigDecimal basePrice,
-    BigDecimal vatRate,
-    String currency,
-    String pricingUnit,
-    BigDecimal minPriceThreshold,
-    Boolean isActive,
-    List<ServiceRelation> relations
-) {}
+        Long id,
+        String name,
+        String description,
+        BigDecimal basePrice,
+        BigDecimal vatRate,
+        String currency,
+        String pricingUnit,
+        BigDecimal minPriceThreshold,
+        Boolean isActive,
+        List<ServiceRelation> relations
+) {
+}
 

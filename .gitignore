@@ -49,3 +49,6 @@ build/
 logs/
 
 /app/src/main/resources/application-mk.yml
+/app/src/main/resources/application-local.yml
+
+.run

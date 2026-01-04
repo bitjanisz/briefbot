@@ -10,9 +10,9 @@ public class ServiceMapper {
     public static ServiceResponse toResponse(Service service) {
         if (service == null) return null;
         List<com.admeliora.briefbot.adapter.in.web.service.model.ServiceRelation> serviceRelations =
-            service.getServiceRelations() != null ? service.getServiceRelations().stream()
-                .map(ServiceMapper::toRelationResponse)
-                .toList() : List.of();
+                service.getServiceRelations() != null ? service.getServiceRelations().stream()
+                        .map(ServiceMapper::toRelationResponse)
+                        .toList() : List.of();
         return new ServiceResponse(
                 service.getId(),
                 service.getName(),
@@ -33,9 +33,9 @@ public class ServiceMapper {
 
     private static com.admeliora.briefbot.adapter.in.web.service.model.ServiceRelation toRelationResponse(ServiceRelation relation) {
         return new com.admeliora.briefbot.adapter.in.web.service.model.ServiceRelation(
-            relation.getRelatedServiceId(),
-            relation.getRelationType(),
-            relation.getImpactDescription()
+                relation.getRelatedServiceId(),
+                relation.getRelationType(),
+                relation.getImpactDescription()
         );
     }
 }

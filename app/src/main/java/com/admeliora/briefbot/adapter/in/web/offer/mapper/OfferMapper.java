@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.adapter.in.web.offer.mapper;
 
 import com.admeliora.briefbot.adapter.in.web.offer.model.response.OfferResponse;
-import com.admeliora.briefbot.adapter.in.web.offer.model.response.OfferVersionResponse;
 import com.admeliora.briefbot.adapter.in.web.offer.model.response.OfferVersionItemResponse;
+import com.admeliora.briefbot.adapter.in.web.offer.model.response.OfferVersionResponse;
 import com.admeliora.briefbot.application.offer.model.Offer;
 import com.admeliora.briefbot.application.offer.model.OfferVersion;
 import com.admeliora.briefbot.application.offer.model.OfferVersionItem;
@@ -17,8 +17,8 @@ public class OfferMapper {
 
         List<OfferVersionResponse> versions = offer.getVersions() != null
                 ? offer.getVersions().stream()
-                        .map(OfferMapper::toVersionResponse)
-                        .collect(Collectors.toList())
+                .map(OfferMapper::toVersionResponse)
+                .collect(Collectors.toList())
                 : List.of();
 
         return new OfferResponse(
@@ -37,8 +37,8 @@ public class OfferMapper {
 
         List<OfferVersionItemResponse> items = version.getItems() != null
                 ? version.getItems().stream()
-                        .map(OfferMapper::toItemResponse)
-                        .collect(Collectors.toList())
+                .map(OfferMapper::toItemResponse)
+                .collect(Collectors.toList())
                 : List.of();
 
         return new OfferVersionResponse(

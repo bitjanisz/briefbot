@@ -1,6 +1,7 @@
 package com.admeliora.briefbot.security.jwt;
 
 import com.admeliora.briefbot.security.CustomUserDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,7 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -30,69 +32,58 @@ import java.util.Collections;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    @Value("${security.jwt.cookie.name:BRIEFBOT_JWT}")
-    private String cookieName;
+    private final ObjectMapper objectMapper;
+    private final JwtProperties jwtProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         try {
-            String token = extractTokenFromRequest(request);
-
-            if (token != null && StringUtils.hasText(token)) {
+            final String token = extractTokenFromRequest(request);
+            if (StringUtils.hasText(token)) {
                 Claims claims = jwtTokenProvider.validateToken(token);
-
-                String email = claims.getSubject();
-                Long userId = claims.get("userId", Long.class);
-                Long accountId = claims.get("accountId", Long.class);
-                String givenName = claims.get("givenName", String.class);
-                String familyName = claims.get("familyName", String.class);
-
-                // Create CustomUserDetails with JWT claims
-                CustomUserDetails userDetails = new CustomUserDetails(
-                        email,
-                        "", // No password needed for JWT auth
-                        true,
-                        true,
-                        true,
-                        true,
-                        Collections.emptyList(),
-                        userId,
-                        accountId,
-                        email,
-                        givenName,
-                        familyName
-                );
-
+                CustomUserDetails userDetails = createUserDetails(claims);
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                log.debug("JWT authentication successful for: {} (userId: {}, accountId: {})",
-                        email, userId, accountId);
             }
-
         } catch (JwtAuthenticationException e) {
             log.error("JWT authentication failed: {}", e.getMessage());
-            SecurityContextHolder.clearContext();
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Invalid or expired JWT token\"}");
-            response.setContentType("application/json");
+            handleAuthenticationError(response, HttpStatus.UNAUTHORIZED, "Invalid or expired JWT token", e.getMessage());
             return;
         } catch (Exception e) {
-            log.error("Error during JWT authentication: {}", e.getMessage(), e);
-            SecurityContextHolder.clearContext();
+            log.error("Error during JWT authentication", e);
+            handleAuthenticationError(response, HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Internal server error during JWT authentication", e.getMessage());
+            return;
         }
-
         filterChain.doFilter(request, response);
+    }
+
+    private CustomUserDetails createUserDetails(Claims claims) {
+        return new CustomUserDetails(
+                claims.getSubject(),
+                "",
+                true, true, true, true,
+                Collections.emptyList(),
+                claims.get("userId", Long.class),
+                claims.get("accountId", Long.class),
+                claims.getSubject(),
+                claims.get("givenName", String.class),
+                claims.get("familyName", String.class)
+        );
+    }
+
+    private void handleAuthenticationError(HttpServletResponse response, HttpStatus status,
+                                           String title, String detail) throws IOException {
+        SecurityContextHolder.clearContext();
+        response.setStatus(status.value());
+        response.setContentType("application/problem+json");
+        ProblemDetail problem = ProblemDetail.forStatus(status);
+        problem.setTitle(title);
+        problem.setDetail(detail);
+        objectMapper.writeValue(response.getWriter(), problem);
     }
 
     /**
@@ -100,20 +91,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * Priority: 1. Cookie, 2. Authorization header
      */
     private String extractTokenFromRequest(HttpServletRequest request) {
-        // Try to get token from cookie first
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
-                if (cookieName.equals(cookie.getName())) {
-                    log.debug("JWT token found in cookie: {}", cookieName);
+                if (jwtProperties.getCookie().getName().equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }
         }
 
-        // Fallback to Authorization header
-        String bearerToken = request.getHeader("Authorization");
+        final String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            log.debug("JWT token found in Authorization header");
             return bearerToken.substring(7);
         }
 
@@ -122,13 +109,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        // Skip JWT filter for public endpoints
-        return path.startsWith("/api/auth/")
-                || path.startsWith("/login")
-                || path.startsWith("/oauth2/")
-                || path.startsWith("/h2-console")
-                || path.startsWith("/actuator");
+        final String path = request.getRequestURI();
+        return path.startsWith("/api/auth/") ||
+                path.startsWith("/login") ||
+                path.startsWith("/oauth2/") ||
+                path.startsWith("/h2-console") ||
+                path.startsWith("/actuator");
     }
 }
-

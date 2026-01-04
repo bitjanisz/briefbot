@@ -1,15 +1,15 @@
 package com.admeliora.briefbot.adapter.in.web.account;
 
-import com.admeliora.briefbot.application.account.port.in.*;
-import com.admeliora.briefbot.application.account.port.in.command.AddUserToAccountCommand;
-import com.admeliora.briefbot.application.account.port.in.command.CreateAccountCommand;
-import com.admeliora.briefbot.application.account.port.in.command.RemoveUserFromAccountCommand;
-import com.admeliora.briefbot.application.account.port.in.command.UpdateAccountCommand;
 import com.admeliora.briefbot.adapter.in.web.account.mapper.AccountMapper;
 import com.admeliora.briefbot.adapter.in.web.account.model.request.AccountUpdateRequest;
 import com.admeliora.briefbot.adapter.in.web.account.model.request.AddUserToAccountRequest;
 import com.admeliora.briefbot.adapter.in.web.account.model.request.CreateAccountRequest;
 import com.admeliora.briefbot.adapter.in.web.account.model.response.AccountResponse;
+import com.admeliora.briefbot.application.account.port.in.*;
+import com.admeliora.briefbot.application.account.port.in.command.AddUserToAccountCommand;
+import com.admeliora.briefbot.application.account.port.in.command.CreateAccountCommand;
+import com.admeliora.briefbot.application.account.port.in.command.RemoveUserFromAccountCommand;
+import com.admeliora.briefbot.application.account.port.in.command.UpdateAccountCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -57,7 +57,7 @@ public class AccountInRestAdapter {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create account")
     public AccountResponse createAccount(@AuthenticationPrincipal OidcUser oidcUser,
-                                 @Valid @RequestBody CreateAccountRequest request) {
+                                         @Valid @RequestBody CreateAccountRequest request) {
         var command = new CreateAccountCommand(request.name(), request.ownerId());
         var account = createAccountPort.execute(command);
         return AccountMapper.toResponse(account);
@@ -82,7 +82,7 @@ public class AccountInRestAdapter {
     @PutMapping("/{accountId}/users")
     @Operation(summary = "Add or update user on account")
     public AccountResponse addUserToAccount(@PathVariable Long accountId,
-                                       @Valid @RequestBody AddUserToAccountRequest request) {
+                                            @Valid @RequestBody AddUserToAccountRequest request) {
         var command = new AddUserToAccountCommand(accountId, request.userId(), request.role());
         var account = addUserToAccountUseCase.execute(command);
         return AccountMapper.toResponse(account);

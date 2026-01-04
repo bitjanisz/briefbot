@@ -1,10 +1,10 @@
 package com.admeliora.briefbot.application.account.service;
 
-import com.admeliora.briefbot.application.account.port.out.AccountPort;
-import com.admeliora.briefbot.application.account.port.out.UserAccountPort;
-import com.admeliora.briefbot.application.account.port.in.command.RemoveUserFromAccountCommand;
 import com.admeliora.briefbot.application.account.model.Account;
 import com.admeliora.briefbot.application.account.model.UserAccount;
+import com.admeliora.briefbot.application.account.port.in.command.RemoveUserFromAccountCommand;
+import com.admeliora.briefbot.application.account.port.out.AccountPort;
+import com.admeliora.briefbot.application.account.port.out.UserAccountPort;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

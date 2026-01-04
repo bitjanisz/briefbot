@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Company Profiles", description = "CRUD operations for company profiles")
 public class CompanyProfileInRestAdapter {
-    
+
     private final CreateCompanyProfilePort createCompanyProfilePort;
     private final GetCompanyProfilePort getCompanyProfilePort;
     private final UpdateCompanyProfilePort updateCompanyProfilePort;

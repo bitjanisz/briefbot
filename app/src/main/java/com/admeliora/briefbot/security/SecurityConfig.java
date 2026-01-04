@@ -3,79 +3,90 @@ package com.admeliora.briefbot.security;
 import com.admeliora.briefbot.adapter.out.persistence.account.jpa.UserAccountRepositoryJpa;
 import com.admeliora.briefbot.adapter.out.persistence.user.jpa.UserRepositoryJpa;
 import com.admeliora.briefbot.security.jwt.JwtAuthenticationFilter;
+import com.admeliora.briefbot.security.jwt.JwtProperties;
 import com.admeliora.briefbot.security.jwt.JwtTokenProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Value("${security.redirect.login-url:/login}")
+    private String loginUrl;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                            OidcAuthenticationSuccessHandler oidcSuccessHandler,
-                                            FormAuthenticationSuccessHandler formSuccessHandler,
-                                            JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        http
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           OidcAuthenticationSuccessHandler oidcSuccessHandler,
+                                           JwtAuthenticationFilter jwtAuthenticationFilter,
+                                           JwtProperties jwtProperties) {
+        try {
+            http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/**").permitAll() // Actuator endpoints
-                        .requestMatchers("/h2-console/**").permitAll() // H2 console
-                        .requestMatchers("/api/auth/**").permitAll() // Auth REST API endpoints (including JWT)
-//                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api-docs/**").permitAll() // Swagger UI
-                        .requestMatchers("/login", "/perform-login", "/oauth2/**").permitAll() // Login page and OAuth2
-                        .anyRequest().authenticated()
+                    .requestMatchers("/", "/index.html", "/test-page/**","/other/**", "/login/**", "/assets/**", "/vite.svg", "/static/**").permitAll()
+                    .requestMatchers("/api/users/**").permitAll()
+                    .requestMatchers("/api/sample").permitAll()
+                    .anyRequest().authenticated()
                 )
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless for JWT
-                )
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                )
-                // Form login with custom login page
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/perform-login")
-                        .successHandler(formSuccessHandler)
-                        .failureUrl("/login?error=true")
-                        .permitAll()
-                )
-                // OAuth2 login (Google)
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
+                    .sessionManagement(session -> session
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless for JWT
+                    )
+                    .headers(headers -> headers
+                            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                    )
+                .oauth2Login(oauth -> oauth
+                    .loginPage(loginUrl)
                         .successHandler(oidcSuccessHandler)
                 )
-                // Logout configuration
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout=true")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
-                )
-                // Add JWT filter before UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+                    .logout(logout -> logout
+                            .logoutUrl("/logout")
+                            .invalidateHttpSession(true)
+                            .clearAuthentication(true)
+                            .deleteCookies(jwtProperties.getCookie().getName())
+                            .permitAll()
+                    )
+//                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
+                    .exceptionHandling(exception -> exception
+                            .defaultAuthenticationEntryPointFor(
+                                    (request, response, authException) -> response.sendError(403, "Forbidden"),
+                                    request -> true
+                            )
+                    )
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                    .addFilterBefore(jwtAuthFilter, AnonymousAuthenticationFilter.class);
+            return http.build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Bean
@@ -94,8 +105,10 @@ public class SecurityConfig {
             UserRepositoryJpa userRepository,
             UserAccountRepositoryJpa userAccountRepository,
             JwtTokenProvider jwtTokenProvider,
-            ObjectMapper objectMapper) {
-        return new OidcAuthenticationSuccessHandler(userRepository, userAccountRepository, jwtTokenProvider, objectMapper);
+            JwtProperties jwtProperties,
+            @Value("${security.redirect.default-success-url}") String defaultSuccessUrl
+    ) {
+        return new OidcAuthenticationSuccessHandler(userRepository, userAccountRepository, jwtTokenProvider, jwtProperties, defaultSuccessUrl);
     }
 
     @Bean
@@ -108,4 +121,3 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
-

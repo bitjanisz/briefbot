@@ -36,7 +36,7 @@ public class AccountFilterContext {
 
             // Enable a single generic filter for all entities
             session.enableFilter("accountFilter")
-                   .setParameter("accountId", accountId);
+                    .setParameter("accountId", accountId);
 
             log.debug("Enabled account filter with accountId: {}", accountId);
         }

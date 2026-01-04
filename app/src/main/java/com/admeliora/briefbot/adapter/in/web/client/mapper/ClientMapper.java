@@ -3,8 +3,6 @@ package com.admeliora.briefbot.adapter.in.web.client.mapper;
 import com.admeliora.briefbot.adapter.in.web.client.model.response.ClientResponse;
 import com.admeliora.briefbot.application.client.model.Client;
 
-import java.util.List;
-
 /**
  * ClientMapper (DDD-aligned)
  * Client no longer holds collections of child entities

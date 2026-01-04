@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ServiceRelation(
-    @NotNull Long relatedServiceId,
-    @NotBlank String relationType,
-    String impactDescription
-) {}
+        @NotNull Long relatedServiceId,
+        @NotBlank String relationType,
+        String impactDescription
+) {
+}
 

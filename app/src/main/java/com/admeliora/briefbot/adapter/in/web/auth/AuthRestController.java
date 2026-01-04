@@ -3,32 +3,31 @@ package com.admeliora.briefbot.adapter.in.web.auth;
 import com.admeliora.briefbot.adapter.in.web.user.model.request.LoginRequest;
 import com.admeliora.briefbot.adapter.in.web.user.model.request.RegisterUserRequest;
 import com.admeliora.briefbot.adapter.in.web.user.model.response.AuthResponse;
+import com.admeliora.briefbot.adapter.out.persistence.account.jpa.UserAccountRepositoryJpa;
+import com.admeliora.briefbot.application.account.model.UserAccount;
 import com.admeliora.briefbot.application.user.model.User;
 import com.admeliora.briefbot.application.user.port.in.LoginPort;
 import com.admeliora.briefbot.application.user.port.in.RegisterUserPort;
 import com.admeliora.briefbot.application.user.port.in.command.LoginCommand;
 import com.admeliora.briefbot.application.user.port.in.command.RegisterUserCommand;
+import com.admeliora.briefbot.security.jwt.JwtProperties;
+import com.admeliora.briefbot.security.jwt.JwtTokenProvider;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 
 /**
  * REST Controller for authentication operations (registration and login)
@@ -42,6 +41,11 @@ public class AuthRestController {
 
     private final RegisterUserPort registerUserPort;
     private final LoginPort loginPort;
+
+    private final UserAccountRepositoryJpa userAccountRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private final JwtProperties jwtProperties;
 
     @PostMapping("/register")
     @Operation(summary = "Register a new user", description = "Register a new user with email. A temporary password will be sent to the provided email address.")
@@ -73,16 +77,17 @@ public class AuthRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "Login with email and password", description = "Authenticate user using email and password credentials")
+    @PostMapping({"/login", "/logon"})
+    @Operation(summary = "Login with email and password (also available under /logon)", description = "Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Login successful",
+            @ApiResponse(responseCode = "200", description = "Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')",
+                    headers = @Header(name = "Set-Cookie", description = "HttpOnly cookie 'BRIEFBOT_JWT' containing the JWT token", schema = @Schema(type = "string")),
                     content = @Content(schema = @Schema(implementation = AuthResponse.class))),
             @ApiResponse(responseCode = "401", description = "Invalid credentials",
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request,
-                                              HttpServletRequest httpRequest) {
+                                              HttpServletResponse response) {
         log.info("Login attempt for user: {}", request.email());
 
         LoginCommand command = LoginCommand.builder()
@@ -92,24 +97,35 @@ public class AuthRestController {
 
         User user = loginPort.login(command);
 
-        // Create authentication token
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        null,
-                        Collections.emptyList()
-                );
+        // Get user's account
+        Long accountId = userAccountRepository.findByUserEmail(user.getEmail())
+                .stream()
+                .findFirst()
+                .map(UserAccount::getAccountId)
+                .orElse(null);
 
-        // Set authentication in security context
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(authentication);
-        SecurityContextHolder.setContext(securityContext);
+        // Generate JWT token with all user details
+        String jwtToken = jwtTokenProvider.createToken(
+                user.getEmail(),
+                user.getId(),
+                accountId,
+                user.getGivenName(),
+                user.getFamilyName(),
+                "form"
+        );
 
-        // Store security context in session
-        HttpSession session = httpRequest.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+        var jwtCookieConfig = jwtProperties.getCookie();
 
-        AuthResponse response = AuthResponse.builder()
+        // Store JWT token in HTTP-only cookie
+        Cookie jwtCookie = new Cookie(jwtCookieConfig.getName(), jwtToken);
+        jwtCookie.setHttpOnly(jwtCookieConfig.isHttpOnly());
+        jwtCookie.setSecure(jwtCookieConfig.isSecure());
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(jwtCookieConfig.getMaxAge());
+        jwtCookie.setAttribute("SameSite", jwtCookieConfig.getSameSite());
+        response.addCookie(jwtCookie);
+
+        AuthResponse authResponse = AuthResponse.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
                 .givenName(user.getGivenName())
@@ -117,7 +133,7 @@ public class AuthRestController {
                 .message("Login successful")
                 .build();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(authResponse);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -130,4 +146,3 @@ public class AuthRestController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 }
-

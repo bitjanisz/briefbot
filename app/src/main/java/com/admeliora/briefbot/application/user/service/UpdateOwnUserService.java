@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.application.user.service;
 
 import com.admeliora.briefbot.application.user.model.User;
-import com.admeliora.briefbot.application.user.port.out.UserPort;
 import com.admeliora.briefbot.application.user.port.in.command.UpdateOwnUserCommand;
+import com.admeliora.briefbot.application.user.port.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

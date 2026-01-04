@@ -1,7 +1,7 @@
 package com.admeliora.briefbot.application.casestudy.service;
 
-import com.admeliora.briefbot.application.casestudy.model.CaseStudy;
 import com.admeliora.briefbot.application.account.port.out.AccountPort;
+import com.admeliora.briefbot.application.casestudy.model.CaseStudy;
 import com.admeliora.briefbot.application.casestudy.port.in.CreateCaseStudyPort;
 import com.admeliora.briefbot.application.casestudy.port.in.command.CreateCaseStudyCommand;
 import com.admeliora.briefbot.application.casestudy.port.out.CaseStudyPort;

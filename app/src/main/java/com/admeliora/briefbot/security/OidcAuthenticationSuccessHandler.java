@@ -4,8 +4,8 @@ import com.admeliora.briefbot.adapter.out.persistence.account.jpa.UserAccountRep
 import com.admeliora.briefbot.adapter.out.persistence.user.jpa.UserRepositoryJpa;
 import com.admeliora.briefbot.application.account.model.UserAccount;
 import com.admeliora.briefbot.application.user.model.User;
+import com.admeliora.briefbot.security.jwt.JwtProperties;
 import com.admeliora.briefbot.security.jwt.JwtTokenProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,34 +29,19 @@ public class OidcAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     private final UserRepositoryJpa userRepository;
     private final UserAccountRepositoryJpa userAccountRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final ObjectMapper objectMapper;
-
-    @Value("${security.jwt.cookie.name}")
-    private String cookieName;
-
-    @Value("${security.jwt.cookie.max-age}")
-    private int cookieMaxAge;
-
-    @Value("${security.jwt.cookie.secure}")
-    private boolean cookieSecure;
-
-    @Value("${security.jwt.cookie.http-only}")
-    private boolean cookieHttpOnly;
-
-    @Value("${security.jwt.cookie.same-site}")
-    private String cookieSameSite;
-
-    @Value("${security.redirect.default-success-url}")
-    private String defaultSuccessUrl;
+    private final JwtProperties jwtProperties;
+    private final String defaultSuccessUrl;
 
     public OidcAuthenticationSuccessHandler(UserRepositoryJpa userRepository,
-                                           UserAccountRepositoryJpa userAccountRepository,
-                                           JwtTokenProvider jwtTokenProvider,
-                                           ObjectMapper objectMapper) {
+                                            UserAccountRepositoryJpa userAccountRepository,
+                                            JwtTokenProvider jwtTokenProvider,
+                                            JwtProperties jwtProperties,
+                                            @Value("${security.redirect.default-success-url}") String defaultSuccessUrl) {
         this.userRepository = userRepository;
         this.userAccountRepository = userAccountRepository;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.objectMapper = objectMapper;
+        this.jwtProperties = jwtProperties;
+        this.defaultSuccessUrl = defaultSuccessUrl;
     }
 
     @Override
@@ -103,13 +88,15 @@ public class OidcAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
                     "oauth2"
             );
 
+            var jwtCookieConfig = jwtProperties.getCookie();
+
             // Store JWT token in HTTP-only cookie
-            Cookie jwtCookie = new Cookie(cookieName, jwtToken);
-            jwtCookie.setHttpOnly(cookieHttpOnly);
-            jwtCookie.setSecure(cookieSecure);
+            Cookie jwtCookie = new Cookie(jwtCookieConfig.getName(), jwtToken);
+            jwtCookie.setHttpOnly(jwtCookieConfig.isHttpOnly());
+            jwtCookie.setSecure(jwtCookieConfig.isSecure());
             jwtCookie.setPath("/");
-            jwtCookie.setMaxAge(cookieMaxAge);
-            jwtCookie.setAttribute("SameSite", cookieSameSite);
+            jwtCookie.setMaxAge(jwtCookieConfig.getMaxAge());
+            jwtCookie.setAttribute("SameSite", jwtCookieConfig.getSameSite());
             response.addCookie(jwtCookie);
 
             log.info("JWT token generated and stored in cookie for OAuth2 user: {}", email);

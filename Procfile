@@ -1,1 +1,1 @@
-    web: java -jar app/target/briefbot-app.jar
+web: java -Dserver.port=${PORT} -jar app/target/briefbot-app.jar

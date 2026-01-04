@@ -36,7 +36,7 @@ public class RegisterUserService implements RegisterUserPort {
             throw new IllegalArgumentException("User with email " + command.email() + " already exists");
         }
 
-        String temporaryPassword = (StringUtils.startsWith(command.email(),"test")
+        String temporaryPassword = (StringUtils.startsWith(command.email(), "test")
                 && StringUtils.endsWith(command.email(), "@example.com"))
                 ? "Secure123"
                 : passwordGenerator.generateTemporaryPassword();
