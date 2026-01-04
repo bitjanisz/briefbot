@@ -1,76 +1,88 @@
 package com.admeliora.briefbot.security;
 
+import com.admeliora.briefbot.adapter.out.persistence.account.jpa.UserAccountRepositoryJpa;
+import com.admeliora.briefbot.adapter.out.persistence.user.jpa.UserRepositoryJpa;
+import com.admeliora.briefbot.security.jwt.JwtAuthenticationFilter;
+import com.admeliora.briefbot.security.jwt.JwtProperties;
+import com.admeliora.briefbot.security.jwt.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
-
-    @Value("${security.jwt.secret:}")
-    private String jwtSecret;
-
-    @Value("${security.jwt.expiration:86400000}")
-    private long jwtExpirationMs;
-
-    @Value("${security.jwt.cookie.name:DEMO_JWT}")
-    private String jwtCookieName;
-
-    @Value("${security.jwt.cookie.max-age:86400}")
-    private int jwtCookieMaxAge;
-
-    @Value("${security.jwt.cookie.secure:false}")
-    private boolean jwtCookieSecure;
-
-    @Value("${security.jwt.cookie.http-only:true}")
-    private boolean jwtCookieHttpOnly;
-
-    @Value("${security.jwt.cookie.same-site:Lax}")
-    private String jwtCookieSameSite;
-
-    @Value("${security.redirect.default-success-url:/}")
-    private String defaultSuccessUrl;
-
     @Value("${security.redirect.login-url:/login}")
     private String loginUrl;
 
-    private final JwtAuthFilter jwtAuthFilter;
-
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           OidcAuthenticationSuccessHandler oidcSuccessHandler,
+                                           JwtAuthenticationFilter jwtAuthenticationFilter,
+                                           JwtProperties jwtProperties) {
         try {
             http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/", "/index.html", "/test-page/**","/other/**", "/login/**", "/assets/**", "/vite.svg", "/static/**").permitAll()
-//                    .requestMatchers("/api/users/me").permitAll()
+                    .requestMatchers("/api/users/**").permitAll()
                     .requestMatchers("/api/sample").permitAll()
                     .anyRequest().authenticated()
                 )
+                    .sessionManagement(session -> session
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless for JWT
+                    )
+                    .headers(headers -> headers
+                            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                    )
                 .oauth2Login(oauth -> oauth
                     .loginPage(loginUrl)
-                    .successHandler(jwtCookieSuccessHandler())
+                        .successHandler(oidcSuccessHandler)
                 )
-                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
-                .addFilterBefore(jwtAuthFilter, AnonymousAuthenticationFilter.class);
+                    .logout(logout -> logout
+                            .logoutUrl("/logout")
+                            .invalidateHttpSession(true)
+                            .clearAuthentication(true)
+                            .deleteCookies(jwtProperties.getCookie().getName())
+                            .permitAll()
+                    )
+//                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
+                    .exceptionHandling(exception -> exception
+                            .defaultAuthenticationEntryPointFor(
+                                    (request, response, authException) -> response.sendError(403, "Forbidden"),
+                                    request -> true
+                            )
+                    )
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                    .addFilterBefore(jwtAuthFilter, AnonymousAuthenticationFilter.class);
             return http.build();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -78,32 +90,34 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationSuccessHandler jwtCookieSuccessHandler() {
-        return (HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
-            OAuth2User user = (OAuth2User) authentication.getPrincipal();
-            String subject = user != null ? user.getName() : "unknown";
-            Map<String, Object> claims = new HashMap<>();
-            if (user != null) {
-                claims.put("email", user.getAttribute("email"));
-                claims.put("name", user.getAttribute("name"));
-            }
-            JwtUtil jwtUtil = new JwtUtil(jwtSecret, Duration.ofMillis(jwtExpirationMs));
-            String token = jwtUtil.createToken(subject, claims);
+    @ConditionalOnProperty(name = "spring.security.oauth2.client.registration.google.client-id")
+    LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
+        OidcClientInitiatedLogoutSuccessHandler successHandler =
+                new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
 
-            ResponseCookie cookie = ResponseCookie.from(jwtCookieName, token)
-                .httpOnly(jwtCookieHttpOnly)
-                .secure(jwtCookieSecure)
-                .path("/")
-                .maxAge(Duration.ofSeconds(jwtCookieMaxAge))
-                .sameSite(jwtCookieSameSite)
-                .build();
-            response.addHeader("Set-Cookie", cookie.toString());
+        successHandler.setPostLogoutRedirectUri("{baseUrl}/");
 
-            try {
-                response.sendRedirect(defaultSuccessUrl);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        };
+        return successHandler;
+    }
+
+    @Bean
+    OidcAuthenticationSuccessHandler customAuthenticationSuccessHandler(
+            UserRepositoryJpa userRepository,
+            UserAccountRepositoryJpa userAccountRepository,
+            JwtTokenProvider jwtTokenProvider,
+            JwtProperties jwtProperties,
+            @Value("${security.redirect.default-success-url}") String defaultSuccessUrl
+    ) {
+        return new OidcAuthenticationSuccessHandler(userRepository, userAccountRepository, jwtTokenProvider, jwtProperties, defaultSuccessUrl);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

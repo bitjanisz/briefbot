@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @Tag(name = "Users", description = "User management API")
 public class UserInRestAdapter {
@@ -38,7 +38,7 @@ public class UserInRestAdapter {
         return listUsersUseCase.execute().stream().map(UserMapper::toResponse).toList();
     }
 
-    @GetMapping("/me")
+    @GetMapping("me")
     @Operation(
             summary = "Get logged-in user",
             description = "Retrieves information about the currently authenticated user (OAuth2 or form-based).",
@@ -51,7 +51,7 @@ public class UserInRestAdapter {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/me")
+    @PatchMapping("me")
     @Operation(
             summary = "Update logged-in user",
             description = "Updates information for the currently authenticated user (OAuth2 or form-based).",
