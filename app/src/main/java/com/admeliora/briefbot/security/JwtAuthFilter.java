@@ -32,11 +32,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         this.cookieName = cookieName;
     }
 
+    //    TODO: investigate
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
         // Only filter /api/sample/**
-        return !(path.startsWith("/api/sample/") || "/api/sample".equals(path));
+        return true;
     }
 
     @Override

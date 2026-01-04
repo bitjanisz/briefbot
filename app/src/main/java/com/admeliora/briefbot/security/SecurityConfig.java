@@ -62,6 +62,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/", "/index.html", "/other/**", "/login/**", "/assets/**", "/vite.svg", "/static/**").permitAll()
                     .requestMatchers("/api/users/me").permitAll()
+                    .requestMatchers("/api/sample").permitAll()
                     .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
