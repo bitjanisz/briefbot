@@ -1,0 +1,18 @@
+spring:
+
+# Security configuration for testing
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-client-id
+            client-secret: test-client-secret
+
+logging:
+  root:
+    level: INFO
+  level:
+    com.admeliora.briefbot: DEBUG
+    org.springframework: INFO
+
