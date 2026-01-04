@@ -49,3 +49,4 @@ build/
 logs/
 
 /app/src/main/resources/application-mk.yml
+/frontend/node_modules/

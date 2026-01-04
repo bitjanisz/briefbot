@@ -25,7 +25,7 @@ public class RegisterUserService implements RegisterUserPort {
 
     private final UserPort userPort;
     private final EmailPort emailPort;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
     private final PasswordGeneratorPort passwordGenerator;
 
     @Override
@@ -46,7 +46,7 @@ public class RegisterUserService implements RegisterUserPort {
                 .email(command.email())
                 .givenName(command.givenName())
                 .familyName(command.familyName())
-                .passwordHash(passwordEncoder.encode(temporaryPassword))
+//                .passwordHash(passwordEncoder.encode(temporaryPassword))
                 .createdAt(LocalDateTime.now())
                 .build();
 

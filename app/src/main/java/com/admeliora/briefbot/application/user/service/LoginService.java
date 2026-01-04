@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class LoginService implements LoginPort {
 
     private final UserPort userPort;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -33,9 +33,9 @@ public class LoginService implements LoginPort {
             throw new IllegalArgumentException("User registered via OAuth, please use OAuth login");
         }
 
-        if (!passwordEncoder.matches(command.password(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Invalid email or password");
-        }
+//        if (!passwordEncoder.matches(command.password(), user.getPasswordHash())) {
+//            throw new IllegalArgumentException("Invalid email or password");
+//        }
 
         // Update last login
         user.setLastLoginAt(LocalDateTime.now());

@@ -63,63 +63,63 @@ public class OidcAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        if (authentication.getPrincipal() instanceof org.springframework.security.oauth2.core.user.OAuth2User oauth2User) {
-            String sub = oauth2User.getAttribute("sub");
-            String email = oauth2User.getAttribute("email");
-
-            User user = userRepository.findByOidcSub(sub).map(existingUser -> {
-                existingUser.setLastLoginAt(LocalDateTime.now());
-                userRepository.save(existingUser);
-                log.info("User logged in via OAuth2: {}", existingUser.getEmail());
-                return existingUser;
-            }).orElseGet(() -> {
-                User newUser = User.builder()
-                        .oidcSub(sub)
-                        .givenName(oauth2User.getAttribute("given_name"))
-                        .familyName(oauth2User.getAttribute("family_name"))
-                        .email(email)
-                        .pictureUrl(oauth2User.getAttribute("picture"))
-                        .lastLoginAt(LocalDateTime.now())
-                        .build();
-                User savedUser = userRepository.save(newUser);
-                log.info("New user registered via OAuth2: {}", newUser.getEmail());
-                return savedUser;
-            });
-
-            // Get user's account
-            Long accountId = userAccountRepository.findByUserEmail(email)
-                    .stream()
-                    .findFirst()
-                    .map(UserAccount::getAccountId)
-                    .orElse(null);
-
-            // Generate JWT token with all user details
-            String jwtToken = jwtTokenProvider.createToken(
-                    email,
-                    user.getId(),
-                    accountId,
-                    user.getGivenName(),
-                    user.getFamilyName(),
-                    "oauth2"
-            );
-
-            // Store JWT token in HTTP-only cookie
-            Cookie jwtCookie = new Cookie(cookieName, jwtToken);
-            jwtCookie.setHttpOnly(cookieHttpOnly);
-            jwtCookie.setSecure(cookieSecure);
-            jwtCookie.setPath("/");
-            jwtCookie.setMaxAge(cookieMaxAge);
-            jwtCookie.setAttribute("SameSite", cookieSameSite);
-            response.addCookie(jwtCookie);
-
-            log.info("JWT token generated and stored in cookie for OAuth2 user: {}", email);
-
-            // Set default target URL before calling super
-            setDefaultTargetUrl(defaultSuccessUrl);
-            setAlwaysUseDefaultTargetUrl(false);
-
-            // Redirect to saved request or default URL
-            super.onAuthenticationSuccess(request, response, authentication);
-        }
+//        if (authentication.getPrincipal() instanceof org.springframework.security.oauth2.core.user.OAuth2User oauth2User) {
+//            String sub = oauth2User.getAttribute("sub");
+//            String email = oauth2User.getAttribute("email");
+//
+//            User user = userRepository.findByOidcSub(sub).map(existingUser -> {
+//                existingUser.setLastLoginAt(LocalDateTime.now());
+//                userRepository.save(existingUser);
+//                log.info("User logged in via OAuth2: {}", existingUser.getEmail());
+//                return existingUser;
+//            }).orElseGet(() -> {
+//                User newUser = User.builder()
+//                        .oidcSub(sub)
+//                        .givenName(oauth2User.getAttribute("given_name"))
+//                        .familyName(oauth2User.getAttribute("family_name"))
+//                        .email(email)
+//                        .pictureUrl(oauth2User.getAttribute("picture"))
+//                        .lastLoginAt(LocalDateTime.now())
+//                        .build();
+//                User savedUser = userRepository.save(newUser);
+//                log.info("New user registered via OAuth2: {}", newUser.getEmail());
+//                return savedUser;
+//            });
+//
+//            // Get user's account
+//            Long accountId = userAccountRepository.findByUserEmail(email)
+//                    .stream()
+//                    .findFirst()
+//                    .map(UserAccount::getAccountId)
+//                    .orElse(null);
+//
+//            // Generate JWT token with all user details
+//            String jwtToken = jwtTokenProvider.createToken(
+//                    email,
+//                    user.getId(),
+//                    accountId,
+//                    user.getGivenName(),
+//                    user.getFamilyName(),
+//                    "oauth2"
+//            );
+//
+//            // Store JWT token in HTTP-only cookie
+//            Cookie jwtCookie = new Cookie(cookieName, jwtToken);
+//            jwtCookie.setHttpOnly(cookieHttpOnly);
+//            jwtCookie.setSecure(cookieSecure);
+//            jwtCookie.setPath("/");
+//            jwtCookie.setMaxAge(cookieMaxAge);
+//            jwtCookie.setAttribute("SameSite", cookieSameSite);
+//            response.addCookie(jwtCookie);
+//
+//            log.info("JWT token generated and stored in cookie for OAuth2 user: {}", email);
+//
+//            // Set default target URL before calling super
+//            setDefaultTargetUrl(defaultSuccessUrl);
+//            setAlwaysUseDefaultTargetUrl(false);
+//
+//            // Redirect to saved request or default URL
+//            super.onAuthenticationSuccess(request, response, authentication);
+//        }
     }
 }

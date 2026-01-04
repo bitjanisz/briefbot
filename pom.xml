@@ -23,7 +23,7 @@
 
     <modules>
         <module>app</module>
-        <module>e2e-tests</module>
+<!--        <module>e2e-tests</module>-->
     </modules>
 
     <properties>

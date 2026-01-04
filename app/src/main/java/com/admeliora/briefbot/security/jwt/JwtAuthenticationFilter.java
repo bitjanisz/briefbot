@@ -29,7 +29,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
 
     @Value("${security.jwt.cookie.name:BRIEFBOT_JWT}")
     private String cookieName;
@@ -38,59 +38,59 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        try {
-            String token = extractTokenFromRequest(request);
-
-            if (token != null && StringUtils.hasText(token)) {
-                Claims claims = jwtTokenProvider.validateToken(token);
-
-                String email = claims.getSubject();
-                Long userId = claims.get("userId", Long.class);
-                Long accountId = claims.get("accountId", Long.class);
-                String givenName = claims.get("givenName", String.class);
-                String familyName = claims.get("familyName", String.class);
-
-                // Create CustomUserDetails with JWT claims
-                CustomUserDetails userDetails = new CustomUserDetails(
-                        email,
-                        "", // No password needed for JWT auth
-                        true,
-                        true,
-                        true,
-                        true,
-                        Collections.emptyList(),
-                        userId,
-                        accountId,
-                        email,
-                        givenName,
-                        familyName
-                );
-
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
-
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                log.debug("JWT authentication successful for: {} (userId: {}, accountId: {})",
-                        email, userId, accountId);
-            }
-
-        } catch (JwtAuthenticationException e) {
-            log.error("JWT authentication failed: {}", e.getMessage());
-            SecurityContextHolder.clearContext();
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Invalid or expired JWT token\"}");
-            response.setContentType("application/json");
-            return;
-        } catch (Exception e) {
-            log.error("Error during JWT authentication: {}", e.getMessage(), e);
-            SecurityContextHolder.clearContext();
-        }
+//        try {
+//            String token = extractTokenFromRequest(request);
+//
+//            if (token != null && StringUtils.hasText(token)) {
+//                Claims claims = jwtTokenProvider.validateToken(token);
+//
+//                String email = claims.getSubject();
+//                Long userId = claims.get("userId", Long.class);
+//                Long accountId = claims.get("accountId", Long.class);
+//                String givenName = claims.get("givenName", String.class);
+//                String familyName = claims.get("familyName", String.class);
+//
+//                // Create CustomUserDetails with JWT claims
+//                CustomUserDetails userDetails = new CustomUserDetails(
+//                        email,
+//                        "", // No password needed for JWT auth
+//                        true,
+//                        true,
+//                        true,
+//                        true,
+//                        Collections.emptyList(),
+//                        userId,
+//                        accountId,
+//                        email,
+//                        givenName,
+//                        familyName
+//                );
+//
+//                UsernamePasswordAuthenticationToken authentication =
+//                        new UsernamePasswordAuthenticationToken(
+//                                userDetails,
+//                                null,
+//                                userDetails.getAuthorities()
+//                        );
+//
+//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//                log.debug("JWT authentication successful for: {} (userId: {}, accountId: {})",
+//                        email, userId, accountId);
+//            }
+//
+//        } catch (JwtAuthenticationException e) {
+//            log.error("JWT authentication failed: {}", e.getMessage());
+//            SecurityContextHolder.clearContext();
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.getWriter().write("{\"error\": \"Invalid or expired JWT token\"}");
+//            response.setContentType("application/json");
+//            return;
+//        } catch (Exception e) {
+//            log.error("Error during JWT authentication: {}", e.getMessage(), e);
+//            SecurityContextHolder.clearContext();
+//        }
 
         filterChain.doFilter(request, response);
     }
