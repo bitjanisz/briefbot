@@ -40,9 +40,9 @@ server:
 #          connectiontimeout: 10000
 #          writetimeout: 10000
 #        from: ${MAIL_FROM:noreply@briefbot.com}
-#
-#  flyway:
-#    locations: classpath:db/migration
+
+  flyway:
+    locations: classpath:db/migration
 #
 #  jpa:
 #    hibernate:

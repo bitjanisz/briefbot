@@ -32,6 +32,22 @@ build/
 ### VS Code ###
 .vscode/
 
-.run/
+# Credentials files
+/src/main/resources/dev-credentials.yml
+/src/main/resources/test-credentials.yml
+**/test-credentials.yml
+.env
+/src/main/resources/application-mk.yml
 
-data/
+# H2 Database files
+/data/
+*.db
+*.trace.db
+
+# Log files
+*.log
+logs/
+
+/app/src/main/resources/application-mk.yml
+
+.run
