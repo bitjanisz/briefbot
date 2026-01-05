@@ -56,7 +56,7 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    @Order(2)
+//    @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            OidcAuthenticationSuccessHandler oidcSuccessHandler,
                                            JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -67,6 +67,7 @@ public class SecurityConfig {
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/", "/index.html", "/test-page/**", "/other/**", "/login/**", "/assets/**", "/vite.svg", "/static/**").permitAll()
                             .requestMatchers("/api/users/**").permitAll()
+                            .requestMatchers("/api/auth/**").permitAll()
                             .requestMatchers("/api/sample").permitAll()
                             .anyRequest().authenticated()
                     )
@@ -96,6 +97,9 @@ public class SecurityConfig {
                     )
                     .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 //                    .addFilterBefore(jwtAuthFilter, AnonymousAuthenticationFilter.class);
+
+            http.cors(cors -> {});
+
             return http.build();
         } catch (Exception e) {
             throw new RuntimeException(e);

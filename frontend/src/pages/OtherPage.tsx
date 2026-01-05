@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { RouteHelper } from 'app/routing/routes';
+import { RouteHelper } from '../routing/routes';
 
 export function OtherPage() {
   return (
@@ -12,4 +12,3 @@ export function OtherPage() {
     </Box>
   );
 }
-

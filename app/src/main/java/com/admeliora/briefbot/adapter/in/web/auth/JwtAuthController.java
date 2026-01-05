@@ -22,7 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "Authentication", description = "JWT token validation")
+@Tag(name = "JWT Authentication", description = "JWT token validation")
 public class JwtAuthController {
 
     private final JwtTokenProvider jwtTokenProvider;

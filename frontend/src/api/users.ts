@@ -5,6 +5,6 @@ const api = new API();
 
 export const UsersApi = {
   getLoggedInUser: async (): Promise<UserResponseOverride> => {
-    return await api.getLoggedInUser() as Promise<UserResponseOverride>;
+    return (await api.getLoggedInUser()) as Promise<UserResponseOverride>;
   },
 };
