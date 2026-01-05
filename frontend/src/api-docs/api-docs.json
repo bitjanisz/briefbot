@@ -1,1 +1,2806 @@
-{"openapi":"3.1.0","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:8080","description":"Generated server url"}],"tags":[{"name":"Services","description":"CRUD for services"},{"name":"Authentication","description":"User registration and login endpoints"},{"name":"Clients","description":"CRUD operations for clients"},{"name":"Case Studies","description":"CRUD operations for case studies"},{"name":"Users","description":"User management API"},{"name":"Orders","description":"CRUD operations for orders"},{"name":"JWT Authentication","description":"JWT token validation"},{"name":"Briefings","description":"CRUD operations for briefings"},{"name":"Offers","description":"CRUD operations for offers"},{"name":"Accounts","description":"Accounts API (adapters)"},{"name":"Company Profiles","description":"CRUD operations for company profiles"}],"paths":{"/services/{id}":{"get":{"tags":["Services"],"summary":"Get service by id","operationId":"get","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceResponse"}}}}}},"put":{"tags":["Services"],"summary":"Update service","operationId":"update","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ServiceUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceResponse"}}}}}},"delete":{"tags":["Services"],"summary":"Delete service","operationId":"delete","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/orders/{id}":{"get":{"tags":["Orders"],"summary":"Get order by id","description":"Retrieves an order by its ID","operationId":"getById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OrderResponse"}}}}}},"put":{"tags":["Orders"],"summary":"Update order","description":"Updates an existing order","operationId":"update_1","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/OrderUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OrderResponse"}}}}}},"delete":{"tags":["Orders"],"summary":"Delete order","description":"Deletes an order by ID","operationId":"delete_1","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/offers/{id}":{"get":{"tags":["Offers"],"summary":"Get offer by id","description":"Retrieves an offer by its ID","operationId":"getById_1","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OfferResponse"}}}}}},"put":{"tags":["Offers"],"summary":"Update offer","description":"Updates an existing offer","operationId":"update_2","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/OfferUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OfferResponse"}}}}}},"delete":{"tags":["Offers"],"summary":"Delete offer","description":"Deletes an offer by ID","operationId":"delete_2","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/company-profiles/{id}":{"get":{"tags":["Company Profiles"],"summary":"Get company profile by id","description":"Retrieves a company profile by its ID","operationId":"getById_2","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CompanyProfileResponse"}}}}}},"put":{"tags":["Company Profiles"],"summary":"Update company profile","description":"Updates an existing company profile","operationId":"update_3","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CompanyProfileUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CompanyProfileResponse"}}}}}},"delete":{"tags":["Company Profiles"],"summary":"Delete company profile","description":"Deletes a company profile by ID","operationId":"delete_3","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/clients/{id}":{"get":{"tags":["Clients"],"summary":"Get client by id","description":"Retrieves a client by its ID","operationId":"getById_3","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ClientResponse"}}}}}},"put":{"tags":["Clients"],"summary":"Update client","description":"Updates an existing client","operationId":"update_4","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ClientResponse"}}}}}},"delete":{"tags":["Clients"],"summary":"Delete client","description":"Deletes a client by ID","operationId":"delete_4","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/case-studies/{id}":{"get":{"tags":["Case Studies"],"summary":"Get case study by id","description":"Retrieves a case study by its ID","operationId":"getById_4","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CaseStudyResponse"}}}}}},"put":{"tags":["Case Studies"],"summary":"Update case study","description":"Updates an existing case study","operationId":"update_5","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CaseStudyUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CaseStudyResponse"}}}}}},"delete":{"tags":["Case Studies"],"summary":"Delete case study","description":"Deletes a case study by ID","operationId":"delete_5","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/briefings/{id}":{"get":{"tags":["Briefings"],"summary":"Get briefing by id","description":"Retrieves a briefing by its ID","operationId":"getById_5","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/BriefingResponse"}}}}}},"put":{"tags":["Briefings"],"summary":"Update briefing","description":"Updates an existing briefing","operationId":"update_6","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BriefingUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/BriefingResponse"}}}}}},"delete":{"tags":["Briefings"],"summary":"Delete briefing","description":"Deletes a briefing by ID","operationId":"delete_6","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/accounts/{id}":{"get":{"tags":["Accounts"],"summary":"Get account by id","operationId":"getAccount","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AccountResponse"}}}}}},"put":{"tags":["Accounts"],"summary":"Update account","operationId":"updateAccount","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AccountUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AccountResponse"}}}}}},"delete":{"tags":["Accounts"],"summary":"Delete account","operationId":"deleteAccount","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content"}}}},"/accounts/{accountId}/users":{"put":{"tags":["Accounts"],"summary":"Add or update user on account","operationId":"addUserToAccount","parameters":[{"name":"accountId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AddUserToAccountRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AccountResponse"}}}}}}},"/services":{"get":{"tags":["Services"],"summary":"List services by account id","operationId":"list","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ServiceResponse"}}}}}}},"post":{"tags":["Services"],"summary":"Create service","operationId":"create","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ServiceCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceResponse"}}}}}}},"/orders":{"get":{"tags":["Orders"],"summary":"List orders by account","description":"Retrieves all orders for a specific account","operationId":"listByAccountId","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/OrderResponse"}}}}}}},"post":{"tags":["Orders"],"summary":"Create order","description":"Creates a new order","operationId":"create_1","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/OrderCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OrderResponse"}}}}}}},"/offers":{"get":{"tags":["Offers"],"summary":"List offers by account","description":"Retrieves all offers for a specific account","operationId":"listByAccountId_1","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/OfferResponse"}}}}}}},"post":{"tags":["Offers"],"summary":"Create offer","description":"Creates a new offer","operationId":"create_2","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/OfferCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/OfferResponse"}}}}}}},"/company-profiles":{"get":{"tags":["Company Profiles"],"summary":"List company profiles by account","description":"Retrieves all company profiles for a specific account","operationId":"listByAccountId_2","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CompanyProfileResponse"}}}}}}},"post":{"tags":["Company Profiles"],"summary":"Create company profile","description":"Creates a new company profile","operationId":"create_3","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CompanyProfileCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CompanyProfileResponse"}}}}}}},"/clients":{"get":{"tags":["Clients"],"summary":"List clients by account","description":"Retrieves all clients for a specific account","operationId":"listByAccountId_3","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ClientResponse"}}}}}}},"post":{"tags":["Clients"],"summary":"Create client","description":"Creates a new client","operationId":"create_4","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ClientCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ClientResponse"}}}}}}},"/case-studies":{"get":{"tags":["Case Studies"],"summary":"List case studies by account","description":"Retrieves all case studies for a specific account","operationId":"listByAccountId_4","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CaseStudyResponse"}}}}}}},"post":{"tags":["Case Studies"],"summary":"Create case study","description":"Creates a new case study","operationId":"create_5","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CaseStudyCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CaseStudyResponse"}}}}}}},"/briefings":{"get":{"tags":["Briefings"],"summary":"List briefings by account","description":"Retrieves all briefings for a specific account","operationId":"listByAccountId_5","parameters":[{"name":"accountId","in":"query","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/BriefingResponse"}}}}}}},"post":{"tags":["Briefings"],"summary":"Create briefing","description":"Creates a new briefing","operationId":"create_6","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BriefingCreateRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/BriefingResponse"}}}}}}},"/api/auth/register":{"post":{"tags":["Authentication"],"summary":"Register a new user","description":"Register a new user with email. A temporary password will be sent to the provided email address.","operationId":"register","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RegisterUserRequest"}}},"required":true},"responses":{"201":{"description":"User registered successfully","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AuthResponse"}}}},"400":{"description":"Invalid input or user already exists","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProblemDetail"}}}}}}},"/api/auth/logon":{"post":{"tags":["Authentication"],"summary":"Login with email and password (also available under /logon)","description":"Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.","operationId":"login","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/LoginRequest"}}},"required":true},"responses":{"200":{"description":"Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')","headers":{"Set-Cookie":{"description":"HttpOnly cookie 'BRIEFBOT_JWT' containing the JWT token","style":"simple","schema":{"type":"string"}}},"content":{"*/*":{"schema":{"$ref":"#/components/schemas/AuthResponse"}}}},"401":{"description":"Invalid credentials","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProblemDetail"}}}}}}},"/api/auth/login":{"post":{"tags":["Authentication"],"summary":"Login with email and password (also available under /logon)","description":"Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.","operationId":"login_1","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/LoginRequest"}}},"required":true},"responses":{"200":{"description":"Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')","headers":{"Set-Cookie":{"description":"HttpOnly cookie 'BRIEFBOT_JWT' containing the JWT token","style":"simple","schema":{"type":"string"}}},"content":{"*/*":{"schema":{"$ref":"#/components/schemas/AuthResponse"}}}},"401":{"description":"Invalid credentials","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ProblemDetail"}}}}}}},"/accounts":{"get":{"tags":["Accounts"],"summary":"List accounts","operationId":"listAccounts","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/AccountResponse"}}}}}}},"post":{"tags":["Accounts"],"summary":"Create account","operationId":"createAccount","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateAccountRequest"}}},"required":true},"responses":{"201":{"description":"Created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AccountResponse"}}}}}}},"/api/users/me":{"get":{"tags":["Users"],"summary":"Get logged-in user","description":"Retrieves information about the currently authenticated user (OAuth2 or form-based).","operationId":"getLoggedInUser","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/UserResponse"}}}}}},"patch":{"tags":["Users"],"summary":"Update logged-in user","description":"Updates information for the currently authenticated user (OAuth2 or form-based).","operationId":"updateLoggedInUser","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UserUpdateRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/UserResponse"}}}}}}},"/api/users":{"get":{"tags":["Users"],"summary":"Get all users","description":"Retrieves a list of all registered users.","operationId":"getAllUsers","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/UserResponse"}}}}}}}},"/api/sample":{"get":{"tags":["sample-controller"],"operationId":"getSample","responses":{"200":{"description":"OK","content":{"text/plain":{"schema":{"type":"string"}}}}}}},"/api/auth/validate":{"get":{"tags":["JWT Authentication"],"summary":"Validate JWT token","description":"Check if JWT token is valid and extract claims","operationId":"validateToken","parameters":[{"name":"Authorization","in":"header","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object","additionalProperties":{}}}}}}}},"/accounts/{accountId}/users/{userId}":{"delete":{"tags":["Accounts"],"summary":"Remove user from account","operationId":"removeUserFromAccount","parameters":[{"name":"accountId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}},{"name":"userId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"204":{"description":"No Content","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AccountResponse"}}}}}}}},"components":{"schemas":{"ServiceRelation":{"type":"object","properties":{"relatedServiceId":{"type":"integer","format":"int64"},"relationType":{"type":"string","minLength":1},"impactDescription":{"type":"string"}},"required":["relatedServiceId","relationType"]},"ServiceUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string","maxLength":255,"minLength":0},"description":{"type":"string","maxLength":10000,"minLength":0},"basePrice":{"type":"number"},"vatRate":{"type":"number"},"currency":{"type":"string"},"pricingUnit":{"type":"string"},"minPriceThreshold":{"type":"number"},"isActive":{"type":"boolean"},"relations":{"type":"array","items":{"$ref":"#/components/schemas/ServiceRelation"}}},"required":["id","name"]},"ServiceResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string"},"description":{"type":"string"},"accountId":{"type":"integer","format":"int64"},"basePrice":{"type":"number"},"vatRate":{"type":"number"},"currency":{"type":"string"},"pricingUnit":{"type":"string"},"minPriceThreshold":{"type":"number"},"isActive":{"type":"boolean"},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"},"version":{"type":"integer","format":"int64"},"relations":{"type":"array","items":{"$ref":"#/components/schemas/ServiceRelation"}}}},"OrderUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"contractStatus":{"type":"string","maxLength":50,"minLength":0},"contractFileUrl":{"type":"string","maxLength":255,"minLength":0},"signedAt":{"type":"string","format":"date-time"}},"required":["contractStatus","id"]},"OrderResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"accountId":{"type":"integer","format":"int64"},"offerVersionId":{"type":"integer","format":"int64"},"contractStatus":{"type":"string"},"contractFileUrl":{"type":"string"},"signedAt":{"type":"string","format":"date-time"},"createdAt":{"type":"string","format":"date-time"}}},"OfferUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"currentStatus":{"type":"string","maxLength":50,"minLength":0}},"required":["currentStatus","id"]},"OfferResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"accountId":{"type":"integer","format":"int64"},"clientId":{"type":"integer","format":"int64"},"briefingId":{"type":"integer","format":"int64"},"currentStatus":{"type":"string"},"createdAt":{"type":"string","format":"date-time"},"versions":{"type":"array","items":{"$ref":"#/components/schemas/OfferVersionResponse"}}}},"OfferVersionItemResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"offerVersionId":{"type":"integer","format":"int64"},"originalServiceId":{"type":"integer","format":"int64"},"serviceName":{"type":"string"},"description":{"type":"string"},"quantity":{"type":"number"},"price":{"type":"number"},"vatRate":{"type":"number"},"createdAt":{"type":"string","format":"date-time"}}},"OfferVersionResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"offerId":{"type":"integer","format":"int64"},"versionNumber":{"type":"integer","format":"int32"},"introductionContent":{"type":"string"},"scopeContent":{"type":"string"},"methodologyContent":{"type":"string"},"summaryContent":{"type":"string"},"totalNetto":{"type":"number"},"totalBrutto":{"type":"number"},"currency":{"type":"string"},"hasSpellingErrors":{"type":"boolean"},"aiSuggestions":{"type":"string"},"createdAt":{"type":"string","format":"date-time"},"items":{"type":"array","items":{"$ref":"#/components/schemas/OfferVersionItemResponse"}}}},"CompanyProfileUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"companyLegalName":{"type":"string","maxLength":255,"minLength":0},"taxId":{"type":"string","maxLength":50,"minLength":0},"addressLine":{"type":"string"},"contactEmail":{"type":"string","format":"email","maxLength":150,"minLength":0},"contactPhone":{"type":"string","maxLength":50,"minLength":0},"shortValueProposition":{"type":"string"},"coreValues":{"type":"string"},"aiToneStyle":{"type":"string","maxLength":100,"minLength":0}},"required":["id"]},"CompanyProfileResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"accountId":{"type":"integer","format":"int64"},"companyLegalName":{"type":"string"},"taxId":{"type":"string"},"addressLine":{"type":"string"},"contactEmail":{"type":"string"},"contactPhone":{"type":"string"},"shortValueProposition":{"type":"string"},"coreValues":{"type":"string"},"aiToneStyle":{"type":"string"},"createdAt":{"type":"string","format":"date-time"},"updatedAt":{"type":"string","format":"date-time"}}},"ClientUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string","maxLength":150,"minLength":0},"email":{"type":"string","format":"email","maxLength":150,"minLength":0},"companyName":{"type":"string","maxLength":255,"minLength":0},"industry":{"type":"string","maxLength":100,"minLength":0}},"required":["email","id","name"]},"ClientResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"accountId":{"type":"integer","format":"int64"},"name":{"type":"string"},"email":{"type":"string"},"companyName":{"type":"string"},"industry":{"type":"string"},"createdAt":{"type":"string","format":"date-time"}}},"CaseStudyUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"projectName":{"type":"string","maxLength":255,"minLength":0},"clientIndustry":{"type":"string","maxLength":100,"minLength":0},"keywords":{"type":"string"},"scopeSummary":{"type":"string"},"challengesSolved":{"type":"string"},"budgetRangeEnum":{"type":"string","maxLength":50,"minLength":0},"isPublic":{"type":"boolean"}},"required":["id","isPublic","projectName"]},"CaseStudyResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"accountId":{"type":"integer","format":"int64"},"projectName":{"type":"string"},"clientIndustry":{"type":"string"},"keywords":{"type":"string"},"scopeSummary":{"type":"string"},"challengesSolved":{"type":"string"},"budgetRangeEnum":{"type":"string"},"isPublic":{"type":"boolean"},"createdAt":{"type":"string","format":"date-time"}}},"BriefingUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"status":{"type":"string","maxLength":50,"minLength":0}},"required":["id"]},"BriefingResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"accountId":{"type":"integer","format":"int64"},"clientId":{"type":"integer","format":"int64"},"status":{"type":"string"},"createdAt":{"type":"string","format":"date-time"},"versions":{"type":"array","items":{"$ref":"#/components/schemas/BriefingVersionResponse"}}}},"BriefingVersionResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"briefingId":{"type":"integer","format":"int64"},"versionNumber":{"type":"integer","format":"int32"},"formStructure":{"type":"string"},"clientResponses":{"type":"string"},"createdByUserId":{"type":"integer","format":"int64"},"createdAt":{"type":"string","format":"date-time"}}},"AccountUpdateRequest":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string","maxLength":100,"minLength":0}},"required":["id","name"]},"AccountResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string"},"createdAt":{"type":"string","format":"date-time"}}},"AddUserToAccountRequest":{"type":"object","properties":{"accountId":{"type":"integer","format":"int64"},"userId":{"type":"integer","format":"int64"},"role":{"type":"string","enum":["OWNER","ADMIN","MEMBER","VIEWER"]}},"required":["accountId","role","userId"]},"ServiceCreateRequest":{"type":"object","properties":{"name":{"type":"string","maxLength":255,"minLength":0},"description":{"type":"string","maxLength":10000,"minLength":0},"basePrice":{"type":"number"},"vatRate":{"type":"number"},"currency":{"type":"string"},"pricingUnit":{"type":"string","minLength":1},"minPriceThreshold":{"type":"number"},"isActive":{"type":"boolean"},"relations":{"type":"array","items":{"$ref":"#/components/schemas/ServiceRelation"}}},"required":["basePrice","name","pricingUnit"]},"OrderCreateRequest":{"type":"object","properties":{"offerVersionId":{"type":"integer","format":"int64"},"contractStatus":{"type":"string","maxLength":50,"minLength":0},"contractFileUrl":{"type":"string","maxLength":255,"minLength":0},"signedAt":{"type":"string","format":"date-time"}},"required":["contractStatus","offerVersionId"]},"OfferCreateRequest":{"type":"object","properties":{"clientId":{"type":"integer","format":"int64"},"briefingId":{"type":"integer","format":"int64"},"currentStatus":{"type":"string","maxLength":50,"minLength":0}},"required":["clientId","currentStatus"]},"CompanyProfileCreateRequest":{"type":"object","properties":{"companyLegalName":{"type":"string","maxLength":255,"minLength":0},"taxId":{"type":"string","maxLength":50,"minLength":0},"addressLine":{"type":"string"},"contactEmail":{"type":"string","format":"email","maxLength":150,"minLength":0},"contactPhone":{"type":"string","maxLength":50,"minLength":0},"shortValueProposition":{"type":"string"},"coreValues":{"type":"string"},"aiToneStyle":{"type":"string","maxLength":100,"minLength":0}}},"ClientCreateRequest":{"type":"object","properties":{"name":{"type":"string","maxLength":150,"minLength":0},"email":{"type":"string","format":"email","maxLength":150,"minLength":0},"companyName":{"type":"string","maxLength":255,"minLength":0},"industry":{"type":"string","maxLength":100,"minLength":0}},"required":["email","name"]},"CaseStudyCreateRequest":{"type":"object","properties":{"projectName":{"type":"string","maxLength":255,"minLength":0},"clientIndustry":{"type":"string","maxLength":100,"minLength":0},"keywords":{"type":"string"},"scopeSummary":{"type":"string"},"challengesSolved":{"type":"string"},"budgetRangeEnum":{"type":"string","maxLength":50,"minLength":0},"isPublic":{"type":"boolean"}},"required":["isPublic","projectName"]},"BriefingCreateRequest":{"type":"object","properties":{"clientId":{"type":"integer","format":"int64"},"status":{"type":"string","maxLength":50,"minLength":0}},"required":["clientId"]},"RegisterUserRequest":{"type":"object","description":"User registration request","properties":{"email":{"type":"string","format":"email","description":"User email address","example":"user@example.com","minLength":1},"givenName":{"type":"string","description":"User first name","example":"John","maxLength":100,"minLength":1},"familyName":{"type":"string","description":"User last name","example":"Doe","maxLength":100,"minLength":1}},"required":["email","familyName","givenName"]},"AuthResponse":{"type":"object","description":"Authentication response with user details","properties":{"userId":{"type":"integer","format":"int64","description":"User ID"},"email":{"type":"string","description":"User email"},"givenName":{"type":"string","description":"User first name"},"familyName":{"type":"string","description":"User last name"},"message":{"type":"string","description":"Success message"}}},"ProblemDetail":{"type":"object","properties":{"type":{"type":"string","format":"uri"},"title":{"type":"string"},"status":{"type":"integer","format":"int32"},"detail":{"type":"string"},"instance":{"type":"string","format":"uri"},"properties":{"type":"object","additionalProperties":{}}}},"LoginRequest":{"type":"object","description":"User login request","properties":{"email":{"type":"string","format":"email","description":"User email address","example":"user@example.com","minLength":1},"password":{"type":"string","description":"User password","example":"password123","minLength":1}},"required":["email","password"]},"CreateAccountRequest":{"type":"object","properties":{"name":{"type":"string","maxLength":100,"minLength":0},"ownerId":{"type":"integer","format":"int64"}},"required":["name","ownerId"]},"UserUpdateRequest":{"type":"object","properties":{"givenName":{"type":"string","maxLength":100,"minLength":0},"familyName":{"type":"string","maxLength":100,"minLength":0},"picture":{"type":"string","maxLength":512,"minLength":0},"email":{"type":"string","format":"email"}}},"UserResponse":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"givenName":{"type":"string"},"familyName":{"type":"string"},"email":{"type":"string"},"picture":{"type":"string"},"lastLogin":{"type":"string","format":"date-time"},"createdAt":{"type":"string","format":"date-time"}}}}}}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "https://briefbot-f158470d83ba.herokuapp.com",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Services",
+      "description": "CRUD for services"
+    },
+    {
+      "name": "Authentication",
+      "description": "User registration and login endpoints"
+    },
+    {
+      "name": "Clients",
+      "description": "CRUD operations for clients"
+    },
+    {
+      "name": "Case Studies",
+      "description": "CRUD operations for case studies"
+    },
+    {
+      "name": "Users",
+      "description": "User management API"
+    },
+    {
+      "name": "Orders",
+      "description": "CRUD operations for orders"
+    },
+    {
+      "name": "JWT Authentication",
+      "description": "JWT token validation"
+    },
+    {
+      "name": "Briefings",
+      "description": "CRUD operations for briefings"
+    },
+    {
+      "name": "Offers",
+      "description": "CRUD operations for offers"
+    },
+    {
+      "name": "Accounts",
+      "description": "Accounts API (adapters)"
+    },
+    {
+      "name": "Company Profiles",
+      "description": "CRUD operations for company profiles"
+    }
+  ],
+  "paths": {
+    "/services/{id}": {
+      "get": {
+        "tags": [
+          "Services"
+        ],
+        "summary": "Get service by id",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Services"
+        ],
+        "summary": "Update service",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Services"
+        ],
+        "summary": "Delete service",
+        "operationId": "delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get order by id",
+        "description": "Retrieves an order by its ID",
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update order",
+        "description": "Updates an existing order",
+        "operationId": "update_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Delete order",
+        "description": "Deletes an order by ID",
+        "operationId": "delete_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/offers/{id}": {
+      "get": {
+        "tags": [
+          "Offers"
+        ],
+        "summary": "Get offer by id",
+        "description": "Retrieves an offer by its ID",
+        "operationId": "getById_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Offers"
+        ],
+        "summary": "Update offer",
+        "description": "Updates an existing offer",
+        "operationId": "update_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Offers"
+        ],
+        "summary": "Delete offer",
+        "description": "Deletes an offer by ID",
+        "operationId": "delete_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/company-profiles/{id}": {
+      "get": {
+        "tags": [
+          "Company Profiles"
+        ],
+        "summary": "Get company profile by id",
+        "description": "Retrieves a company profile by its ID",
+        "operationId": "getById_2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Company Profiles"
+        ],
+        "summary": "Update company profile",
+        "description": "Updates an existing company profile",
+        "operationId": "update_3",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyProfileUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Company Profiles"
+        ],
+        "summary": "Delete company profile",
+        "description": "Deletes a company profile by ID",
+        "operationId": "delete_3",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/clients/{id}": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Get client by id",
+        "description": "Retrieves a client by its ID",
+        "operationId": "getById_3",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Update client",
+        "description": "Updates an existing client",
+        "operationId": "update_4",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Delete client",
+        "description": "Deletes a client by ID",
+        "operationId": "delete_4",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/case-studies/{id}": {
+      "get": {
+        "tags": [
+          "Case Studies"
+        ],
+        "summary": "Get case study by id",
+        "description": "Retrieves a case study by its ID",
+        "operationId": "getById_4",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseStudyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Case Studies"
+        ],
+        "summary": "Update case study",
+        "description": "Updates an existing case study",
+        "operationId": "update_5",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseStudyUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseStudyResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Case Studies"
+        ],
+        "summary": "Delete case study",
+        "description": "Deletes a case study by ID",
+        "operationId": "delete_5",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/briefings/{id}": {
+      "get": {
+        "tags": [
+          "Briefings"
+        ],
+        "summary": "Get briefing by id",
+        "description": "Retrieves a briefing by its ID",
+        "operationId": "getById_5",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefingResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Briefings"
+        ],
+        "summary": "Update briefing",
+        "description": "Updates an existing briefing",
+        "operationId": "update_6",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BriefingUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefingResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Briefings"
+        ],
+        "summary": "Delete briefing",
+        "description": "Deletes a briefing by ID",
+        "operationId": "delete_6",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get account by id",
+        "operationId": "getAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Update account",
+        "operationId": "updateAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Delete account",
+        "operationId": "deleteAccount",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}/users": {
+      "put": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Add or update user on account",
+        "operationId": "addUserToAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUserToAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/services": {
+      "get": {
+        "tags": [
+          "Services"
+        ],
+        "summary": "List services by account id",
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServiceResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Services"
+        ],
+        "summary": "Create service",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "List orders by account",
+        "description": "Retrieves all orders for a specific account",
+        "operationId": "listByAccountId",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrderResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create order",
+        "description": "Creates a new order",
+        "operationId": "create_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offers": {
+      "get": {
+        "tags": [
+          "Offers"
+        ],
+        "summary": "List offers by account",
+        "description": "Retrieves all offers for a specific account",
+        "operationId": "listByAccountId_1",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OfferResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Offers"
+        ],
+        "summary": "Create offer",
+        "description": "Creates a new offer",
+        "operationId": "create_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company-profiles": {
+      "get": {
+        "tags": [
+          "Company Profiles"
+        ],
+        "summary": "List company profiles by account",
+        "description": "Retrieves all company profiles for a specific account",
+        "operationId": "listByAccountId_2",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompanyProfileResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Company Profiles"
+        ],
+        "summary": "Create company profile",
+        "description": "Creates a new company profile",
+        "operationId": "create_3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyProfileCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "List clients by account",
+        "description": "Retrieves all clients for a specific account",
+        "operationId": "listByAccountId_3",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClientResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Create client",
+        "description": "Creates a new client",
+        "operationId": "create_4",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/case-studies": {
+      "get": {
+        "tags": [
+          "Case Studies"
+        ],
+        "summary": "List case studies by account",
+        "description": "Retrieves all case studies for a specific account",
+        "operationId": "listByAccountId_4",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CaseStudyResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Case Studies"
+        ],
+        "summary": "Create case study",
+        "description": "Creates a new case study",
+        "operationId": "create_5",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseStudyCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseStudyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/briefings": {
+      "get": {
+        "tags": [
+          "Briefings"
+        ],
+        "summary": "List briefings by account",
+        "description": "Retrieves all briefings for a specific account",
+        "operationId": "listByAccountId_5",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BriefingResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Briefings"
+        ],
+        "summary": "Create briefing",
+        "description": "Creates a new briefing",
+        "operationId": "create_6",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BriefingCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BriefingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Register a new user",
+        "description": "Register a new user with email. A temporary password will be sent to the provided email address.",
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or user already exists",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logon": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login with email and password (also available under /logon)",
+        "description": "Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')",
+            "headers": {
+              "Set-Cookie": {
+                "description": "HttpOnly cookie 'BRIEFBOT_JWT' containing the JWT token",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login with email and password (also available under /logon)",
+        "description": "Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.",
+        "operationId": "login_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')",
+            "headers": {
+              "Set-Cookie": {
+                "description": "HttpOnly cookie 'BRIEFBOT_JWT' containing the JWT token",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "List accounts",
+        "operationId": "listAccounts",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Create account",
+        "operationId": "createAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get logged-in user",
+        "description": "Retrieves information about the currently authenticated user (OAuth2 or form-based).",
+        "operationId": "getLoggedInUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update logged-in user",
+        "description": "Updates information for the currently authenticated user (OAuth2 or form-based).",
+        "operationId": "updateLoggedInUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "description": "Retrieves a list of all registered users.",
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sample": {
+      "get": {
+        "tags": [
+          "sample-controller"
+        ],
+        "operationId": "getSample",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/validate": {
+      "get": {
+        "tags": [
+          "JWT Authentication"
+        ],
+        "summary": "Validate JWT token",
+        "description": "Check if JWT token is valid and extract claims",
+        "operationId": "validateToken",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}/users/{userId}": {
+      "delete": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Remove user from account",
+        "operationId": "removeUserFromAccount",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ServiceRelation": {
+        "type": "object",
+        "properties": {
+          "relatedServiceId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "relationType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "impactDescription": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "relatedServiceId",
+          "relationType"
+        ]
+      },
+      "ServiceUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 0
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "vatRate": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "pricingUnit": {
+            "type": "string"
+          },
+          "minPriceThreshold": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceRelation"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "ServiceResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "vatRate": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "pricingUnit": {
+            "type": "string"
+          },
+          "minPriceThreshold": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceRelation"
+            }
+          }
+        }
+      },
+      "OrderUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contractStatus": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "contractFileUrl": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "signedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "contractStatus",
+          "id"
+        ]
+      },
+      "OrderResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "offerVersionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contractStatus": {
+            "type": "string"
+          },
+          "contractFileUrl": {
+            "type": "string"
+          },
+          "signedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "OfferUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currentStatus": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "currentStatus",
+          "id"
+        ]
+      },
+      "OfferResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "clientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "briefingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currentStatus": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferVersionResponse"
+            }
+          }
+        }
+      },
+      "OfferVersionItemResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "offerVersionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "originalServiceId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "serviceName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "vatRate": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "OfferVersionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "offerId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "versionNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "introductionContent": {
+            "type": "string"
+          },
+          "scopeContent": {
+            "type": "string"
+          },
+          "methodologyContent": {
+            "type": "string"
+          },
+          "summaryContent": {
+            "type": "string"
+          },
+          "totalNetto": {
+            "type": "number"
+          },
+          "totalBrutto": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "hasSpellingErrors": {
+            "type": "boolean"
+          },
+          "aiSuggestions": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferVersionItemResponse"
+            }
+          }
+        }
+      },
+      "CompanyProfileUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyLegalName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "taxId": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "addressLine": {
+            "type": "string"
+          },
+          "contactEmail": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "contactPhone": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "shortValueProposition": {
+            "type": "string"
+          },
+          "coreValues": {
+            "type": "string"
+          },
+          "aiToneStyle": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CompanyProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyLegalName": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "addressLine": {
+            "type": "string"
+          },
+          "contactEmail": {
+            "type": "string"
+          },
+          "contactPhone": {
+            "type": "string"
+          },
+          "shortValueProposition": {
+            "type": "string"
+          },
+          "coreValues": {
+            "type": "string"
+          },
+          "aiToneStyle": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ClientUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "companyName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "industry": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "email",
+          "id",
+          "name"
+        ]
+      },
+      "ClientResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CaseStudyUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "projectName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "clientIndustry": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "keywords": {
+            "type": "string"
+          },
+          "scopeSummary": {
+            "type": "string"
+          },
+          "challengesSolved": {
+            "type": "string"
+          },
+          "budgetRangeEnum": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "isPublic",
+          "projectName"
+        ]
+      },
+      "CaseStudyResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "projectName": {
+            "type": "string"
+          },
+          "clientIndustry": {
+            "type": "string"
+          },
+          "keywords": {
+            "type": "string"
+          },
+          "scopeSummary": {
+            "type": "string"
+          },
+          "challengesSolved": {
+            "type": "string"
+          },
+          "budgetRangeEnum": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BriefingUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "BriefingResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "clientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BriefingVersionResponse"
+            }
+          }
+        }
+      },
+      "BriefingVersionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "briefingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "versionNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "formStructure": {
+            "type": "string"
+          },
+          "clientResponses": {
+            "type": "string"
+          },
+          "createdByUserId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AccountUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "AccountResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddUserToAccountRequest": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "OWNER",
+              "ADMIN",
+              "MEMBER",
+              "VIEWER"
+            ]
+          }
+        },
+        "required": [
+          "accountId",
+          "role",
+          "userId"
+        ]
+      },
+      "ServiceCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 0
+          },
+          "basePrice": {
+            "type": "number"
+          },
+          "vatRate": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "pricingUnit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minPriceThreshold": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "relations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceRelation"
+            }
+          }
+        },
+        "required": [
+          "basePrice",
+          "name",
+          "pricingUnit"
+        ]
+      },
+      "OrderCreateRequest": {
+        "type": "object",
+        "properties": {
+          "offerVersionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "contractStatus": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "contractFileUrl": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "signedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "contractStatus",
+          "offerVersionId"
+        ]
+      },
+      "OfferCreateRequest": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "briefingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currentStatus": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "clientId",
+          "currentStatus"
+        ]
+      },
+      "CompanyProfileCreateRequest": {
+        "type": "object",
+        "properties": {
+          "companyLegalName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "taxId": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "addressLine": {
+            "type": "string"
+          },
+          "contactEmail": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "contactPhone": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "shortValueProposition": {
+            "type": "string"
+          },
+          "coreValues": {
+            "type": "string"
+          },
+          "aiToneStyle": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        }
+      },
+      "ClientCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 150,
+            "minLength": 0
+          },
+          "companyName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "industry": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "email",
+          "name"
+        ]
+      },
+      "CaseStudyCreateRequest": {
+        "type": "object",
+        "properties": {
+          "projectName": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 0
+          },
+          "clientIndustry": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "keywords": {
+            "type": "string"
+          },
+          "scopeSummary": {
+            "type": "string"
+          },
+          "challengesSolved": {
+            "type": "string"
+          },
+          "budgetRangeEnum": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isPublic",
+          "projectName"
+        ]
+      },
+      "BriefingCreateRequest": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string",
+            "maxLength": 50,
+            "minLength": 0
+          }
+        },
+        "required": [
+          "clientId"
+        ]
+      },
+      "RegisterUserRequest": {
+        "type": "object",
+        "description": "User registration request",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email address",
+            "example": "user@example.com",
+            "minLength": 1
+          },
+          "givenName": {
+            "type": "string",
+            "description": "User first name",
+            "example": "John",
+            "maxLength": 100,
+            "minLength": 1
+          },
+          "familyName": {
+            "type": "string",
+            "description": "User last name",
+            "example": "Doe",
+            "maxLength": 100,
+            "minLength": 1
+          }
+        },
+        "required": [
+          "email",
+          "familyName",
+          "givenName"
+        ]
+      },
+      "AuthResponse": {
+        "type": "object",
+        "description": "Authentication response with user details",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "User ID"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email"
+          },
+          "givenName": {
+            "type": "string",
+            "description": "User first name"
+          },
+          "familyName": {
+            "type": "string",
+            "description": "User last name"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success message"
+          }
+        }
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {}
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "description": "User login request",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User email address",
+            "example": "user@example.com",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "example": "password123",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "CreateAccountRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "ownerId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "required": [
+          "name",
+          "ownerId"
+        ]
+      },
+      "UserUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "givenName": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "familyName": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "picture": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 0
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "givenName": {
+            "type": "string"
+          },
+          "familyName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "picture": {
+            "type": "string"
+          },
+          "lastLogin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
