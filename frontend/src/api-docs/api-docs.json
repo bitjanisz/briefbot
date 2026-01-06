@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhostdevelop:8080",
+      "url": "http://localhostprod:8080",
       "description": "Generated server url"
     }
   ],
