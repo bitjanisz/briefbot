@@ -138,6 +138,9 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
+            <properties>
+                <npm.command>run build:development</npm.command>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>com.h2database</groupId>
@@ -148,10 +151,13 @@
         </profile>
 
         <profile>
-            <id>dev-postgres</id>
+            <id>prod</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <npm.command>run build</npm.command>
+            </properties>
             <dependencies>
                 <dependency>
                     <groupId>org.postgresql</groupId>
@@ -225,13 +231,12 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>run build</arguments>
+                            <arguments>${npm.command}</arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <!-- 2. skopiuj dist -> static -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -245,9 +250,7 @@
                         <configuration>
                             <target>
                                 <copy todir="${project.basedir}/src/main/resources/static">
-                                    <!-- Vite -->
                                     <fileset dir="${project.basedir}/../frontend/dist" includes="**/*" />
-                                    <!-- dla CRA zamień dist->build -->
                                 </copy>
                             </target>
                         </configuration>

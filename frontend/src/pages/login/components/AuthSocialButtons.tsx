@@ -37,6 +37,7 @@ export default function AuthSocialButtons() {
     window.location.href = GOOGLE_LOGIN_URL;
   };
 
+  console.log('TEST', GOOGLE_LOGIN_URL);
   return (
     <>
       {socialButtons.map(({ key, text, icon, disabled }) => (

@@ -7,7 +7,7 @@
     "start": "npm run generate:api-development && npm run dev",
     "dev": "vite",
     "build": "npm run generate:api && vite build",
-    "build:development": "npm run generate:api-development && vite build",
+    "build:development": "npm run generate:api-development && vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "prettier:check": "prettier --check .",
