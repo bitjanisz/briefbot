@@ -27,11 +27,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const current = await UsersApi.getLoggedInUser();
       setUser(current ?? null);
     } catch (e) {
-      console.log('eeee', e);
+      console.debug('AuthProvider: failed to refresh user', e);
+      setUser(null);
     } finally {
       setLoading(false);
     }

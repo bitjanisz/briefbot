@@ -82,12 +82,12 @@ security:
 #    shutdown:
 #      enabled: false
 
-#springdoc:
-#  api-docs:
-#    enabled: true
+springdoc:
+  api-docs:
+    enabled: true
 #    path: /v3/api-docs
-#  swagger-ui:
-#    enabled: true
+  swagger-ui:
+    enabled: true
 #    path: /swagger-ui
 #  show-actuator: true
 #  use-management-port: true

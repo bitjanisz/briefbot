@@ -34,6 +34,3 @@ public class CorsConfigDev {
         return source;
     }
 }
-
-// Add this call in your existing SecurityFilterChain setup (in 'SecurityConfig'):
-// http.cors(cors -> {});
