@@ -28,3 +28,4 @@ dist-ssr
 
 # Generated API client
 /src/api/generated/
+/node/

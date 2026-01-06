@@ -30,7 +30,8 @@
       "app/*": ["./src/app/*"],
       "pages/*": ["./src/pages/*"],
       "utils/*": ["./src/utils/*"],
-      "models/*": ["./src/models/*"]
+      "models/*": ["./src/models/*"],
+      "routing/*": ["./src/routing/*"]
     }
   },
   "include": ["src"],

@@ -52,3 +52,4 @@ logs/
 /app/src/main/resources/application-local.yml
 
 .run
+/app/src/main/resources/static/

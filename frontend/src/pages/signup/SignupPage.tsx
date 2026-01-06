@@ -1,10 +1,10 @@
 import { AuthHeader } from 'pages/login/components/AuthHeader.tsx';
-import AuthCard from 'pages/login/components/AuthCard.tsx';
+import SignupCard from 'pages/signup/components/SignupCard.tsx';
 import { useAuth } from '../../providers/AuthContext.tsx';
 import { Navigate } from 'react-router-dom';
 import { RouteHelper } from 'routing/routes.ts';
 
-export function LoginPage() {
+export function SignupPage() {
   const { user } = useAuth();
 
   if (user) {
@@ -25,7 +25,7 @@ export function LoginPage() {
     >
       <AuthHeader />
       <div style={{ margin: '32px 0', width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <AuthCard />
+        <SignupCard />
       </div>
     </div>
   );

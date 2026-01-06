@@ -1,10 +1,11 @@
 import { UsersApi as API } from './generated';
-import type { UserResponseOverride } from '../models/users';
+import type { AuthUser } from '../models/users';
+import { config } from 'api/config.ts';
 
-const api = new API();
+const api = new API(config);
 
 export const UsersApi = {
-  getLoggedInUser: async (): Promise<UserResponseOverride> => {
-    return await api.getLoggedInUser() as Promise<UserResponseOverride>;
+  getLoggedInUser: async (): Promise<AuthUser> => {
+    return (await api.getLoggedInUser()) as Promise<AuthUser>;
   },
 };

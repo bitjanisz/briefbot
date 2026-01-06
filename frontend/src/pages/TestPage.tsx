@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 import { Box, Stack, Typography } from '@mui/material';
-import { RouteHelper } from 'app/routing/routes';
+import { RouteHelper } from '../routing/routes';
 
 export function TestPage() {
   return (

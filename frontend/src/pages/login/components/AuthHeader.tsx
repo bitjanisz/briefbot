@@ -1,4 +1,6 @@
-import { Avatar, Box, Typography } from '@mui/material';
+import { Avatar, Box, Typography, Link as MUILink } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { RouteHelper } from 'routing/routes.ts';
 
 export const AuthHeader = () => {
   return (
@@ -8,7 +10,10 @@ export const AuthHeader = () => {
         Witaj w Brifin
       </Typography>
       <Typography variant="subtitle1" fontWeight={300}>
-        Zaloguj się lub zarejestruj
+        Zaloguj się lub{' '}
+        <MUILink component={RouterLink} to={RouteHelper.signupPath.abs()} underline="hover">
+          zarejestruj
+        </MUILink>
       </Typography>
     </Box>
   );
