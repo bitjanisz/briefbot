@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Controller for login page
  */
-@Controller
+//@Controller
 public class LoginController {
 
     @GetMapping("/login")
