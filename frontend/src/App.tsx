@@ -6,6 +6,7 @@ import { DashboardPage } from 'pages/DashboardPage.tsx';
 import { TestPage } from 'pages/TestPage';
 import { TestSubpage } from 'pages/TestSubpage';
 import { OtherPage } from 'pages/OtherPage';
+import { SignupPage } from 'pages/signup/SignupPage.tsx';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
 
       {/*Public routes*/}
       <Route path={RouteHelper.loginPath.param()} element={<LoginPage />} />
+      <Route path={RouteHelper.signupPath.param()} element={<SignupPage />} />
       <Route path="*" element={<Navigate to={RouteHelper.mainPath.param()} replace />} />
     </Routes>
   );

@@ -3,12 +3,11 @@
 const ROUTES = {
   home: '/',
   login: '/login',
+  signup: '/signup',
   testPage: '/test-page',
   testSubpage: '/test-page/subpage',
   other: '/other',
 } as const;
-
-export type RouteKey = keyof typeof ROUTES;
 
 export const RouteHelper = {
   mainPath: {
@@ -18,6 +17,10 @@ export const RouteHelper = {
   loginPath: {
     abs: () => ROUTES.login,
     param: () => ROUTES.login,
+  },
+  signupPath: {
+    abs: () => ROUTES.signup,
+    param: () => ROUTES.signup,
   },
   testPagePath: {
     abs: () => ROUTES.testPage,
