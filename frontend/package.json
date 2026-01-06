@@ -4,16 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "npm run dev",
+    "start": "npm run generate:api-development && npm run dev",
     "dev": "vite",
     "build": "npm run generate:api && vite build",
+    "build:development": "npm run generate:api-development && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
-    "generate:api": "npm run generate:api-docs && npm run generate:post",
-    "generate:api-docs": "openapi-generator-cli generate -i ./src/api-docs/api-docs.json -g typescript-fetch -o ./src/api/generated --additional-properties=useSingleRequestParameter=true,typescriptThreePlus=true,withInterfaces=true,enumPropertyNaming=UPPERCASE",
-    "generate:post": "node ./tsNoCheckScript.cjs"
+    "generate:pre": "node scripts/update-openapi-servers.mjs",
+    "generate:api": "npm run generate:pre && npm run generate:api-docs && npm run generate:post",
+    "generate:api-development": "npm run generate:pre -- --mode development && npm run generate:api-docs && npm run generate:post",
+    "generate:post": "node ./tsNoCheckScript.cjs",
+    "generate:api-docs": "openapi-generator-cli generate -i ./src/api-docs/api-docs.json -g typescript-fetch -o ./src/api/generated --additional-properties=useSingleRequestParameter=true,typescriptThreePlus=true,withInterfaces=true,enumPropertyNaming=UPPERCASE"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -42,6 +45,7 @@
     "prettier": "^3.7.4",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.3.0"
+    "vite": "^7.3.0",
+    "dotenv": "^16.4.5"
   }
 }
