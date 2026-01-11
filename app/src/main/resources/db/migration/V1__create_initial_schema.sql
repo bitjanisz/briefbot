@@ -76,17 +76,17 @@ CREATE TABLE services (
     CONSTRAINT fk_services_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
-CREATE TABLE service_relations (
-    id BIGSERIAL PRIMARY KEY,
-    parent_service_id BIGINT NOT NULL,
-    related_service_id BIGINT NOT NULL,
-    relation_type VARCHAR(50) NOT NULL,
-    impact_description VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_rel_parent FOREIGN KEY (parent_service_id) REFERENCES services(id) ON DELETE CASCADE,
-    CONSTRAINT fk_rel_related FOREIGN KEY (related_service_id) REFERENCES services(id) ON DELETE CASCADE
-);
+--CREATE TABLE service_relations (
+--    id BIGSERIAL PRIMARY KEY,
+--    parent_service_id BIGINT NOT NULL,
+--    related_service_id BIGINT NOT NULL,
+--    relation_type VARCHAR(50) NOT NULL,
+--    impact_description VARCHAR(255),
+--    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    CONSTRAINT fk_rel_parent FOREIGN KEY (parent_service_id) REFERENCES services(id) ON DELETE CASCADE,
+--    CONSTRAINT fk_rel_related FOREIGN KEY (related_service_id) REFERENCES services(id) ON DELETE CASCADE
+--);
 
 -- 4. MODULE: WORKFLOW
 CREATE TABLE clients (

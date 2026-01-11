@@ -28,20 +28,20 @@ public class UpdateServiceService implements UpdateServiceUseCase {
         service.setMinPriceThreshold(command.minPriceThreshold());
         service.setIsActive(command.isActive());
 
-        service.getServiceRelations().clear();
-
-        if (command.relations() != null && !command.relations().isEmpty()) {
-            command.relations().forEach(relationCommand -> {
-                var relatedService = servicePort.findById(relationCommand.relatedServiceId()).orElseThrow();
-                ServiceRelation serviceRelation = ServiceRelation.builder()
-                        .parentService(service)
-                        .relatedServiceId(relatedService.getId())
-                        .relationType(relationCommand.relationType())
-                        .impactDescription(relationCommand.impactDescription())
-                        .build();
-                service.getServiceRelations().add(serviceRelation);
-            });
-        }
+//        service.getServiceRelations().clear();
+//
+//        if (command.relations() != null && !command.relations().isEmpty()) {
+//            command.relations().forEach(relationCommand -> {
+//                var relatedService = servicePort.findById(relationCommand.relatedServiceId()).orElseThrow();
+//                ServiceRelation serviceRelation = ServiceRelation.builder()
+//                        .parentService(service)
+//                        .relatedServiceId(relatedService.getId())
+//                        .relationType(relationCommand.relationType())
+//                        .impactDescription(relationCommand.impactDescription())
+//                        .build();
+//                service.getServiceRelations().add(serviceRelation);
+//            });
+//        }
 
         return servicePort.save(service);
     }

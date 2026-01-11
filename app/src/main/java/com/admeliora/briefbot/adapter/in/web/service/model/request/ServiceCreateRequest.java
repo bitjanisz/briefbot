@@ -21,7 +21,7 @@ public record ServiceCreateRequest(
         @NotBlank
         String pricingUnit,
         BigDecimal minPriceThreshold,
-        Boolean isActive,
-        List<ServiceRelation> relations
+        Boolean isActive
+//        List<ServiceRelation> relations
 ) {
 }

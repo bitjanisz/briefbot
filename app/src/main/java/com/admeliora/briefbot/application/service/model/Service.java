@@ -55,9 +55,9 @@ public class Service extends BaseEntity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "parentService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ServiceRelation> serviceRelations = new ArrayList<>();
+//    @Builder.Default
+//    @OneToMany(mappedBy = "parentService", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<ServiceRelation> serviceRelations = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

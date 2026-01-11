@@ -11,8 +11,8 @@ public record CreateServiceCommand(
         String currency,
         String pricingUnit,
         BigDecimal minPriceThreshold,
-        Boolean isActive,
-        List<ServiceRelation> relations
+        Boolean isActive
+//        List<ServiceRelation> relations
 ) {
 }
 

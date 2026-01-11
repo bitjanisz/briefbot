@@ -26,12 +26,12 @@ public class AccountRoleSteps {
         this.context = context;
     }
 
-    @When("I assign ADMIN role to that user")
-    public void iAssignADMINRoleToThatUser() {
+    @When("I assign {string} role to that user")
+    public void iAssignRoleToThatUser(String role) {
         Long userId = (Long) context.get("userId");
 
         RoleUpdateRequest request = RoleUpdateRequest.builder()
-                .role("ADMIN")
+                .role(role)
                 .userId(userId)
                 .build();
 
@@ -46,19 +46,19 @@ public class AccountRoleSteps {
         context.setLastResponse(response);
     }
 
-    @Then("the user should have ADMIN role")
-    public void theUserShouldHaveADMINRole() {
+    @Then("the user should have {string} role")
+    public void theUserShouldHaveRole(String expectedRole) {
         Response response = context.getLastResponse();
         assertThat(response.getStatusCode()).isEqualTo(200);
-        // Verify role in response
+        // TODO: Verify the role in the response matches expectedRole
     }
 
-    @When("I change their role to VIEWER")
-    public void iChangeTheirRoleToVIEWER() {
+    @When("I change their role to {string}")
+    public void iChangeTheirRoleTo(String role) {
         Long userId = (Long) context.get("userId");
 
         RoleUpdateRequest request = RoleUpdateRequest.builder()
-                .role("VIEWER")
+                .role(role)
                 .userId(userId)
                 .build();
 
@@ -71,12 +71,6 @@ public class AccountRoleSteps {
                 .extract().response();
 
         context.setLastResponse(response);
-    }
-
-    @Then("the user should have VIEWER role")
-    public void theUserShouldHaveVIEWERRole() {
-        Response response = context.getLastResponse();
-        assertThat(response.getStatusCode()).isEqualTo(200);
     }
 
     @When("I remove that user from the account role")

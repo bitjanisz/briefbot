@@ -1,5 +1,8 @@
 package com.admeliora.briefbot.application.user.service;
 
+import com.admeliora.briefbot.application.account.model.AccountRole;
+import com.admeliora.briefbot.application.account.port.in.AddUserToAccountUseCase;
+import com.admeliora.briefbot.application.account.port.in.command.AddUserToAccountCommand;
 import com.admeliora.briefbot.application.user.model.User;
 import com.admeliora.briefbot.application.user.port.in.RegisterUserPort;
 import com.admeliora.briefbot.application.user.port.in.command.RegisterUserCommand;
@@ -27,6 +30,7 @@ public class RegisterUserService implements RegisterUserPort {
     private final EmailPort emailPort;
     private final PasswordEncoder passwordEncoder;
     private final PasswordGeneratorPort passwordGenerator;
+    private final AddUserToAccountUseCase addUserToAccountUseCase;
 
     @Override
     @Transactional
@@ -52,6 +56,16 @@ public class RegisterUserService implements RegisterUserPort {
 
         User savedUser = userPort.save(user);
 
+        // Assign user to default account 1 with MEMBER role
+        try {
+            AddUserToAccountCommand addCommand = new AddUserToAccountCommand(1L, savedUser.getId(), AccountRole.MEMBER);
+            addUserToAccountUseCase.execute(addCommand);
+            log.info("User {} assigned to default account 1", savedUser.getId());
+        } catch (Exception e) {
+            log.error("Failed to assign user {} to default account", savedUser.getId(), e);
+            // Don't fail registration if assignment fails
+        }
+
         // Send email with temporary password
         try {
             emailPort.sendTemporaryPassword(
@@ -68,4 +82,3 @@ public class RegisterUserService implements RegisterUserPort {
         return savedUser;
     }
 }
-
