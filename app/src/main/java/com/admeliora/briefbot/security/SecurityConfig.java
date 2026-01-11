@@ -65,7 +65,7 @@ public class SecurityConfig {
             http
                     .csrf(csrf -> csrf.disable())
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/", "/index.html", "/login/**", "/assets/**", "/vite.svg", "/static/**").permitAll()
+                            .requestMatchers("/", "/index.html", "/login/**", "/services/**","/assets/**", "/vite.svg", "/static/**").permitAll()
                             .requestMatchers("/api/users/**").permitAll()
                             .requestMatchers("/api/auth/**").permitAll()
                             .requestMatchers("/api/sample").permitAll()
