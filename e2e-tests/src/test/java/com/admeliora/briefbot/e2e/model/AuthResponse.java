@@ -1,16 +1,21 @@
 package com.admeliora.briefbot.e2e.model;
 
-import lombok.Data;
+import lombok.Builder;
 
 /**
- * Response model for authentication (registration and login)
+ * Response DTO for authentication (login/registration)
  */
-@Data
-public class AuthResponse {
-    private Long userId;
-    private String email;
-    private String givenName;
-    private String familyName;
-    private String message;
-}
+@Builder
+public record AuthResponse(
 
+        Long id,
+
+        String email,
+
+        String givenName,
+
+        String familyName,
+
+        String message
+) {
+}

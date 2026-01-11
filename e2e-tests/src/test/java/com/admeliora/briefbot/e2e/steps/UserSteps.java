@@ -1,6 +1,7 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
+import com.admeliora.briefbot.e2e.model.AuthResponse;
 import com.admeliora.briefbot.e2e.model.CreateUserRequest;
 import com.admeliora.briefbot.e2e.model.UpdateUserRequest;
 import com.admeliora.briefbot.e2e.model.UserResponse;
@@ -52,6 +53,8 @@ public class UserSteps {
                 context.put("secondUserId", userResponse.id());
             }
             context.put("createdUserId", userResponse.id());
+        } else {
+            throw new IllegalStateException("Account creation failed with status: " + response.getStatusCode());
         }
     }
 
@@ -145,8 +148,8 @@ public class UserSteps {
         context.setLastResponse(response);
     }
 
-    @Given("I create a new user")
-    public void iCreateANewUser() {
+    @Given("I register a new user")
+    public void iRegisterANewUser() {
         // Generate a unique email for the test user
         String email = "testuser" + System.currentTimeMillis() + "@example.com";
 
@@ -160,15 +163,17 @@ public class UserSteps {
                 .spec(TestConfig.getRequestSpec(context))
                 .body(request)
                 .when()
-                .post("/users")
+                .post("/auth/register")
                 .then()
                 .extract().response();
 
         context.setLastResponse(response);
 
         if (response.getStatusCode() == 201) {
-            UserResponse userResponse = response.as(UserResponse.class);
-            context.put("userId", userResponse.id());
+            AuthResponse authResponse = response.as(AuthResponse.class);
+            context.put("userId", authResponse.id());
+        } else {
+            throw new IllegalStateException("User registration failed with status: " + response.getStatusCode());
         }
     }
 }

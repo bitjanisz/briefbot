@@ -57,6 +57,8 @@ public class ServiceSteps {
             ServiceResponse serviceResponse = response.as(ServiceResponse.class);
             context.setCreatedId("service", serviceResponse.getId());
             context.put("lastService", serviceResponse);
+        } else {
+            throw new IllegalStateException("Service creation failed with status: " + response.getStatusCode());
         }
     }
 

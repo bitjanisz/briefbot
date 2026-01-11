@@ -49,6 +49,8 @@ public class AccountSteps {
             AccountResponse accountResponse = response.as(AccountResponse.class);
             context.setCreatedId("account", accountResponse.getId());
             context.put("lastAccount", accountResponse);
+        } else {
+            throw new IllegalStateException("Account creation failed with status: " + response.getStatusCode());
         }
     }
 

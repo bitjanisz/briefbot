@@ -11,7 +11,7 @@ import lombok.Builder;
 public record AuthResponse(
 
         @Schema(description = "User ID")
-        Long userId,
+        Long id,
 
         @Schema(description = "User email")
         String email,

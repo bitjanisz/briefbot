@@ -70,6 +70,8 @@ public class AuthenticationSteps {
         // For test profile, the password is always "Secure123" (hardcoded in TestPasswordGenerator)
         if (response.getStatusCode() == 201) {
             context.put("temporary.password", "Secure123");
+        } else {
+            throw new IllegalStateException("User creation failed with status: " + response.getStatusCode());
         }
     }
 
@@ -113,13 +115,13 @@ public class AuthenticationSteps {
         Response response = context.getLastResponse();
         AuthResponse authResponse = response.as(AuthResponse.class);
 
-        assertThat(authResponse.getUserId())
+        assertThat(authResponse.id())
                 .as("User ID should be present")
                 .isNotNull();
-        assertThat(authResponse.getEmail())
+        assertThat(authResponse.email())
                 .as("Email should be present")
                 .isNotNull();
-        assertThat(authResponse.getMessage())
+        assertThat(authResponse.message())
                 .as("Message should contain password info")
                 .contains("password");
     }
@@ -131,7 +133,7 @@ public class AuthenticationSteps {
         Response response = context.getLastResponse();
         AuthResponse authResponse = response.as(AuthResponse.class);
 
-        assertThat(authResponse.getMessage())
+        assertThat(authResponse.message())
                 .as("Message should indicate email was sent")
                 .containsIgnoringCase("email");
     }
@@ -226,13 +228,13 @@ public class AuthenticationSteps {
         Response response = context.getLastResponse();
         AuthResponse authResponse = response.as(AuthResponse.class);
 
-        assertThat(authResponse.getUserId())
+        assertThat(authResponse.id())
                 .as("User ID should be present")
                 .isNotNull();
-        assertThat(authResponse.getEmail())
+        assertThat(authResponse.email())
                 .as("Email should be present")
                 .isNotNull();
-        assertThat(authResponse.getMessage())
+        assertThat(authResponse.message())
                 .as("Message should indicate successful login")
                 .containsIgnoringCase("success");
     }

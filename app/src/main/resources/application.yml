@@ -1,5 +1,7 @@
 server:
   port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: ${SERVER_CONTEXT_PATH:/api}
   application:
     name: briefbot
 
@@ -68,19 +70,19 @@ security:
     login-url: ${LOGIN_URL:/login}
 
 # Actuator and management configuration
-#management:
-#  server:
-#    port: 8081
-#  health:
-#    mail:
-#      enabled: false
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#  endpoint:
-#    shutdown:
-#      enabled: false
+management:
+  server:
+    port: 8081
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: false
 
 springdoc:
   api-docs:

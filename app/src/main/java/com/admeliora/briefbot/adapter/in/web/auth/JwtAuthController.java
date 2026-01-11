@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("auth")
 @RequiredArgsConstructor
 @Tag(name = "JWT Authentication", description = "JWT token validation")
 public class JwtAuthController {

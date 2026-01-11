@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
+            log.info("Processing JWT authentication for request: {}", request.getRequestURI());
             final String token = extractTokenFromRequest(request);
             if (StringUtils.hasText(token)) {
                 Claims claims = jwtTokenProvider.validateToken(token);
@@ -110,10 +111,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         final String path = request.getRequestURI();
-        return path.startsWith("/api/auth/") ||
-                path.startsWith("/login") ||
-                path.startsWith("/oauth2/") ||
-                path.startsWith("/h2-console") ||
-                path.startsWith("/actuator");
+//        return path.startsWith("/api/auth/") ||
+//                path.startsWith("/login") ||
+//                path.startsWith("/oauth2/") ||
+//                path.startsWith("/h2-console") ||
+//                path.startsWith("/actuator");
+        return false;
     }
 }

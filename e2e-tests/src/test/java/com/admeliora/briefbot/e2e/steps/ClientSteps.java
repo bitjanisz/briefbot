@@ -49,6 +49,8 @@ public class ClientSteps {
         if (response.getStatusCode() == 201) {
             ClientResponse clientResponse = response.as(ClientResponse.class);
             context.setCreatedId("client", clientResponse.getId());
+        } else {
+            throw new IllegalStateException("client creation failed with status: " + response.getStatusCode());
         }
     }
 

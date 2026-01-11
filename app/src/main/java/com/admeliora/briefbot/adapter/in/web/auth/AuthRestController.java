@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "User registration and login endpoints")
 public class AuthRestController {
@@ -65,7 +65,7 @@ public class AuthRestController {
         User user = registerUserPort.register(command);
 
         AuthResponse response = AuthResponse.builder()
-                .userId(user.getId())
+                .id(user.getId())
                 .email(user.getEmail())
                 .givenName(user.getGivenName())
                 .familyName(user.getFamilyName())
@@ -124,7 +124,7 @@ public class AuthRestController {
         response.addCookie(jwtCookie);
 
         AuthResponse authResponse = AuthResponse.builder()
-                .userId(user.getId())
+                .id(user.getId())
                 .email(user.getEmail())
                 .givenName(user.getGivenName())
                 .familyName(user.getFamilyName())
