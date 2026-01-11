@@ -33,7 +33,7 @@ public class CaseStudyMapper {
                 caseStudy.getScopeSummary(),
                 caseStudy.getChallengesSolved(),
                 caseStudy.getBudgetRangeEnum(),
-                caseStudy.getIsPublic(),
+                caseStudy.getStatus(),
                 caseStudy.getCreatedAt(),
                 services
         );
@@ -62,7 +62,6 @@ public class CaseStudyMapper {
                 request.scopeSummary(),
                 request.challengesSolved(),
                 request.budgetRangeEnum(),
-                request.isPublic(),
                 services
         );
     }
@@ -81,9 +80,7 @@ public class CaseStudyMapper {
                 request.scopeSummary(),
                 request.challengesSolved(),
                 request.budgetRangeEnum(),
-                request.isPublic(),
                 services
         );
     }
 }
-

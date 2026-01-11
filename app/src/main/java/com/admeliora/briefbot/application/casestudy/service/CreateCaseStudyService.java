@@ -3,6 +3,7 @@ package com.admeliora.briefbot.application.casestudy.service;
 import com.admeliora.briefbot.application.account.port.out.AccountPort;
 import com.admeliora.briefbot.application.casestudy.model.CaseStudy;
 import com.admeliora.briefbot.application.casestudy.model.CaseStudyService;
+import com.admeliora.briefbot.application.casestudy.model.CaseStudyStatus;
 import com.admeliora.briefbot.application.casestudy.port.in.CreateCaseStudyPort;
 import com.admeliora.briefbot.application.casestudy.port.in.command.CreateCaseStudyCommand;
 import com.admeliora.briefbot.application.casestudy.port.out.CaseStudyPort;
@@ -43,7 +44,7 @@ public class CreateCaseStudyService implements CreateCaseStudyPort {
                 .scopeSummary(command.scopeSummary())
                 .challengesSolved(command.challengesSolved())
                 .budgetRangeEnum(command.budgetRangeEnum())
-                .isPublic(command.isPublic())
+                .status(CaseStudyStatus.DRAFT)
                 .caseStudyServices(new HashSet<>())
                 .build();
 
@@ -62,4 +63,3 @@ public class CreateCaseStudyService implements CreateCaseStudyPort {
         return caseStudyPort.save(caseStudy);
     }
 }
-

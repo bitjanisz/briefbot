@@ -1,12 +1,12 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.BriefingRequest;
-import com.admeliora.briefbot.e2e.model.BriefingResponse;
-import com.admeliora.briefbot.e2e.model.BriefingVersionRequest;
-import com.admeliora.briefbot.e2e.model.BriefingVersionResponse;
-import com.admeliora.briefbot.e2e.model.BriefingVersionUpdateRequest;
-import com.admeliora.briefbot.e2e.model.FinalizeRequest;
+import com.admeliora.briefbot.e2e.model.request.BriefingRequest;
+import com.admeliora.briefbot.e2e.model.response.BriefingResponse;
+import com.admeliora.briefbot.e2e.model.request.BriefingVersionRequest;
+import com.admeliora.briefbot.e2e.model.response.BriefingVersionResponse;
+import com.admeliora.briefbot.e2e.model.request.BriefingVersionUpdateRequest;
+import com.admeliora.briefbot.e2e.model.request.FinalizeRequest;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

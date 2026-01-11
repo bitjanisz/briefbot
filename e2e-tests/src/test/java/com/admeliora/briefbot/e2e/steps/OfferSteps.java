@@ -1,10 +1,10 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.ClientRequest;
-import com.admeliora.briefbot.e2e.model.OfferRequest;
-import com.admeliora.briefbot.e2e.model.OfferResponse;
-import com.admeliora.briefbot.e2e.model.StatusUpdateRequest;
+import com.admeliora.briefbot.e2e.model.request.ClientRequest;
+import com.admeliora.briefbot.e2e.model.request.OfferRequest;
+import com.admeliora.briefbot.e2e.model.response.OfferResponse;
+import com.admeliora.briefbot.e2e.model.request.StatusUpdateRequest;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

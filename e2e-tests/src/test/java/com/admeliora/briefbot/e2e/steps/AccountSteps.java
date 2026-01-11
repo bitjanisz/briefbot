@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.AccountRequest;
-import com.admeliora.briefbot.e2e.model.AccountResponse;
+import com.admeliora.briefbot.e2e.model.request.AccountRequest;
+import com.admeliora.briefbot.e2e.model.response.AccountResponse;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;

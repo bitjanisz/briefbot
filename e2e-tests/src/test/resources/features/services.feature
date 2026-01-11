@@ -14,12 +14,12 @@ Feature: Service Management
     Then the response status should be 201
     And the response should contain the service with name "Web Development"
 
-  @create-with-relations @skipped
-  Scenario: Create a service with related services
-    When I create a service with name "Backend Development" and price 3000.00
-    And I create a service with name "Full Stack Development" that depends on the previous service
-    Then the response status should be 201
-    And the service should have 1 related service
+#  @create-with-relations @skipped
+#  Scenario: Create a service with related services
+#    When I create a service with name "Backend Development" and price 3000.00
+#    And I create a service with name "Full Stack Development" that depends on the previous service
+#    Then the response status should be 201
+#    And the service should have 1 related service
 
   @read
   Scenario: Get service by ID

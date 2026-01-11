@@ -14,6 +14,13 @@ Feature: Case Study Management
     Then the response status should be 201
     And the case study should be created
 
+  @create-with-services
+  Scenario: Create a case study with services
+    When I create a case study with title "Project with Services" and services
+    Then the response status should be 201
+    And the case study should be created
+    And the case study should contain services
+
   @read
   Scenario: Get case study by ID
     Given I have an existing case study
@@ -27,6 +34,13 @@ Feature: Case Study Management
     When I update the case study description and results
     Then the response status should be 200
     And the case study should be updated
+
+  @update-with-services
+  Scenario: Update case study to add services
+    Given I have an existing case study
+    When I update the case study to add services
+    Then the response status should be 200
+    And the case study should contain services
 
   @delete @skipped
   Scenario: Delete a case study

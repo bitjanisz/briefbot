@@ -32,7 +32,7 @@ public class UpdateCaseStudyService implements UpdateCaseStudyPort {
         caseStudy.setScopeSummary(command.scopeSummary());
         caseStudy.setChallengesSolved(command.challengesSolved());
         caseStudy.setBudgetRangeEnum(command.budgetRangeEnum());
-        caseStudy.setIsPublic(command.isPublic());
+        caseStudy.setStatus(caseStudy.getStatus());
 
         // Update services with discounts
         if (command.services() != null) {

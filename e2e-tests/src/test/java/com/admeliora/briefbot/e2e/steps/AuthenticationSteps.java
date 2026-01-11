@@ -1,9 +1,9 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.AuthResponse;
-import com.admeliora.briefbot.e2e.model.LoginRequest;
-import com.admeliora.briefbot.e2e.model.RegisterUserRequest;
+import com.admeliora.briefbot.e2e.model.response.AuthResponse;
+import com.admeliora.briefbot.e2e.model.request.LoginRequest;
+import com.admeliora.briefbot.e2e.model.request.RegisterUserRequest;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;

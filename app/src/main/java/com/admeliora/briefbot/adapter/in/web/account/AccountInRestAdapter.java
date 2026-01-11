@@ -5,6 +5,7 @@ import com.admeliora.briefbot.adapter.in.web.account.model.request.AccountUpdate
 import com.admeliora.briefbot.adapter.in.web.account.model.request.AddUserToAccountRequest;
 import com.admeliora.briefbot.adapter.in.web.account.model.request.CreateAccountRequest;
 import com.admeliora.briefbot.adapter.in.web.account.model.response.AccountResponse;
+import com.admeliora.briefbot.adapter.in.web.account.model.response.AccountUserResponse;
 import com.admeliora.briefbot.application.account.port.in.*;
 import com.admeliora.briefbot.application.account.port.in.command.AddUserToAccountCommand;
 import com.admeliora.briefbot.application.account.port.in.command.CreateAccountCommand;
@@ -35,6 +36,7 @@ public class AccountInRestAdapter {
     private final DeleteAccountUseCase deleteAccountUseCase;
     private final AddUserToAccountUseCase addUserToAccountUseCase;
     private final RemoveUserFromAccountUseCase removeUserFromAccountUseCase;
+    private final ListUsersInAccountUseCase listUsersInAccountUseCase;
 
     @GetMapping
     @Operation(summary = "List accounts")
@@ -81,11 +83,11 @@ public class AccountInRestAdapter {
 
     @PutMapping("/{accountId}/users")
     @Operation(summary = "Add or update user on account")
-    public AccountResponse addUserToAccount(@PathVariable Long accountId,
-                                            @Valid @RequestBody AddUserToAccountRequest request) {
+    public AccountUserResponse addUserToAccount(@PathVariable Long accountId,
+                                                @Valid @RequestBody AddUserToAccountRequest request) {
         var command = new AddUserToAccountCommand(accountId, request.userId(), request.role());
-        var account = addUserToAccountUseCase.execute(command);
-        return AccountMapper.toResponse(account);
+        var userAccountDetails = addUserToAccountUseCase.execute(command);
+        return AccountMapper.toUserResponse(userAccountDetails);
     }
 
     @DeleteMapping("/{accountId}/users/{userId}")
@@ -95,5 +97,13 @@ public class AccountInRestAdapter {
         var command = new RemoveUserFromAccountCommand(accountId, userId);
         var account = removeUserFromAccountUseCase.execute(command);
         return AccountMapper.toResponse(account);
+    }
+
+    @GetMapping("/{accountId}/users")
+    @Operation(summary = "List users in account with their roles")
+    public List<AccountUserResponse> listUsersInAccount(@PathVariable Long accountId) {
+        return listUsersInAccountUseCase.execute(accountId).stream()
+                .map(AccountMapper::toUserResponse)
+                .toList();
     }
 }

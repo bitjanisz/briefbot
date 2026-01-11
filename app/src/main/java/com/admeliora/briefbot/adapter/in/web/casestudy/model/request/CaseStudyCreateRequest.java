@@ -18,8 +18,6 @@ public record CaseStudyCreateRequest(
         String challengesSolved,
         @Size(max = 50)
         String budgetRangeEnum,
-        @NotNull
-        Boolean isPublic,
         @Valid
         List<CaseStudyServiceRequest> services
 ) {

@@ -49,8 +49,9 @@ public class CaseStudy extends BaseEntity {
     @Column(name = "budget_range_enum", length = 50)
     private String budgetRangeEnum;
 
-    @Column(name = "is_public", nullable = false)
-    private Boolean isPublic;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 50)
+    private CaseStudyStatus status;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

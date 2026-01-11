@@ -1,5 +1,7 @@
 package com.admeliora.briefbot.adapter.in.web.casestudy.model.response;
 
+import com.admeliora.briefbot.application.casestudy.model.CaseStudyStatus;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,9 +14,8 @@ public record CaseStudyResponse(
         String scopeSummary,
         String challengesSolved,
         String budgetRangeEnum,
-        Boolean isPublic,
+        CaseStudyStatus status,
         LocalDateTime createdAt,
         List<CaseStudyServiceResponse> services
 ) {
 }
-

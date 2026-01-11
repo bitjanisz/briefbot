@@ -28,6 +28,7 @@ public class CaseStudyInRestAdapter {
     private final UpdateCaseStudyPort updateCaseStudyPort;
     private final DeleteCaseStudyPort deleteCaseStudyPort;
     private final ListCaseStudiesPort listCaseStudiesPort;
+    private final PublishCaseStudyPort publishCaseStudyPort;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -70,5 +71,11 @@ public class CaseStudyInRestAdapter {
                 .map(CaseStudyMapper::toResponse)
                 .toList();
     }
-}
 
+    @PutMapping("/{id}/publish")
+    @Operation(summary = "Publish case study", description = "Publishes a case study by setting its status to PUBLISHED")
+    public CaseStudyResponse publish(@PathVariable Long id) {
+        var caseStudy = publishCaseStudyPort.publish(id);
+        return CaseStudyMapper.toResponse(caseStudy);
+    }
+}

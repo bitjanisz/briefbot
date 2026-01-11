@@ -53,7 +53,7 @@ CREATE TABLE case_studies (
     scope_summary TEXT,
     challenges_solved TEXT,
     budget_range_enum VARCHAR(50),
-    is_public BOOLEAN DEFAULT FALSE,
+    status VARCHAR(50) DEFAULT 'DRAFT',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_case_studies_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );

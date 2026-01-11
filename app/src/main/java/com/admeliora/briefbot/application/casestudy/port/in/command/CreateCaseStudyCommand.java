@@ -9,8 +9,6 @@ public record CreateCaseStudyCommand(
         String scopeSummary,
         String challengesSolved,
         String budgetRangeEnum,
-        Boolean isPublic,
         List<CaseStudyServiceCommand> services
 ) {
 }
-

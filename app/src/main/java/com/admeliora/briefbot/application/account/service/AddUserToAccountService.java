@@ -3,6 +3,7 @@ package com.admeliora.briefbot.application.account.service;
 import com.admeliora.briefbot.application.account.model.Account;
 import com.admeliora.briefbot.application.account.model.AccountRole;
 import com.admeliora.briefbot.application.account.model.UserAccount;
+import com.admeliora.briefbot.application.account.model.UserAccountDetails;
 import com.admeliora.briefbot.application.account.port.in.command.AddUserToAccountCommand;
 import com.admeliora.briefbot.application.account.port.out.AccountPort;
 import com.admeliora.briefbot.application.account.port.out.UserAccountPort;
@@ -24,7 +25,7 @@ public class AddUserToAccountService implements com.admeliora.briefbot.applicati
 
     @Override
     @Transactional
-    public Account execute(AddUserToAccountCommand command) {
+    public UserAccountDetails execute(AddUserToAccountCommand command) {
         Long userId = command.userId();
         Long accountId = command.accountId();
         AccountRole role = command.role();
@@ -38,14 +39,35 @@ public class AddUserToAccountService implements com.admeliora.briefbot.applicati
             throw new EntityNotFoundException("Account not found: " + accountId);
         }
 
-        UserAccount link = new UserAccount();
-        link.setUserId(userId);
-        link.setAccountId(accountId);
-        link.setRole(effectiveRole);
+        UserAccount savedLink;
+        var existing = userAccountPort.findByAccountIdAndUserId(accountId, userId);
+        if (existing.isPresent()) {
+            UserAccount link = existing.get();
+            if (link.getRole() != effectiveRole) {
+                link.setRole(effectiveRole);
+                savedLink = userAccountPort.save(link);
+            } else {
+                savedLink = link;
+            }
+        } else {
+            UserAccount link = new UserAccount();
+            link.setUserId(userId);
+            link.setAccountId(accountId);
+            link.setRole(effectiveRole);
+            savedLink = userAccountPort.save(link);
+        }
 
-        userAccountPort.save(link);
+        // Fetch user details
+        var user = userPort.findById(userId).orElseThrow();
 
-        return accountPort.findById(accountId)
-                .orElseThrow(() -> new EntityNotFoundException("Account not found: " + accountId));
+        return new UserAccountDetails(
+                savedLink.getId(),
+                savedLink.getUserId(),
+                user.getEmail(),
+                user.getGivenName(),
+                user.getFamilyName(),
+                savedLink.getRole(),
+                savedLink.getCreatedAt()
+        );
     }
 }

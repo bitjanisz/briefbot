@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.ServiceRequest;
-import com.admeliora.briefbot.e2e.model.ServiceResponse;
+import com.admeliora.briefbot.e2e.model.request.ServiceRequest;
+import com.admeliora.briefbot.e2e.model.response.ServiceResponse;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
@@ -39,7 +39,8 @@ public class ServiceSteps {
                 .currency("PLN")
                 .pricingUnit("project")
                 .isActive(true)
-                .relations(new ArrayList<>())
+                .minPriceThreshold(BigDecimal.valueOf(1000))
+//                .relations(new ArrayList<>())
                 .build();
 
         Response response = given()
@@ -67,12 +68,12 @@ public class ServiceSteps {
         ServiceResponse previousService = context.get("lastService", ServiceResponse.class);
         assertThat(previousService).as("Previous service should exist").isNotNull();
 
-        List<ServiceRequest.ServiceRelation> relations = new ArrayList<>();
-        relations.add(ServiceRequest.ServiceRelation.builder()
-                .relatedServiceId(previousService.getId())
-                .relationType("DEPENDS_ON")
-                .impactDescription("Requires backend development")
-                .build());
+//        List<ServiceRequest.ServiceRelation> relations = new ArrayList<>();
+//        relations.add(ServiceRequest.ServiceRelation.builder()
+//                .relatedServiceId(previousService.getId())
+//                .relationType("DEPENDS_ON")
+//                .impactDescription("Requires backend development")
+//                .build());
 
         ServiceRequest request = ServiceRequest.builder()
                 .name(name)
@@ -83,7 +84,8 @@ public class ServiceSteps {
                 .currency("PLN")
                 .pricingUnit("project")
                 .isActive(true)
-                .relations(relations)
+//                .relations(relations)
+                .minPriceThreshold(BigDecimal.valueOf(1000))
                 .build();
 
         Response response = given()
@@ -127,7 +129,8 @@ public class ServiceSteps {
                 .currency(currentService.getCurrency())
                 .pricingUnit(currentService.getPricingUnit())
                 .isActive(currentService.getIsActive())
-                .relations(new ArrayList<>())
+                .minPriceThreshold(currentService.getMinPriceThreshold())
+//                .relations(new ArrayList<>())
                 .build();
 
         Response response = given()
@@ -187,15 +190,15 @@ public class ServiceSteps {
         context.put("lastService", serviceResponse);
     }
 
-    @And("the service should have {int} related service(s)")
-    public void theServiceShouldHaveRelatedServices(int expectedCount) {
-        Response response = context.getLastResponse();
-        ServiceResponse serviceResponse = response.as(ServiceResponse.class);
-
-        assertThat(serviceResponse.getRelatedServices())
-                .as("Service should have related services")
-                .hasSize(expectedCount);
-    }
+//    @And("the service should have {int} related service(s)")
+//    public void theServiceShouldHaveRelatedServices(int expectedCount) {
+//        Response response = context.getLastResponse();
+//        ServiceResponse serviceResponse = response.as(ServiceResponse.class);
+//
+//        assertThat(serviceResponse.getRelatedServices())
+//                .as("Service should have related services")
+//                .hasSize(expectedCount);
+//    }
 
     @And("the response should contain a list of services")
     public void theResponseShouldContainAListOfServices() {
@@ -207,4 +210,3 @@ public class ServiceSteps {
                 .isNotNull();
     }
 }
-

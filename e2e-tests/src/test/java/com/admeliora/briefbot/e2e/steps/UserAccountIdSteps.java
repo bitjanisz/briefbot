@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.RoleUpdateRequest;
-import com.admeliora.briefbot.e2e.model.UserAccountRequest;
+import com.admeliora.briefbot.e2e.model.request.RoleUpdateRequest;
+import com.admeliora.briefbot.e2e.model.request.UserAccountRequest;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

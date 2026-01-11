@@ -1,8 +1,8 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.ClientRequest;
-import com.admeliora.briefbot.e2e.model.ClientResponse;
+import com.admeliora.briefbot.e2e.model.request.ClientRequest;
+import com.admeliora.briefbot.e2e.model.response.ClientResponse;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
