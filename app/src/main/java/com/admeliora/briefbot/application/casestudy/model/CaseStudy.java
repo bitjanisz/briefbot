@@ -1,9 +1,7 @@
 package com.admeliora.briefbot.application.casestudy.model;
 
 import com.admeliora.briefbot.application.common.model.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Filter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * CaseStudy Aggregate Root (DDD)
@@ -55,4 +55,7 @@ public class CaseStudy extends BaseEntity {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "caseStudy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CaseStudyService> caseStudyServices = new HashSet<>();
 }

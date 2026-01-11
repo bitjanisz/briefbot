@@ -58,17 +58,6 @@ CREATE TABLE case_studies (
     CONSTRAINT fk_case_studies_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
-CREATE TABLE case_study_services (
-    id BIGSERIAL PRIMARY KEY,
-    case_study_id BIGINT NOT NULL,
-    service_id BIGINT NOT NULL,
-    discount_percentage DECIMAL(5,2) DEFAULT 0.00,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_case_study_services_case_study FOREIGN KEY (case_study_id) REFERENCES case_studies(id) ON DELETE CASCADE,
-    CONSTRAINT fk_case_study_services_service FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE,
-    CONSTRAINT uq_case_study_service UNIQUE(case_study_id, service_id)
-);
-
 -- 3. MODULE: CATALOG
 CREATE TABLE services (
     id BIGSERIAL PRIMARY KEY,
@@ -98,6 +87,17 @@ CREATE TABLE services (
 --    CONSTRAINT fk_rel_parent FOREIGN KEY (parent_service_id) REFERENCES services(id) ON DELETE CASCADE,
 --    CONSTRAINT fk_rel_related FOREIGN KEY (related_service_id) REFERENCES services(id) ON DELETE CASCADE
 --);
+
+CREATE TABLE case_study_services (
+    id BIGSERIAL PRIMARY KEY,
+    case_study_id BIGINT NOT NULL,
+    service_id BIGINT NOT NULL,
+    discount_percentage DECIMAL(5,2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_case_study_services_case_study FOREIGN KEY (case_study_id) REFERENCES case_studies(id) ON DELETE CASCADE,
+    CONSTRAINT fk_case_study_services_service FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE,
+    CONSTRAINT uq_case_study_service UNIQUE(case_study_id, service_id)
+);
 
 -- 4. MODULE: WORKFLOW
 CREATE TABLE clients (
