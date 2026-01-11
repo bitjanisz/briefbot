@@ -7,6 +7,8 @@ const ROUTES = {
   testPage: '/test-page',
   testSubpage: '/test-page/subpage',
   other: '/other',
+  services: '/services',
+  serviceOverview: '/services/:serviceId/overview',
 } as const;
 
 export const RouteHelper = {
@@ -33,5 +35,13 @@ export const RouteHelper = {
   otherPath: {
     abs: () => ROUTES.other,
     param: () => ROUTES.other,
+  },
+  servicesPath: {
+    abs: () => ROUTES.services,
+    param: () => ROUTES.services,
+  },
+  serviceOverviewPath: {
+    abs: (serviceId: string | number) => `/services/${serviceId}/overview`,
+    param: () => ROUTES.serviceOverview,
   },
 };
