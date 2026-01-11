@@ -10,21 +10,21 @@ Feature: Account Role Management
 
   @assign-role
   Scenario: Assign role to user
-    Given I have a user in my account
+    Given I create a new user
     When I assign ADMIN role to that user
     Then the response status should be 200
     And the user should have ADMIN role
 
   @change-role
   Scenario: Change user role
-    Given I have a user with MEMBER role
+    Given I create a new user
     When I change their role to VIEWER
     Then the response status should be 200
     And the user should have VIEWER role
 
   @remove-user
   Scenario: Remove user from account
-    Given I have a user in my account
+    Given I create a new user
     When I remove that user from the account role
     Then the response status should be 200
     And the user should no longer be in the account

@@ -5,6 +5,7 @@ import com.admeliora.briefbot.e2e.model.CreateUserRequest;
 import com.admeliora.briefbot.e2e.model.UpdateUserRequest;
 import com.admeliora.briefbot.e2e.model.UserResponse;
 import com.admeliora.briefbot.e2e.support.TestContext;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
@@ -142,5 +143,32 @@ public class UserSteps {
                 .extract().response();
 
         context.setLastResponse(response);
+    }
+
+    @Given("I create a new user")
+    public void iCreateANewUser() {
+        // Generate a unique email for the test user
+        String email = "testuser" + System.currentTimeMillis() + "@example.com";
+
+        CreateUserRequest request = CreateUserRequest.builder()
+                .email(email)
+                .givenName("Test")
+                .familyName("User")
+                .build();
+
+        Response response = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(request)
+                .when()
+                .post("/users")
+                .then()
+                .extract().response();
+
+        context.setLastResponse(response);
+
+        if (response.getStatusCode() == 201) {
+            UserResponse userResponse = response.as(UserResponse.class);
+            context.put("userId", userResponse.id());
+        }
     }
 }

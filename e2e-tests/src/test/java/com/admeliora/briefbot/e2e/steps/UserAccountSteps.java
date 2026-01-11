@@ -29,12 +29,12 @@ public class UserAccountSteps {
     @Given("I have a registered user not in any account")
     public void iHaveARegisteredUserNotInAnyAccount() {
         // Assume user exists from authentication steps
-        context.put("newUserId", 3L);
+        context.put("userId", 3L);
     }
 
     @When("I add that user to my account with MEMBER role")
     public void iAddThatUserToMyAccountWithMEMBERRole() {
-        Long userId = (Long) context.get("newUserId");
+        Long userId = (Long) context.get("userId");
 
         AccountUserRequest request = AccountUserRequest.builder()
                 .userId(userId)
@@ -67,7 +67,7 @@ public class UserAccountSteps {
 
     @When("I change their role to ADMIN")
     public void iChangeTheirRoleToADMIN() {
-        Long userId = (Long) context.get("newUserId");
+        Long userId = (Long) context.get("userId");
 
         RoleUpdateRequest request = RoleUpdateRequest.builder()
                 .role("ADMIN")
@@ -77,7 +77,7 @@ public class UserAccountSteps {
                 .spec(TestConfig.getRequestSpec(context))
                 .body(request)
                 .when()
-                .put("/accounts/1/users/{userId}", userId)
+                .put("/accounts/1/users")
                 .then()
                 .extract().response();
 
@@ -92,7 +92,7 @@ public class UserAccountSteps {
 
     @When("I remove that user from the account")
     public void iRemoveThatUserFromTheAccount() {
-        Long userId = (Long) context.get("newUserId");
+        Long userId = (Long) context.get("userId");
 
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
@@ -135,7 +135,7 @@ public class UserAccountSteps {
 
     @When("I try to add them again")
     public void iTryToAddThemAgain() {
-        Long userId = (Long) context.get("newUserId");
+        Long userId = (Long) context.get("userId");
 
         AccountUserRequest request = AccountUserRequest.builder()
                 .userId(userId)

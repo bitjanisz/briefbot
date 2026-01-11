@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class RoleUpdateRequest {
+    private Long userId;
     private String role;
 }

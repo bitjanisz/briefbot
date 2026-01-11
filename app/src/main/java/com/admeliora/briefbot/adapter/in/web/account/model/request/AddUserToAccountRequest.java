@@ -4,7 +4,6 @@ import com.admeliora.briefbot.application.account.model.AccountRole;
 import jakarta.validation.constraints.NotNull;
 
 public record AddUserToAccountRequest(
-        @NotNull Long accountId,
         @NotNull Long userId,
         @NotNull AccountRole role
 ) {
