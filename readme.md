@@ -14,53 +14,50 @@ Before you begin, ensure you have the following tools installed:
 
 ---
 
-## 🚀 Getting Started (First Time Setup)
+## ▶️ Run: Backend + Frontend (standalone)
 
-Follow these steps to configure and run the project locally.
+Run the backend and frontend as two separate processes. Choose your database profile first.
 
-### Step 1: Configure the Database (Docker)
+Profiles quick matrix:
+- H2 (in-memory): Maven `dev` + Spring `local,h2` (no Docker required)
+- Postgres (Docker): Maven `prod` + Spring `local,dev-postgres` (requires `docker-compose up -d`)
 
-The PostgreSQL database runs in a Docker container. <br>Its configuration (user, password, database name) is loaded from
-an `.env` file that you must create locally.
+Default ports:
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
 
-1. In the project's **root directory** (next to `docker-compose.yml`), create a file named `.env`.
-2. Paste the following content into it and fill in your values:
+### Local application profile (OAuth & redirect)
 
-   ```
-   # This file is ignored by Git (.gitignore)
-   
-   # Credentials for the Postgres container
-   POSTGRES_USER=your_db_user
-   POSTGRES_PASSWORD=your_secure_password
-   POSTGRES_DB=your_db_name
-   ```
+In addition to the DB profile, always enable the Spring profile `local`. This profile holds your local OAuth and redirect settings.
 
-### Step 2: Run the Database
+1) Create or edit the file `app/src/main/resources/application-local.yml` and fill in your values:
 
-With the `.env` file in place, start the database container in detached mode:
-
-```bash
-  docker-compose up -d
-```
-
-### Step 3: Configure the Application (Spring Boot)
-
-The Spring Boot application needs its own configuration to connect to the database. <br>We use a dev-credentials.yml
-file for this, which is ignored by Git.
-
-1. Navigate to the src/main/resources/ directory.
-2. Create a new file named dev-credentials.yml.
-3. Paste the following content into it and fill in your values:
-
-```# This file is ignored by Git (.gitignore)
-# It contains the developer's private credentials
-
+```yaml
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/use the one from .env file
-    username: use the one from .env file
-    password: use the one from .env file
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: <your_google_oauth_client_id>
+            client-secret: <your_google_oauth_client_secret>
+
+security:
+  redirect:
+    default-success-url: http://localhost:3000
 ```
 
-http://localhost:8080/swagger-ui.html
-http://localhost:8080/v3/api-docs
+3) Start the backend with Maven profile `prod` and Spring profiles `local,dev-postgres`
+```bash
+./mvnw -pl app -am spring-boot:run -Pprod -Dspring-boot.run.profiles=local,dev-postgres
+```
+
+Verify:
+- API: http://localhost:8080
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- Frontend: http://localhost:3000
+
+Notes:
+- CORS: The React dev server (3000) calls the API on port 8080; ensure CORS for http://localhost:3000 is enabled in Spring.
+- Stop services: press Ctrl+C in terminals; for Postgres, stop with `docker-compose down` (data persists unless volumes are removed).
+- Packaged mode: If you prefer serving the built frontend from Spring Boot, use the Maven build that copies `frontend/dist` into `app/src/main/resources/static/` via the configured Maven plugins. That flow is separate from this standalone mode.
