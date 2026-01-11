@@ -58,6 +58,17 @@ CREATE TABLE case_studies (
     CONSTRAINT fk_case_studies_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
+CREATE TABLE case_study_services (
+    id BIGSERIAL PRIMARY KEY,
+    case_study_id BIGINT NOT NULL,
+    service_id BIGINT NOT NULL,
+    discount_percentage DECIMAL(5,2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_case_study_services_case_study FOREIGN KEY (case_study_id) REFERENCES case_studies(id) ON DELETE CASCADE,
+    CONSTRAINT fk_case_study_services_service FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE,
+    CONSTRAINT uq_case_study_service UNIQUE(case_study_id, service_id)
+);
+
 -- 3. MODULE: CATALOG
 CREATE TABLE services (
     id BIGSERIAL PRIMARY KEY,
@@ -192,4 +203,5 @@ CREATE INDEX idx_offers_briefing ON offers(briefing_id);
 CREATE INDEX idx_offer_versions_offer ON offer_versions(offer_id);
 CREATE INDEX idx_offer_items_version ON offer_version_items(offer_version_id);
 CREATE INDEX idx_orders_offer_version ON orders(offer_version_id);
-
+CREATE INDEX idx_case_study_services_case_study ON case_study_services(case_study_id);
+CREATE INDEX idx_case_study_services_service ON case_study_services(service_id);

@@ -1,6 +1,7 @@
 package com.admeliora.briefbot.adapter.in.web.casestudy.model.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record CaseStudyResponse(
         Long id,
@@ -12,7 +13,8 @@ public record CaseStudyResponse(
         String challengesSolved,
         String budgetRangeEnum,
         Boolean isPublic,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        List<CaseStudyServiceResponse> services
 ) {
 }
 

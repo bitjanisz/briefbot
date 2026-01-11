@@ -2,6 +2,7 @@ package com.admeliora.briefbot.application.casestudy.service;
 
 import com.admeliora.briefbot.application.account.port.out.AccountPort;
 import com.admeliora.briefbot.application.casestudy.model.CaseStudy;
+import com.admeliora.briefbot.application.casestudy.model.CaseStudyService;
 import com.admeliora.briefbot.application.casestudy.port.in.CreateCaseStudyPort;
 import com.admeliora.briefbot.application.casestudy.port.in.command.CreateCaseStudyCommand;
 import com.admeliora.briefbot.application.casestudy.port.out.CaseStudyPort;
@@ -11,6 +12,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +44,20 @@ public class CreateCaseStudyService implements CreateCaseStudyPort {
                 .challengesSolved(command.challengesSolved())
                 .budgetRangeEnum(command.budgetRangeEnum())
                 .isPublic(command.isPublic())
+                .caseStudyServices(new HashSet<>())
                 .build();
+
+        // Add services with discounts if provided
+        if (command.services() != null && !command.services().isEmpty()) {
+            Set<CaseStudyService> caseStudyServices = command.services().stream()
+                    .map(serviceCmd -> CaseStudyService.builder()
+                            .caseStudy(caseStudy)
+                            .serviceId(serviceCmd.serviceId())
+                            .discountPercentage(serviceCmd.discountPercentage())
+                            .build())
+                    .collect(Collectors.toSet());
+            caseStudy.setCaseStudyServices(caseStudyServices);
+        }
 
         return caseStudyPort.save(caseStudy);
     }

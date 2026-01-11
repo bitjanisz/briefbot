@@ -33,15 +33,7 @@ public class CaseStudyInRestAdapter {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create case study", description = "Creates a new case study")
     public CaseStudyResponse create(@Valid @RequestBody CaseStudyCreateRequest request) {
-        var command = new CreateCaseStudyCommand(
-                request.projectName(),
-                request.clientIndustry(),
-                request.keywords(),
-                request.scopeSummary(),
-                request.challengesSolved(),
-                request.budgetRangeEnum(),
-                request.isPublic()
-        );
+        var command = CaseStudyMapper.toCreateCommand(request);
         var caseStudy = createCaseStudyPort.create(command);
         return CaseStudyMapper.toResponse(caseStudy);
     }
@@ -58,16 +50,7 @@ public class CaseStudyInRestAdapter {
     @PutMapping("/{id}")
     @Operation(summary = "Update case study", description = "Updates an existing case study")
     public CaseStudyResponse update(@PathVariable Long id, @Valid @RequestBody CaseStudyUpdateRequest request) {
-        var command = new UpdateCaseStudyCommand(
-                request.id(),
-                request.projectName(),
-                request.clientIndustry(),
-                request.keywords(),
-                request.scopeSummary(),
-                request.challengesSolved(),
-                request.budgetRangeEnum(),
-                request.isPublic()
-        );
+        var command = CaseStudyMapper.toUpdateCommand(request);
         var caseStudy = updateCaseStudyPort.update(command);
         return CaseStudyMapper.toResponse(caseStudy);
     }
