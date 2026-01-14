@@ -9,8 +9,13 @@ import java.util.List;
 @Data
 @Builder
 public class CaseStudyUpdateRequest {
-    private String description;
-    private String results;
+    private Long id;
+    private String projectName;
+    private String clientIndustry;
+    private String keywords;
+    private String scopeSummary;
+    private String challengesSolved;
+    private String budgetRangeEnum;
     private List<Service> services;
 
     @Data

@@ -5,6 +5,8 @@ import com.admeliora.briefbot.e2e.model.request.CaseStudyRequest;
 import com.admeliora.briefbot.e2e.model.request.PublishRequest;
 import com.admeliora.briefbot.e2e.model.response.CaseStudyResponse;
 import com.admeliora.briefbot.e2e.model.request.CaseStudyUpdateRequest;
+import com.admeliora.briefbot.e2e.model.request.ServiceRequest;
+import com.admeliora.briefbot.e2e.model.response.ServiceResponse;
 import com.admeliora.briefbot.e2e.model.CaseStudyStatus;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.Given;
@@ -35,9 +37,11 @@ public class CaseStudySteps {
     public void iCreateACaseStudyWithTitle(String title) {
         CaseStudyRequest request = CaseStudyRequest.builder()
                 .projectName(title)
-                .description("Test case study description")
-                .results("Successful project completion")
-                .technologies("Java, Spring Boot")
+                .clientIndustry("Test Industry")
+                .keywords("test,keywords")
+                .scopeSummary("Test scope summary")
+                .challengesSolved("Test challenges solved")
+                .budgetRangeEnum("SMALL")
                 .build();
 
         Response response = given()
@@ -48,22 +52,59 @@ public class CaseStudySteps {
                 .then()
                 .extract().response();
 
+        context.put("caseStudyId", response.jsonPath().getLong("id"));
         context.setLastResponse(response);
     }
 
     @When("I create a case study with title {string} and services")
     public void iCreateACaseStudyWithTitleAndServices(String title) {
-        // Assume service with ID 1 exists
+        // First, create a service if not exists
+        if (context.get("serviceId") == null) {
+            // Create a service
+            ServiceRequest serviceRequest = ServiceRequest.builder()
+                    .name("Test Service")
+                    .description("Test service description")
+                    .accountId(TestConfig.getDefaultAccountId())
+                    .basePrice(BigDecimal.valueOf(1000))
+                    .vatRate(BigDecimal.valueOf(23))
+                    .currency("PLN")
+                    .pricingUnit("project")
+                    .isActive(true)
+                    .minPriceThreshold(BigDecimal.valueOf(500))
+//                    .relations(new ArrayList<>())
+                    .build();
+
+            Response serviceResponse = given()
+                    .spec(TestConfig.getRequestSpec(context))
+                    .body(serviceRequest)
+                    .when()
+                    .post("/services")
+                    .then()
+                    .extract().response();
+
+            if (serviceResponse.getStatusCode() == 201) {
+                ServiceResponse createdService = serviceResponse.as(ServiceResponse.class);
+                context.setCreatedId("service", createdService.getId());
+                context.put("lastService", createdService);
+            }
+        }
+
+        Long serviceId = context.getCreatedId("service");
+        assertThat(serviceId).as("Service ID should exist").isNotNull();
+
+        // Now create case study with the service
         CaseStudyRequest.Service service = CaseStudyRequest.Service.builder()
-                .serviceId(1L)
+                .serviceId(serviceId)
                 .discountPercentage(BigDecimal.valueOf(10.00))
                 .build();
 
         CaseStudyRequest request = CaseStudyRequest.builder()
                 .projectName(title)
-                .description("Test case study with services")
-                .results("Successful project with services")
-                .technologies("Java, Spring Boot, Services")
+                .clientIndustry("Test Industry with Services")
+                .keywords("test,keywords,services")
+                .scopeSummary("Test scope summary with services")
+                .challengesSolved("Test challenges solved with services")
+                .budgetRangeEnum("MEDIUM")
                 .services(List.of(service))
                 .build();
 
@@ -124,8 +165,13 @@ public class CaseStudySteps {
         Long caseStudyId = (Long) context.get("caseStudyId");
 
         CaseStudyUpdateRequest request = CaseStudyUpdateRequest.builder()
-                .description("Updated description")
-                .results("Updated results")
+                .id(caseStudyId)
+                .projectName("Updated Project Name")
+                .clientIndustry("Updated Industry")
+                .keywords("updated,keywords")
+                .scopeSummary("Updated scope summary")
+                .challengesSolved("Updated challenges solved")
+                .budgetRangeEnum("MEDIUM")
                 .build();
 
         Response response = given()
@@ -143,14 +189,22 @@ public class CaseStudySteps {
     public void iUpdateTheCaseStudyToAddServices() {
         Long caseStudyId = (Long) context.get("caseStudyId");
 
+        Long serviceId = context.getCreatedId("service");
+        assertThat(serviceId).as("Service ID should exist").isNotNull();
+
         CaseStudyUpdateRequest.Service service = CaseStudyUpdateRequest.Service.builder()
-                .serviceId(1L)
+                .serviceId(serviceId)
                 .discountPercentage(BigDecimal.valueOf(15.00))
                 .build();
 
         CaseStudyUpdateRequest request = CaseStudyUpdateRequest.builder()
-                .description("Updated description with services")
-                .results("Updated results with services")
+                .id(caseStudyId)
+                .projectName("Updated Project Name with Services")
+                .clientIndustry("Updated Industry with Services")
+                .keywords("updated,keywords,services")
+                .scopeSummary("Updated scope summary with services")
+                .challengesSolved("Updated challenges solved with services")
+                .budgetRangeEnum("LARGE")
                 .services(List.of(service))
                 .build();
 
@@ -226,7 +280,7 @@ public class CaseStudySteps {
     public void iCreateACaseStudyWithEmptyTitle() {
         CaseStudyRequest request = CaseStudyRequest.builder()
                 .projectName("")
-                .description("Test description")
+                .clientIndustry("Test Industry")
                 .build();
 
         Response response = given()
@@ -244,8 +298,8 @@ public class CaseStudySteps {
     public void iHaveACaseStudyWithoutResults() {
         CaseStudyRequest request = CaseStudyRequest.builder()
                 .projectName("Incomplete Case Study")
-                .description("Test description")
-                .technologies("Java")
+                .clientIndustry("Test Industry")
+                .keywords("incomplete")
                 .build();
 
         Response response = given()
@@ -283,7 +337,8 @@ public class CaseStudySteps {
         CaseStudyResponse caseStudy = response.as(CaseStudyResponse.class);
         assertThat(caseStudy.getServices()).isNotNull();
         assertThat(caseStudy.getServices()).isNotEmpty();
-        assertThat(caseStudy.getServices().get(0).getServiceId()).isEqualTo(1L);
+        Long expectedServiceId = context.getCreatedId("service");
+        assertThat(caseStudy.getServices().get(0).getServiceId()).isEqualTo(expectedServiceId);
         assertThat(caseStudy.getServices().get(0).getDiscountPercentage()).isEqualTo(BigDecimal.valueOf(10.00));
     }
 }

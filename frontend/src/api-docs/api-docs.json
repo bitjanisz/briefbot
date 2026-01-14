@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "https://briefbot-f158470d83ba.herokuapp.com",
       "description": "Generated server url"
     }
   ],

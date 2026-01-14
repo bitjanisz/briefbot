@@ -10,9 +10,11 @@ import java.util.List;
 @Builder
 public class CaseStudyRequest {
     private String projectName;
-    private String description;
-    private String results;
-    private String technologies;
+    private String clientIndustry;
+    private String keywords;
+    private String scopeSummary;
+    private String challengesSolved;
+    private String budgetRangeEnum;
     private List<Service> services;
 
     @Data

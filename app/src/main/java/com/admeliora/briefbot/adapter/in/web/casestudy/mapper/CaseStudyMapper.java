@@ -3,7 +3,6 @@ package com.admeliora.briefbot.adapter.in.web.casestudy.mapper;
 import com.admeliora.briefbot.adapter.in.web.casestudy.model.request.CaseStudyCreateRequest;
 import com.admeliora.briefbot.adapter.in.web.casestudy.model.request.CaseStudyUpdateRequest;
 import com.admeliora.briefbot.adapter.in.web.casestudy.model.response.CaseStudyResponse;
-import com.admeliora.briefbot.adapter.in.web.casestudy.model.response.CaseStudyServiceResponse;
 import com.admeliora.briefbot.application.casestudy.model.CaseStudy;
 import com.admeliora.briefbot.application.casestudy.model.CaseStudyService;
 import com.admeliora.briefbot.application.casestudy.port.in.command.CaseStudyServiceCommand;
@@ -19,7 +18,7 @@ public class CaseStudyMapper {
     public static CaseStudyResponse toResponse(CaseStudy caseStudy) {
         if (caseStudy == null) return null;
 
-        List<CaseStudyServiceResponse> services = caseStudy.getCaseStudyServices() != null ?
+        List<CaseStudyResponse.Service> services = caseStudy.getCaseStudyServices() != null ?
                 caseStudy.getCaseStudyServices().stream()
                         .map(CaseStudyMapper::toServiceResponse)
                         .collect(Collectors.toList()) : Collections.emptyList();
@@ -39,9 +38,9 @@ public class CaseStudyMapper {
         );
     }
 
-    public static CaseStudyServiceResponse toServiceResponse(CaseStudyService service) {
+    public static CaseStudyResponse.Service toServiceResponse(CaseStudyService service) {
         if (service == null) return null;
-        return new CaseStudyServiceResponse(
+        return new CaseStudyResponse.Service(
                 service.getId(),
                 service.getServiceId(),
                 service.getDiscountPercentage(),

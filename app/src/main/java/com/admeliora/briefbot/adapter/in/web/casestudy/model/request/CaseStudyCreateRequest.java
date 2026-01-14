@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record CaseStudyCreateRequest(
@@ -19,7 +20,12 @@ public record CaseStudyCreateRequest(
         @Size(max = 50)
         String budgetRangeEnum,
         @Valid
-        List<CaseStudyServiceRequest> services
+        List<Service> services
 ) {
+    public record Service(
+            @NotNull
+            Long serviceId,
+            BigDecimal discountPercentage
+    ) {
+    }
 }
-

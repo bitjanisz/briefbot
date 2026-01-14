@@ -38,6 +38,7 @@ Feature: Case Study Management
   @update-with-services
   Scenario: Update case study to add services
     Given I have an existing case study
+    And I create a service with name "Added Service" and price 1000.00
     When I update the case study to add services
     Then the response status should be 200
     And the case study should contain services
