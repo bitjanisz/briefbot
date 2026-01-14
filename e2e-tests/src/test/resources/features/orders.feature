@@ -37,8 +37,8 @@ Feature: Order Management
     And the order status should be "CANCELLED"
 
   @list
-  Scenario: List orders for account
-    When I list all orders for account 1
+  Scenario: List all orders for account
+    When I list all orders for the default account
     Then the response status should be 200
     And the response should contain a list of orders
 

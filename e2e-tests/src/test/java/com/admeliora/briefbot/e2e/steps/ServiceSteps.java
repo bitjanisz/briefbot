@@ -4,14 +4,16 @@ import com.admeliora.briefbot.e2e.config.TestConfig;
 import com.admeliora.briefbot.e2e.model.request.ServiceRequest;
 import com.admeliora.briefbot.e2e.model.response.ServiceResponse;
 import com.admeliora.briefbot.e2e.support.TestContext;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +28,49 @@ public class ServiceSteps {
     @Autowired
     public ServiceSteps(TestContext context) {
         this.context = context;
+    }
+
+    @Given("I create a service with the following details:")
+    public void iCreateAServiceWithDetails(io.cucumber.datatable.DataTable dataTable) {
+        List<Map<String, String>> table = dataTable.asMaps(String.class, String.class);
+        if (table.isEmpty()) {
+            throw new IllegalArgumentException("Service details table cannot be empty");
+        }
+
+        // Create only one service using the first row
+        Map<String, String> row = table.get(0);
+        String name = row.get("name");
+        Double price = Double.valueOf(row.get("price"));
+
+        ServiceRequest request = ServiceRequest.builder()
+                .name(name)
+                .description("Test service description")
+                .accountId(TestConfig.getDefaultAccountId())
+                .basePrice(BigDecimal.valueOf(price))
+                .vatRate(BigDecimal.valueOf(23))
+                .currency("PLN")
+                .pricingUnit("project")
+                .isActive(true)
+                .minPriceThreshold(BigDecimal.valueOf(1000))
+//                    .relations(new ArrayList<>())
+                .build();
+
+        Response response = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(request)
+                .when()
+                .post("/services")
+                .then()
+                .extract()
+                .response();
+
+        if (response.getStatusCode() == 201) {
+            ServiceResponse serviceResponse = response.as(ServiceResponse.class);
+            context.setCreatedId("service", serviceResponse.getId());
+            context.put("lastService", serviceResponse);
+        } else {
+            throw new IllegalStateException("Service creation failed for " + name + " with status: " + response.getStatusCode());
+        }
     }
 
     @When("I create a service with name {string} and price {double}")

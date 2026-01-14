@@ -43,8 +43,8 @@ Feature: Briefing Management
     Then the response status should be 204
 
   @list
-  Scenario: List briefings for account
-    When I list all briefings for account 1
+  Scenario: List all briefings for account
+    When I list all briefings for the default account
     Then the response status should be 200
     And the response should contain a list of briefings
 

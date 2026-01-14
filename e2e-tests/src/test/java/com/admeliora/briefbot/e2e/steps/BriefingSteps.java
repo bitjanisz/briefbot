@@ -113,14 +113,16 @@ public class BriefingSteps {
         assertThat(response.getStatusCode()).isEqualTo(200);
     }
 
-    @When("I list all briefings for account 1")
-    public void iListAllBriefingsForAccount() {
+    @When("I list all briefings for the default account")
+    public void iListAllBriefingsForTheDefaultAccount() {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
+                .queryParam("accountId", TestConfig.getDefaultAccountId())
                 .when()
-                .get("/briefings?accountId=1")
+                .get("/briefings")
                 .then()
-                .extract().response();
+                .extract()
+                .response();
 
         context.setLastResponse(response);
     }

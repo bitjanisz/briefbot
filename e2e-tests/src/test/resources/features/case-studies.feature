@@ -38,10 +38,14 @@ Feature: Case Study Management
   @update-with-services
   Scenario: Update case study to add services
     Given I have an existing case study
-    And I create a service with name "Added Service" and price 1000.00
-    When I update the case study to add services
+    And I create a service with the following details:
+      | name          | price   |
+      | Added Service | 1000.00 |
+    When I update the case study to add services with discount 15.00
     Then the response status should be 200
-    And the case study should contain services
+    And the case study should contain services with the following details:
+      | field               | value  |
+      | discountPercentage  | 15.00  |
 
   @delete @skipped
   Scenario: Delete a case study
@@ -51,7 +55,7 @@ Feature: Case Study Management
 
   @list
   Scenario: List case studies for account
-    When I list all case studies for account 1
+    When I list all case studies for the default account
     Then the response status should be 200
     And the response should contain a list of case studies
 

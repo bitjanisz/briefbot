@@ -43,8 +43,8 @@ Feature: Offer Management
     Then the response status should be 204
 
   @list
-  Scenario: List offers for account
-    When I list all offers for account 1
+  Scenario: List all offers for account
+    When I list all offers for the default account
     Then the response status should be 200
     And the response should contain a list of offers
 

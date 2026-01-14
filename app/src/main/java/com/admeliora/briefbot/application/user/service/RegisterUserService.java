@@ -12,6 +12,7 @@ import com.admeliora.briefbot.application.user.port.out.UserPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,9 @@ public class RegisterUserService implements RegisterUserPort {
     private final PasswordEncoder passwordEncoder;
     private final PasswordGeneratorPort passwordGenerator;
     private final AddUserToAccountUseCase addUserToAccountUseCase;
+
+    @Value("${app.default.account.id:1}")
+    private Long defaultAccountId;
 
     @Override
     @Transactional
@@ -58,9 +62,9 @@ public class RegisterUserService implements RegisterUserPort {
 
         // Assign user to default account 1 with MEMBER role
         try {
-            AddUserToAccountCommand addCommand = new AddUserToAccountCommand(1L, savedUser.getId(), AccountRole.MEMBER);
+            AddUserToAccountCommand addCommand = new AddUserToAccountCommand(defaultAccountId, savedUser.getId(), AccountRole.MEMBER);
             addUserToAccountUseCase.execute(addCommand);
-            log.info("User {} assigned to default account 1", savedUser.getId());
+            log.info("User {} assigned to default account {}", savedUser.getId(), defaultAccountId);
         } catch (Exception e) {
             log.error("Failed to assign user {} to default account", savedUser.getId(), e);
             // Don't fail registration if assignment fails

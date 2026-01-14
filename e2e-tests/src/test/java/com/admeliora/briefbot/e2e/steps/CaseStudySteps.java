@@ -9,6 +9,7 @@ import com.admeliora.briefbot.e2e.model.request.ServiceRequest;
 import com.admeliora.briefbot.e2e.model.response.ServiceResponse;
 import com.admeliora.briefbot.e2e.model.CaseStudyStatus;
 import com.admeliora.briefbot.e2e.support.TestContext;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -185,17 +187,24 @@ public class CaseStudySteps {
         context.setLastResponse(response);
     }
 
-    @When("I update the case study to add services")
-    public void iUpdateTheCaseStudyToAddServices() {
+    @When("I update the case study to add services with discount {double}")
+    public void iUpdateTheCaseStudyToAddServicesWithDiscount(Double discount) {
         Long caseStudyId = (Long) context.get("caseStudyId");
 
-        Long serviceId = context.getCreatedId("service");
-        assertThat(serviceId).as("Service ID should exist").isNotNull();
+        @SuppressWarnings("unchecked")
+        List<Long> expectedServiceIds = (List<Long>) context.get("serviceIds");
+        if (expectedServiceIds == null || expectedServiceIds.isEmpty()) {
+            // Fallback to single service
+            Long serviceId = context.getCreatedId("service");
+            expectedServiceIds = serviceId != null ? List.of(serviceId) : List.of();
+        }
 
-        CaseStudyUpdateRequest.Service service = CaseStudyUpdateRequest.Service.builder()
-                .serviceId(serviceId)
-                .discountPercentage(BigDecimal.valueOf(15.00))
-                .build();
+        List<CaseStudyUpdateRequest.Service> services = expectedServiceIds.stream()
+                .map(serviceId -> CaseStudyUpdateRequest.Service.builder()
+                        .serviceId(serviceId)
+                        .discountPercentage(BigDecimal.valueOf(discount))
+                        .build())
+                .toList();
 
         CaseStudyUpdateRequest request = CaseStudyUpdateRequest.builder()
                 .id(caseStudyId)
@@ -205,7 +214,7 @@ public class CaseStudySteps {
                 .scopeSummary("Updated scope summary with services")
                 .challengesSolved("Updated challenges solved with services")
                 .budgetRangeEnum("LARGE")
-                .services(List.of(service))
+                .services(services)
                 .build();
 
         Response response = given()
@@ -225,12 +234,13 @@ public class CaseStudySteps {
         assertThat(response.getStatusCode()).isEqualTo(200);
     }
 
-    @When("I list all case studies for account 1")
-    public void iListAllCaseStudiesForAccount() {
+    @When("I list all case studies for the default account")
+    public void iListAllCaseStudiesForTheDefaultAccount() {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
+                .queryParam("accountId", TestConfig.getDefaultAccountId())
                 .when()
-                .get("/case-studies?accountId=1")
+                .get("/case-studies")
                 .then()
                 .extract().response();
 
@@ -340,5 +350,54 @@ public class CaseStudySteps {
         Long expectedServiceId = context.getCreatedId("service");
         assertThat(caseStudy.getServices().get(0).getServiceId()).isEqualTo(expectedServiceId);
         assertThat(caseStudy.getServices().get(0).getDiscountPercentage()).isEqualTo(BigDecimal.valueOf(10.00));
+    }
+
+    @Then("the case study should contain services with the following details:")
+    public void theCaseStudyShouldContainServicesWithDetails(DataTable dataTable) {
+        Response response = context.getLastResponse();
+        CaseStudyResponse caseStudy = response.as(CaseStudyResponse.class);
+        assertThat(caseStudy.getServices()).isNotNull();
+        assertThat(caseStudy.getServices()).isNotEmpty();
+
+        Long expectedServiceId = context.getCreatedId("service");
+        // Check that the expected service is present
+        boolean serviceFound = caseStudy.getServices().stream()
+                .anyMatch(service -> service.getServiceId().equals(expectedServiceId));
+        assertThat(serviceFound).as("Expected service should be present").isTrue();
+
+        // Process the data table
+        List<Map<String, String>> table = dataTable.asMaps(String.class, String.class);
+        for (Map<String, String> row : table) {
+            String field = row.get("field");
+            String expectedValue = row.get("value");
+
+            // Check that all services have this field with the expected value
+            for (CaseStudyResponse.Service service : caseStudy.getServices()) {
+                try {
+                    // Use reflection to get the field value
+                    java.lang.reflect.Field fieldObj = service.getClass().getDeclaredField(field);
+                    fieldObj.setAccessible(true);
+                    Object actualValue = fieldObj.get(service);
+
+                    // Convert expected value to appropriate type
+                    if (actualValue instanceof BigDecimal) {
+                        assertThat((BigDecimal) actualValue).isEqualTo(new BigDecimal(expectedValue));
+                    } else if (actualValue instanceof String) {
+                        assertThat((String) actualValue).isEqualTo(expectedValue);
+                    } else if (actualValue instanceof Long) {
+                        assertThat((Long) actualValue).isEqualTo(Long.valueOf(expectedValue));
+                    } else if (actualValue instanceof Integer) {
+                        assertThat((Integer) actualValue).isEqualTo(Integer.valueOf(expectedValue));
+                    } else if (actualValue instanceof Boolean) {
+                        assertThat((Boolean) actualValue).isEqualTo(Boolean.valueOf(expectedValue));
+                    } else {
+                        // For other types, convert to string and compare
+                        assertThat(actualValue.toString()).isEqualTo(expectedValue);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to check field " + field + " for service " + service.getServiceId(), e);
+                }
+            }
+        }
     }
 }

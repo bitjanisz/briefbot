@@ -37,7 +37,6 @@ public class OfferSteps {
                 .accountId(TestConfig.getDefaultAccountId())
                 .name("Test Client")
                 .email("test@client.com")
-                .industry("industry")
                 .companyName("Test Company")
                 .industry("IT")
                 .build();
@@ -145,14 +144,16 @@ public class OfferSteps {
         assertThat(offer.getStatus()).isEqualTo(status);
     }
 
-    @When("I list all offers for account 1")
-    public void iListAllOffersForAccount() {
+    @When("I list all offers for the default account")
+    public void iListAllOffersForTheDefaultAccount() {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
+                .queryParam("accountId", TestConfig.getDefaultAccountId())
                 .when()
-                .get("/offers?accountId=1")
+                .get("/offers")
                 .then()
-                .extract().response();
+                .extract()
+                .response();
 
         context.setLastResponse(response);
     }

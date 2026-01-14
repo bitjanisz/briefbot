@@ -160,14 +160,16 @@ public class OrderSteps {
         assertThat(order.getStatus()).isEqualTo(status);
     }
 
-    @When("I list all orders for account 1")
-    public void iListAllOrdersForAccount() {
+    @When("I list all orders for the default account")
+    public void iListAllOrdersForTheDefaultAccount() {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
+                .queryParam("accountId", TestConfig.getDefaultAccountId())
                 .when()
-                .get("/orders?accountId=1")
+                .get("/orders")
                 .then()
-                .extract().response();
+                .extract()
+                .response();
 
         context.setLastResponse(response);
     }
@@ -183,7 +185,7 @@ public class OrderSteps {
     public void iHaveAnOfferInStatusForOrder(String status) {
         // Create offer with specific status
         ClientRequest clientRequest = ClientRequest.builder()
-                .accountId(1L)
+                .accountId(TestConfig.getDefaultAccountId())
                 .name("Status Test Client")
                 .email("status@test.com")
                 .companyName("Test Company")

@@ -14,6 +14,15 @@ Feature: Service Management
     Then the response status should be 201
     And the response should contain the service with name "Web Development"
 
+#  @create-multiple
+#  Scenario: Create multiple services
+#    When I create services with the following details:
+#      | name              | price   |
+#      | Web Development   | 5000.00 |
+#      | Mobile Development| 4000.00 |
+#    Then the response status should be 201
+#    And the services should be created
+
 #  @create-with-relations @skipped
 #  Scenario: Create a service with related services
 #    When I create a service with name "Backend Development" and price 3000.00
@@ -48,4 +57,3 @@ Feature: Service Management
     When I list all services for account 1
     Then the response status should be 200
     And the response should contain a list of services
-

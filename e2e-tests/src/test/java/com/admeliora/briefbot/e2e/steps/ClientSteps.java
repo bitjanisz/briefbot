@@ -111,11 +111,11 @@ public class ClientSteps {
         context.setLastResponse(response);
     }
 
-    @When("I list all clients for account {long}")
-    public void iListAllClientsForAccount(Long accountId) {
+    @When("I list all clients for the default account")
+    public void iListAllClientsForTheDefaultAccount() {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
-                .queryParam("accountId", accountId)
+                .queryParam("accountId", TestConfig.getDefaultAccountId())
                 .when()
                 .get("/clients")
                 .then()
@@ -150,9 +150,8 @@ public class ClientSteps {
 
     @And("I create a sample client")
     public void iCreateASampleClient() {
-        var radom = RandomStringUtils.insecure().nextAlphabetic(5);
-        String randomEmail = "client+" + radom + "@example.com";
-        iCreateAClientWithNameAndEmail("Sample " + radom + " Client ", randomEmail);
+        var random = RandomStringUtils.insecure().nextAlphabetic(5);
+        String randomEmail = "client+" + random + "@example.com";
+        iCreateAClientWithNameAndEmail("Sample " + random + " Client ", randomEmail);
     }
 }
-

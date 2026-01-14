@@ -54,7 +54,7 @@ public class UserSteps {
             }
             context.put("createdUserId", userResponse.id());
         } else {
-            throw new IllegalStateException("Account creation failed with status: " + response.getStatusCode());
+            throw new IllegalStateException("User creation failed with status: " + response.getStatusCode());
         }
     }
 
