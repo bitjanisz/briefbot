@@ -8,6 +8,20 @@ End-to-End API tests for BriefBot using Cucumber and REST Assured.
 - Maven 3.8+
 - BriefBot application running locally on `http://localhost:8080`
 
+### AI Chat Local Setup
+
+For AI Chat tests (`@ai-chat`), Ollama must be running locally. Use Docker to set up Ollama:
+
+```bash
+# Run Ollama container with GPU support
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+# Pull and run the required model (llama3.2)
+docker exec -it ollama ollama run llama3.2
+```
+
+Ensure the model supports tool calling (function calling). If using a different model, update `OLLAMA_MODEL` in the application configuration.
+
 ## Project Structure
 
 ```
@@ -89,4 +103,3 @@ Feature: Client Management
 After running tests, reports are generated in:
 - `target/cucumber-reports/`
 - Console output with test results
-
