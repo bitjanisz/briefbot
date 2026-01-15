@@ -181,66 +181,196 @@ public class AiChatSteps {
 
     @Given("I have case studies with services and pricing")
     public void iHaveCaseStudiesWithServicesAndPricing() {
-        // Create multiple services
+        // Create multiple services with different types
         List<Long> serviceIds = new ArrayList<>();
 
-        for (int i = 1; i <= 3; i++) {
-            ServiceRequest serviceRequest = ServiceRequest.builder()
-                    .name("Service " + i)
-                    .description("Test service " + i)
-                    .basePrice(BigDecimal.valueOf(1000 * i))
-                    .vatRate(BigDecimal.valueOf(23))
-                    .currency("PLN")
-                    .pricingUnit("project")
-                    .isActive(true)
-                    .minPriceThreshold(BigDecimal.valueOf(500 * i))
-                    .build();
+        // Web Development Service
+        ServiceRequest webDevService = ServiceRequest.builder()
+                .name("Web Development Service")
+                .description("Complete web application development including frontend and backend")
+                .basePrice(BigDecimal.valueOf(15000))
+                .vatRate(BigDecimal.valueOf(23))
+                .currency("PLN")
+                .pricingUnit("project")
+                .isActive(true)
+                .minPriceThreshold(BigDecimal.valueOf(7500))
+                .build();
 
-            Response serviceResponse = given()
-                    .spec(TestConfig.getRequestSpec(context))
-                    .body(serviceRequest)
-                    .when()
-                    .post("/services")
-                    .then()
-                    .extract().response();
+        Response webDevResponse = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(webDevService)
+                .when()
+                .post("/services")
+                .then()
+                .extract().response();
 
-            if (serviceResponse.getStatusCode() == 201) {
-                ServiceResponse service = serviceResponse.as(ServiceResponse.class);
-                serviceIds.add(service.getId());
-            }
+        if (webDevResponse.getStatusCode() == 201) {
+            ServiceResponse service = webDevResponse.as(ServiceResponse.class);
+            serviceIds.add(service.getId());
         }
 
-        // Create case studies
-        for (int i = 1; i <= 2; i++) {
-            CaseStudyRequest request = CaseStudyRequest.builder()
-                    .projectName("Case Study " + i)
-                    .clientIndustry("Technology")
-                    .keywords("test,keywords")
-                    .scopeSummary("Test case study " + i)
-                    .challengesSolved("Solved challenges " + i)
-                    .budgetRangeEnum("MEDIUM")
-                    .build();
+        // Mobile App Development Service
+        ServiceRequest mobileService = ServiceRequest.builder()
+                .name("Mobile App Development")
+                .description("Native mobile application development for iOS and Android")
+                .basePrice(BigDecimal.valueOf(25000))
+                .vatRate(BigDecimal.valueOf(23))
+                .currency("PLN")
+                .pricingUnit("project")
+                .isActive(true)
+                .minPriceThreshold(BigDecimal.valueOf(12500))
+                .build();
 
-            Response response = given()
-                    .spec(TestConfig.getRequestSpec(context))
-                    .body(request)
-                    .when()
-                    .post("/case-studies")
-                    .then()
-                    .extract().response();
+        Response mobileResponse = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(mobileService)
+                .when()
+                .post("/services")
+                .then()
+                .extract().response();
 
-            if (response.getStatusCode() == 201) {
-                CaseStudyResponse caseStudy = response.as(CaseStudyResponse.class);
-                context.put("caseStudyId_" + i, caseStudy.getId());
-            }
+        if (mobileResponse.getStatusCode() == 201) {
+            ServiceResponse service = mobileResponse.as(ServiceResponse.class);
+            serviceIds.add(service.getId());
         }
+
+        // Cloud Migration Service
+        ServiceRequest cloudService = ServiceRequest.builder()
+                .name("Cloud Migration Service")
+                .description("Complete migration of existing systems to cloud infrastructure")
+                .basePrice(BigDecimal.valueOf(30000))
+                .vatRate(BigDecimal.valueOf(23))
+                .currency("PLN")
+                .pricingUnit("project")
+                .isActive(true)
+                .minPriceThreshold(BigDecimal.valueOf(15000))
+                .build();
+
+        Response cloudResponse = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(cloudService)
+                .when()
+                .post("/services")
+                .then()
+                .extract().response();
+
+        if (cloudResponse.getStatusCode() == 201) {
+            ServiceResponse service = cloudResponse.as(ServiceResponse.class);
+            serviceIds.add(service.getId());
+        }
+
+        // AI Integration Service
+        ServiceRequest aiService = ServiceRequest.builder()
+                .name("AI Integration Service")
+                .description("Integration of AI/ML capabilities into existing business processes")
+                .basePrice(BigDecimal.valueOf(35000))
+                .vatRate(BigDecimal.valueOf(23))
+                .currency("PLN")
+                .pricingUnit("project")
+                .isActive(true)
+                .minPriceThreshold(BigDecimal.valueOf(17500))
+                .build();
+
+        Response aiResponse = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(aiService)
+                .when()
+                .post("/services")
+                .then()
+                .extract().response();
+
+        if (aiResponse.getStatusCode() == 201) {
+            ServiceResponse service = aiResponse.as(ServiceResponse.class);
+            serviceIds.add(service.getId());
+        }
+
+        // Consulting Service
+        ServiceRequest consultingService = ServiceRequest.builder()
+                .name("IT Consulting Service")
+                .description("Expert IT consulting and strategic planning services")
+                .basePrice(BigDecimal.valueOf(500))
+                .vatRate(BigDecimal.valueOf(23))
+                .currency("PLN")
+                .pricingUnit("hour")
+                .isActive(true)
+                .minPriceThreshold(BigDecimal.valueOf(250))
+                .build();
+
+        Response consultingResponse = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(consultingService)
+                .when()
+                .post("/services")
+                .then()
+                .extract().response();
+
+        if (consultingResponse.getStatusCode() == 201) {
+            ServiceResponse service = consultingResponse.as(ServiceResponse.class);
+            serviceIds.add(service.getId());
+        }
+
+        // Create diverse case studies
+        createCaseStudy("E-commerce Platform Development",
+                "Technology",
+                "ecommerce,web development,react,node.js",
+                "Complete e-commerce platform with payment integration, inventory management, and customer portal",
+                "Successfully launched a scalable e-commerce solution handling 10k+ daily transactions",
+                "LARGE");
+
+        createCaseStudy("Healthcare Mobile App",
+                "Healthcare",
+                "mobile,ios,android,healthcare",
+                "Patient management mobile application with appointment scheduling and telemedicine features",
+                "Improved patient engagement by 300% and reduced no-show rates by 40%",
+                "LARGE");
+
+        createCaseStudy("Financial Services Cloud Migration",
+                "Finance",
+                "cloud,aws,migration,security",
+                "Migration of legacy banking systems to secure cloud infrastructure with zero downtime",
+                "Achieved 99.9% uptime and 60% cost reduction in infrastructure expenses",
+                "LARGE");
+
+        createCaseStudy("AI-Powered Analytics Platform",
+                "Technology",
+                "ai,machine learning,analytics,big data",
+                "Development of predictive analytics platform using machine learning for business intelligence",
+                "Increased operational efficiency by 45% through data-driven decision making",
+                "LARGE");
+
+        createCaseStudy("SaaS Product Launch",
+                "Technology",
+                "saas,web application,subscription model",
+                "End-to-end development of B2B SaaS product with multi-tenant architecture",
+                "Reached 500+ paying customers within first year of launch",
+                "MEDIUM");
 
         context.put("serviceIds", serviceIds);
     }
 
-    @Given("I have multiple case studies with services")
-    public void iHaveMultipleCaseStudiesWithServices() {
-        iHaveCaseStudiesWithServicesAndPricing();
+    private void createCaseStudy(String projectName, String clientIndustry, String keywords,
+                                String scopeSummary, String challengesSolved, String budgetRange) {
+        CaseStudyRequest request = CaseStudyRequest.builder()
+                .projectName(projectName)
+                .clientIndustry(clientIndustry)
+                .keywords(keywords)
+                .scopeSummary(scopeSummary)
+                .challengesSolved(challengesSolved)
+                .budgetRangeEnum(budgetRange)
+                .build();
+
+        Response response = given()
+                .spec(TestConfig.getRequestSpec(context))
+                .body(request)
+                .when()
+                .post("/case-studies")
+                .then()
+                .extract().response();
+
+        if (response.getStatusCode() == 201) {
+            CaseStudyResponse caseStudy = response.as(CaseStudyResponse.class);
+            context.put("caseStudyId_" + projectName.replaceAll("\\s+", "_"), caseStudy.getId());
+        }
     }
 
     @Then("the chat response should not be empty")
@@ -268,5 +398,20 @@ public class AiChatSteps {
         assertThat(response.toLowerCase())
                 .containsAnyOf("case study", "service", "project", "price", "pricing");
     }
-}
 
+    @Then("the response should include suggested services with IDs and discounts")
+    public void theResponseShouldIncludeSuggestedServicesWithIdsAndDiscounts() {
+        ChatResponse chatResponse = context.get("chatResponse", ChatResponse.class);
+        assertThat(chatResponse).isNotNull();
+        assertThat(chatResponse.getSuggestedServices()).isNotNull();
+        assertThat(chatResponse.getSuggestedServices()).isNotEmpty();
+
+        // Check that services have required fields
+        chatResponse.getSuggestedServices().forEach(service -> {
+            assertThat(service.getServiceId()).isNotNull();
+            assertThat(service.getServiceName()).isNotNull();
+            assertThat(service.getDiscountPercentage()).isNotNull();
+            assertThat(service.getFinalPrice()).isNotNull();
+        });
+    }
+}

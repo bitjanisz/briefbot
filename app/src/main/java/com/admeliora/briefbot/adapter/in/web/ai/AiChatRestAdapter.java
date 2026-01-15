@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("ai/chat")
 @RequiredArgsConstructor
@@ -23,19 +25,18 @@ public class AiChatRestAdapter {
     @PostMapping
     @Operation(
             summary = "Send a chat message to AI",
-            description = "Send a message to the AI assistant. The AI has access to case studies with services data through function calling."
+            description = "Send a message to the AI assistant. The AI analyzes customer requests and suggests relevant services based on case study data."
     )
     public ResponseEntity<ChatResponse> chat(@Valid @RequestBody ChatRequest request) {
         log.info("Received chat request: {}", request.message());
 
         try {
-            String response = aiChatService.chat(request.message());
-            return ResponseEntity.ok(new ChatResponse(response));
+            ChatResponse response = aiChatService.chat(request.message());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Error processing chat request", e);
             return ResponseEntity.internalServerError()
-                    .body(new ChatResponse("Error: " + e.getMessage()));
+                    .body(new ChatResponse("Error: " + e.getMessage(), List.of()));
         }
     }
 }
-
