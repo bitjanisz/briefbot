@@ -17,8 +17,11 @@ public record ChatResponse(
             @Schema(description = "Service ID")
             Long serviceId,
 
-            @Schema(description = "Service name")
-            String serviceName,
+            @Schema(description = "Original service name")
+            String originalName,
+
+            @Schema(description = "Translated service name")
+            String translatedName,
 
             @Schema(description = "Discount percentage")
             BigDecimal discountPercentage,
