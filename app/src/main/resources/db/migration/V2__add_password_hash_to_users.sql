@@ -47,4 +47,3 @@ SELECT u.id, a.id, 'MEMBER', CURRENT_TIMESTAMP
 FROM users u, accounts a
 WHERE u.email = 'borapltest@gmail.com'
   AND a.name = 'Default Account';
-

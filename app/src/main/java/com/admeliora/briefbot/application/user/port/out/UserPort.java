@@ -21,4 +21,6 @@ public interface UserPort {
     List<User> findAll();
 
     User save(User user);
+
+    void deleteById(Long id);
 }

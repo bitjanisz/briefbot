@@ -1,6 +1,10 @@
 package com.admeliora.briefbot.adapter.in.web.casestudy.model.response;
 
+import com.admeliora.briefbot.application.casestudy.model.CaseStudyStatus;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record CaseStudyResponse(
         Long id,
@@ -11,8 +15,15 @@ public record CaseStudyResponse(
         String scopeSummary,
         String challengesSolved,
         String budgetRangeEnum,
-        Boolean isPublic,
-        LocalDateTime createdAt
+        CaseStudyStatus status,
+        LocalDateTime createdAt,
+        List<Service> services
 ) {
+    public record Service(
+            Long id,
+            Long serviceId,
+            BigDecimal discountPercentage,
+            LocalDateTime createdAt
+    ) {
+    }
 }
-

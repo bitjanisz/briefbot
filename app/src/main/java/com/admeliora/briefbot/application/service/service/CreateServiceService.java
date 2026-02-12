@@ -38,18 +38,18 @@ public class CreateServiceService implements CreateServiceUseCase {
                 .isActive(command.isActive())
                 .build();
 
-        if (command.relations() != null && !command.relations().isEmpty()) {
-            command.relations().forEach(relationCommand -> {
-                var relatedService = servicePort.findById(relationCommand.relatedServiceId()).orElseThrow();
-                ServiceRelation serviceRelation = ServiceRelation.builder()
-                        .parentService(service)
-                        .relatedServiceId(relatedService.getId())
-                        .relationType(relationCommand.relationType())
-                        .impactDescription(relationCommand.impactDescription())
-                        .build();
-                service.getServiceRelations().add(serviceRelation);
-            });
-        }
+//        if (command.relations() != null && !command.relations().isEmpty()) {
+//            command.relations().forEach(relationCommand -> {
+//                var relatedService = servicePort.findById(relationCommand.relatedServiceId()).orElseThrow();
+//                ServiceRelation serviceRelation = ServiceRelation.builder()
+//                        .parentService(service)
+//                        .relatedServiceId(relatedService.getId())
+//                        .relationType(relationCommand.relationType())
+//                        .impactDescription(relationCommand.impactDescription())
+//                        .build();
+//                service.getServiceRelations().add(serviceRelation);
+//            });
+//        }
 
         return servicePort.save(service);
     }

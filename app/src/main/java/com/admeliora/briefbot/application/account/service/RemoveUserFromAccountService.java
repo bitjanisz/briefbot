@@ -26,11 +26,7 @@ public class RemoveUserFromAccountService implements com.admeliora.briefbot.appl
         Long userId = command.userId();
         Long accountId = command.accountId();
 
-        // Find the UserAccount by userId and accountId
-        List<UserAccount> userAccounts = userAccountPort.findByAccountId(accountId);
-        UserAccount userAccount = userAccounts.stream()
-                .filter(ua -> ua.getUserId().equals(userId))
-                .findFirst()
+        UserAccount userAccount = userAccountPort.findByAccountIdAndUserId(accountId, userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "UserAccount not found for userId=" + userId + ", accountId=" + accountId
                 ));

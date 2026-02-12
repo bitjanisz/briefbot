@@ -34,17 +34,15 @@ import org.springframework.web.bind.annotation.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication", description = "User registration and login endpoints")
 public class AuthRestController {
 
     private final RegisterUserPort registerUserPort;
     private final LoginPort loginPort;
-
     private final UserAccountRepositoryJpa userAccountRepository;
     private final JwtTokenProvider jwtTokenProvider;
-
     private final JwtProperties jwtProperties;
 
     @PostMapping("/register")
@@ -67,7 +65,7 @@ public class AuthRestController {
         User user = registerUserPort.register(command);
 
         AuthResponse response = AuthResponse.builder()
-                .userId(user.getId())
+                .id(user.getId())
                 .email(user.getEmail())
                 .givenName(user.getGivenName())
                 .familyName(user.getFamilyName())
@@ -77,7 +75,7 @@ public class AuthRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping({"/login", "/logon"})
+    @PostMapping("/login")
     @Operation(summary = "Login with email and password (also available under /logon)", description = "Authenticate user using email and password credentials; on success an HttpOnly cookie named BRIEFBOT_JWT with a signed JWT is set in the response.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Login successful (sets HttpOnly cookie 'BRIEFBOT_JWT')",
@@ -126,7 +124,7 @@ public class AuthRestController {
         response.addCookie(jwtCookie);
 
         AuthResponse authResponse = AuthResponse.builder()
-                .userId(user.getId())
+                .id(user.getId())
                 .email(user.getEmail())
                 .givenName(user.getGivenName())
                 .familyName(user.getFamilyName())

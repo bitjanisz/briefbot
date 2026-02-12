@@ -1,8 +1,12 @@
 package com.admeliora.briefbot.adapter.in.web.casestudy.model.request;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public record CaseStudyUpdateRequest(
         @NotNull
@@ -17,8 +21,13 @@ public record CaseStudyUpdateRequest(
         String challengesSolved,
         @Size(max = 50)
         String budgetRangeEnum,
-        @NotNull
-        Boolean isPublic
+        @Valid
+        List<Service> services
 ) {
+    public record Service(
+            @NotNull
+            Long serviceId,
+            BigDecimal discountPercentage
+    ) {
+    }
 }
-

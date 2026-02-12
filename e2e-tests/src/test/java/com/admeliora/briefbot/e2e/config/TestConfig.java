@@ -80,6 +80,10 @@ public class TestConfig {
         return properties.getProperty("base.url", "http://localhost:8080");
     }
 
+    public static String getActuatorUrl() {
+        return properties.getProperty("actuator.url", "http://localhost:8081/actuator/health");
+    }
+
     public static Long getDefaultAccountId() {
         return Long.parseLong(properties.getProperty("default.account.id", "1"));
     }

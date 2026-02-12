@@ -1,9 +1,9 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.AuthResponse;
-import com.admeliora.briefbot.e2e.model.LoginRequest;
-import com.admeliora.briefbot.e2e.model.RegisterUserRequest;
+import com.admeliora.briefbot.e2e.model.response.AuthResponse;
+import com.admeliora.briefbot.e2e.model.request.LoginRequest;
+import com.admeliora.briefbot.e2e.model.request.RegisterUserRequest;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Slf4j
 public class AuthenticationSteps {
+
+    private static final String JWT_COOKIE_NAME = "BRIEFBOT_JWT";
 
     private final TestContext context;
 
@@ -68,6 +70,8 @@ public class AuthenticationSteps {
         // For test profile, the password is always "Secure123" (hardcoded in TestPasswordGenerator)
         if (response.getStatusCode() == 201) {
             context.put("temporary.password", "Secure123");
+        } else {
+            throw new IllegalStateException("User creation failed with status: " + response.getStatusCode());
         }
     }
 
@@ -111,13 +115,13 @@ public class AuthenticationSteps {
         Response response = context.getLastResponse();
         AuthResponse authResponse = response.as(AuthResponse.class);
 
-        assertThat(authResponse.getUserId())
+        assertThat(authResponse.id())
                 .as("User ID should be present")
                 .isNotNull();
-        assertThat(authResponse.getEmail())
+        assertThat(authResponse.email())
                 .as("Email should be present")
                 .isNotNull();
-        assertThat(authResponse.getMessage())
+        assertThat(authResponse.message())
                 .as("Message should contain password info")
                 .contains("password");
     }
@@ -129,7 +133,7 @@ public class AuthenticationSteps {
         Response response = context.getLastResponse();
         AuthResponse authResponse = response.as(AuthResponse.class);
 
-        assertThat(authResponse.getMessage())
+        assertThat(authResponse.message())
                 .as("Message should indicate email was sent")
                 .containsIgnoringCase("email");
     }
@@ -161,6 +165,11 @@ public class AuthenticationSteps {
         iLoginWithEmailAndPassword("admin@briefbot.com", "Admin123");
     }
 
+    @Given("I login as account admin")
+    public void iLoginAsAccountAdmin() {
+        iLoginWithEmailAndPassword("admin@briefbot.com", "Admin123");
+    }
+
     @When("I login with email {string} and password {string}")
     public void iLoginWithEmailAndPassword(String email, String password) {
         LoginRequest request = LoginRequest.builder()
@@ -179,10 +188,10 @@ public class AuthenticationSteps {
 
         context.setLastResponse(response);
 
-        // Save session cookies for subsequent authenticated requests
-        if (response.getStatusCode() == 200 && response.getCookies() != null) {
+        // Save JWT cookies for subsequent authenticated requests
+        if (response.getStatusCode() == 200) {
             context.setSessionCookies(response.getDetailedCookies());
-            log.info("Session cookies saved for user: {}", email);
+            log.info("JWT cookies saved for user: {}", email);
         }
     }
 
@@ -219,24 +228,29 @@ public class AuthenticationSteps {
         Response response = context.getLastResponse();
         AuthResponse authResponse = response.as(AuthResponse.class);
 
-        assertThat(authResponse.getUserId())
+        assertThat(authResponse.id())
                 .as("User ID should be present")
                 .isNotNull();
-        assertThat(authResponse.getEmail())
+        assertThat(authResponse.email())
                 .as("Email should be present")
                 .isNotNull();
-        assertThat(authResponse.getMessage())
+        assertThat(authResponse.message())
                 .as("Message should indicate successful login")
                 .containsIgnoringCase("success");
     }
 
     @And("I should be authenticated")
     public void iShouldBeAuthenticated() {
-        // Verify session cookie was set
+        // Verify JWT cookie was set
         Response response = context.getLastResponse();
         assertThat(response.getCookies())
-                .as("Session cookie should be present")
+                .as("JWT cookie should be present")
                 .isNotEmpty();
+
+        // Verify BRIEFBOT_JWT cookie specifically
+        assertThat(response.getCookie(JWT_COOKIE_NAME))
+                .as(JWT_COOKIE_NAME + " cookie should be present")
+                .isNotNull();
     }
 
     @Given("a user registered via OAuth with email {string}")

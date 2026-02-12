@@ -39,7 +39,6 @@ Feature: Client Management
 
   @list
   Scenario: List all clients for an account
-    When I list all clients for account 1
+    When I list all clients for the default account
     Then the response status should be 200
     And the response should contain a list of clients
-

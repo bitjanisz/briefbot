@@ -53,7 +53,7 @@ CREATE TABLE case_studies (
     scope_summary TEXT,
     challenges_solved TEXT,
     budget_range_enum VARCHAR(50),
-    is_public BOOLEAN DEFAULT FALSE,
+    status VARCHAR(50) DEFAULT 'DRAFT',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_case_studies_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
@@ -76,16 +76,27 @@ CREATE TABLE services (
     CONSTRAINT fk_services_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );
 
-CREATE TABLE service_relations (
+--CREATE TABLE service_relations (
+--    id BIGSERIAL PRIMARY KEY,
+--    parent_service_id BIGINT NOT NULL,
+--    related_service_id BIGINT NOT NULL,
+--    relation_type VARCHAR(50) NOT NULL,
+--    impact_description VARCHAR(255),
+--    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    CONSTRAINT fk_rel_parent FOREIGN KEY (parent_service_id) REFERENCES services(id) ON DELETE CASCADE,
+--    CONSTRAINT fk_rel_related FOREIGN KEY (related_service_id) REFERENCES services(id) ON DELETE CASCADE
+--);
+
+CREATE TABLE case_study_services (
     id BIGSERIAL PRIMARY KEY,
-    parent_service_id BIGINT NOT NULL,
-    related_service_id BIGINT NOT NULL,
-    relation_type VARCHAR(50) NOT NULL,
-    impact_description VARCHAR(255),
+    case_study_id BIGINT NOT NULL,
+    service_id BIGINT NOT NULL,
+    discount_percentage DECIMAL(5,2) DEFAULT 0.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_rel_parent FOREIGN KEY (parent_service_id) REFERENCES services(id) ON DELETE CASCADE,
-    CONSTRAINT fk_rel_related FOREIGN KEY (related_service_id) REFERENCES services(id) ON DELETE CASCADE
+    CONSTRAINT fk_case_study_services_case_study FOREIGN KEY (case_study_id) REFERENCES case_studies(id) ON DELETE CASCADE,
+    CONSTRAINT fk_case_study_services_service FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE,
+    CONSTRAINT uq_case_study_service UNIQUE(case_study_id, service_id)
 );
 
 -- 4. MODULE: WORKFLOW
@@ -192,4 +203,5 @@ CREATE INDEX idx_offers_briefing ON offers(briefing_id);
 CREATE INDEX idx_offer_versions_offer ON offer_versions(offer_id);
 CREATE INDEX idx_offer_items_version ON offer_version_items(offer_version_id);
 CREATE INDEX idx_orders_offer_version ON orders(offer_version_id);
-
+CREATE INDEX idx_case_study_services_case_study ON case_study_services(case_study_id);
+CREATE INDEX idx_case_study_services_service ON case_study_services(service_id);

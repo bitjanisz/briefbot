@@ -40,12 +40,13 @@ public class ServiceInRestAdapter {
                 request.currency(),
                 request.pricingUnit(),
                 request.minPriceThreshold(),
-                request.isActive(),
-                request.relations().stream().map(serviceRelation -> new com.admeliora.briefbot.application.service.port.in.command.ServiceRelation(
-                        serviceRelation.relatedServiceId(),
-                        serviceRelation.relationType(),
-                        serviceRelation.impactDescription()
-                )).toList());
+                request.isActive()
+//                request.relations().stream().map(serviceRelation -> new com.admeliora.briefbot.application.service.port.in.command.ServiceRelation(
+//                        serviceRelation.relatedServiceId(),
+//                        serviceRelation.relationType(),
+//                        serviceRelation.impactDescription()
+//                )).toList());
+                );
         var service = createServiceUseCase.create(command);
         return ServiceMapper.toResponse(service);
     }
@@ -70,12 +71,13 @@ public class ServiceInRestAdapter {
                 request.currency(),
                 request.pricingUnit(),
                 request.minPriceThreshold(),
-                request.isActive(),
-                request.relations().stream().map(serviceRelation -> new com.admeliora.briefbot.application.service.port.in.command.ServiceRelation(
-                        serviceRelation.relatedServiceId(),
-                        serviceRelation.relationType(),
-                        serviceRelation.impactDescription()
-                )).toList());
+                request.isActive()
+//                request.relations().stream().map(serviceRelation -> new com.admeliora.briefbot.application.service.port.in.command.ServiceRelation(
+//                        serviceRelation.relatedServiceId(),
+//                        serviceRelation.relationType(),
+//                        serviceRelation.impactDescription()
+//                )).toList());
+        );
         var service = updateServiceUseCase.update(command);
         return ServiceMapper.toResponse(service);
     }

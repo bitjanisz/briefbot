@@ -9,10 +9,10 @@ import java.util.List;
 public class ServiceMapper {
     public static ServiceResponse toResponse(Service service) {
         if (service == null) return null;
-        List<com.admeliora.briefbot.adapter.in.web.service.model.ServiceRelation> serviceRelations =
-                service.getServiceRelations() != null ? service.getServiceRelations().stream()
-                        .map(ServiceMapper::toRelationResponse)
-                        .toList() : List.of();
+//        List<com.admeliora.briefbot.adapter.in.web.service.model.ServiceRelation> serviceRelations =
+//                service.getServiceRelations() != null ? service.getServiceRelations().stream()
+//                        .map(ServiceMapper::toRelationResponse)
+//                        .toList() : List.of();
         return new ServiceResponse(
                 service.getId(),
                 service.getName(),
@@ -26,8 +26,8 @@ public class ServiceMapper {
                 service.getIsActive(),
                 service.getCreatedAt(),
                 service.getUpdatedAt(),
-                service.getVersion(),
-                serviceRelations
+                service.getVersion()
+//                serviceRelations
         );
     }
 

@@ -19,7 +19,7 @@ public record ServiceResponse(
         Boolean isActive,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        Long version,
-        List<ServiceRelation> relations
+        Long version
+//        List<ServiceRelation> relations
 ) {
 }

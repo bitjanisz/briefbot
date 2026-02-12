@@ -1,5 +1,7 @@
 package com.admeliora.briefbot.application.casestudy.port.in.command;
 
+import java.util.List;
+
 public record UpdateCaseStudyCommand(
         Long id,
         String projectName,
@@ -8,7 +10,6 @@ public record UpdateCaseStudyCommand(
         String scopeSummary,
         String challengesSolved,
         String budgetRangeEnum,
-        Boolean isPublic
+        List<CaseStudyServiceCommand> services
 ) {
 }
-

@@ -1,12 +1,13 @@
 package com.admeliora.briefbot.e2e.steps;
 
 import com.admeliora.briefbot.e2e.config.TestConfig;
-import com.admeliora.briefbot.e2e.model.ClientRequest;
-import com.admeliora.briefbot.e2e.model.ClientResponse;
+import com.admeliora.briefbot.e2e.model.request.ClientRequest;
+import com.admeliora.briefbot.e2e.model.response.ClientResponse;
 import com.admeliora.briefbot.e2e.support.TestContext;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.restassured.RestAssured.given;
@@ -48,6 +49,8 @@ public class ClientSteps {
         if (response.getStatusCode() == 201) {
             ClientResponse clientResponse = response.as(ClientResponse.class);
             context.setCreatedId("client", clientResponse.getId());
+        } else {
+            throw new IllegalStateException("client creation failed with status: " + response.getStatusCode());
         }
     }
 
@@ -108,11 +111,11 @@ public class ClientSteps {
         context.setLastResponse(response);
     }
 
-    @When("I list all clients for account {long}")
-    public void iListAllClientsForAccount(Long accountId) {
+    @When("I list all clients for the default account")
+    public void iListAllClientsForTheDefaultAccount() {
         Response response = given()
                 .spec(TestConfig.getRequestSpec(context))
-                .queryParam("accountId", accountId)
+                .queryParam("accountId", TestConfig.getDefaultAccountId())
                 .when()
                 .get("/clients")
                 .then()
@@ -144,5 +147,11 @@ public class ClientSteps {
                 .as("Response should contain clients array")
                 .isNotNull();
     }
-}
 
+    @And("I create a sample client")
+    public void iCreateASampleClient() {
+        var random = RandomStringUtils.insecure().nextAlphabetic(5);
+        String randomEmail = "client+" + random + "@example.com";
+        iCreateAClientWithNameAndEmail("Sample " + random + " Client ", randomEmail);
+    }
+}

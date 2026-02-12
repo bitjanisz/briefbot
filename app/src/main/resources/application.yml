@@ -1,5 +1,7 @@
 server:
   port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
   application:
     name: briefbot
 
@@ -41,6 +43,14 @@ spring:
   flyway:
     locations: classpath:db/migration
 
+  ai:
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      chat:
+        options:
+          model: ${OLLAMA_MODEL:llama3.2}
+          temperature: 0.7
+
 #  mvc:
 #    problemdetails:
 #      enabled: true
@@ -67,20 +77,26 @@ security:
     default-success-url: ${DEFAULT_SUCCESS_URL:/}
     login-url: ${LOGIN_URL:/login}
 
+# Default account configuration
+app:
+  default:
+    account:
+      id: ${DEFAULT_ACCOUNT_ID:1}
+
 # Actuator and management configuration
-#management:
-#  server:
-#    port: 8081
-#  health:
-#    mail:
-#      enabled: false
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
-#  endpoint:
-#    shutdown:
-#      enabled: false
+management:
+  server:
+    port: 8081
+  health:
+    mail:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: false
 
 springdoc:
   api-docs:

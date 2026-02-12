@@ -5,16 +5,17 @@ import com.admeliora.briefbot.adapter.out.persistence.user.jpa.UserRepositoryJpa
 import com.admeliora.briefbot.security.jwt.JwtAuthenticationFilter;
 import com.admeliora.briefbot.security.jwt.JwtProperties;
 import com.admeliora.briefbot.security.jwt.JwtTokenProvider;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,78 +33,51 @@ public class SecurityConfig {
     @Value("${security.redirect.login-url:/login}")
     private String loginUrl;
 
-//    @Bean
-//    @Order(1)
-//    SecurityFilterChain managementSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .securityMatcher(request -> request.getLocalPort() == 8081)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(
-//                                "/h2-console/**",
-//                                "/actuator/**"
-//                        ).permitAll()
-//                        .anyRequest().denyAll()
-//                )
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-//                .exceptionHandling(exception -> exception
-//                        .defaultAuthenticationEntryPointFor(
-//                                (request, response, authException) -> response.sendError(403, "Forbidden"),
-//                                request -> true
-//                        )
-//                );
-//        return http.build();
-//    }
-
     @Bean
-//    @Order(2)
+    @SneakyThrows
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            OidcAuthenticationSuccessHandler oidcSuccessHandler,
                                            JwtAuthenticationFilter jwtAuthenticationFilter,
                                            JwtProperties jwtProperties) {
-        try {
-            http
-                    .csrf(csrf -> csrf.disable())
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/", "/index.html", "/login/**", "/services/**","/assets/**", "/vite.svg", "/static/**").permitAll()
-                            .requestMatchers("/api/users/**").permitAll()
-                            .requestMatchers("/api/auth/**").permitAll()
-                            .requestMatchers("/api/sample").permitAll()
-                            .anyRequest().authenticated()
-                    )
-                    .sessionManagement(session -> session
-                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless for JWT
-                    )
-                    .headers(headers -> headers
-                            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                    )
-                    .oauth2Login(oauth -> oauth
-                            .loginPage(loginUrl)
-                            .successHandler(oidcSuccessHandler)
-                    )
-                    .logout(logout -> logout
-                            .logoutUrl("/logout")
-                            .invalidateHttpSession(true)
-                            .clearAuthentication(true)
-                            .deleteCookies(jwtProperties.getCookie().getName())
-                            .permitAll()
-                    )
+        http
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/login",
+                                "/actuator",
+                                "/actuator/**"
+                                ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless for JWT
+                )
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
+                .oauth2Login(oauth -> oauth
+                        .loginPage(loginUrl)
+                        .successHandler(oidcSuccessHandler)
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies(jwtProperties.getCookie().getName())
+                        .permitAll()
+                )
 //                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/"))
-                    .exceptionHandling(exception -> exception
-                            .defaultAuthenticationEntryPointFor(
-                                    (request, response, authException) -> response.sendError(403, "Forbidden"),
-                                    request -> true
-                            )
-                    )
-                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling(exception -> exception
+                        .defaultAuthenticationEntryPointFor(
+                                (request, response, authException) -> response.sendError(403, "Forbidden"),
+                                request -> true
+                        )
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> {});
 //                    .addFilterBefore(jwtAuthFilter, AnonymousAuthenticationFilter.class);
 
-            http.cors(cors -> {});
-
-            return http.build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return http.build();
     }
 
     @Bean
